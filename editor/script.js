@@ -31,7 +31,7 @@ const fontList =
 const fontNames = 
     ['Arial',
     'Courier New',
-    'Franklin Gothic Medium',
+    'Franklin Gothic',
     'Gill Sans',
     'Lucida Sans',
     'Segoe UI',
@@ -58,7 +58,7 @@ let dragY = 0;
 let dragPreviewX = 0;
 let dragPreviewY = 0;
 
-let mirrorIdCounter = 0;
+let mirrorIdCounter = 1;
 let globalMirrorMode = 'OFF';
 let mirrorMode = 'OFF';
 
@@ -69,6 +69,9 @@ let zIndexCounter = 1;
 
 let selection = null;
 let previewElement = null;
+
+let undoStack = [];
+let redoStack = [];
 
 const canvas = document.getElementById('canvas');
 
@@ -99,7 +102,11 @@ const clearButton = document.getElementById('clear');
 const delButton = document.getElementById('delete');
 const copyButton = document.getElementById('copy');
 
+const undoBtn = document.getElementById('undo');
+const redoBtn = document.getElementById('redo');
+
 const mirrorButton = document.getElementById('mirror');
+const downloadBtn = document.getElementById('download');
 
 const colorPicker = document.getElementById('colorInput');
 const chosenColor = document.getElementById('currentColor');
@@ -108,6 +115,8 @@ const bgColor = document.getElementById('bgColor');
 
 const previewButtons = document.querySelectorAll('.preview');
 const alphabet = document.getElementById('alphabet');
+const fontAllBtn = document.getElementById('fontAll');
+const fontOneBtn = document.getElementById('fontOne');
 
 canvas.addEventListener('click', deselect);
 canvas.addEventListener('wheel', changeSizeScroll);
@@ -118,6 +127,9 @@ canvas.addEventListener('wheel', changeSizeScroll);
 clearButton.addEventListener('click', clearAll);
 delButton.addEventListener('click', deleteElement);
 copyButton.addEventListener('click', copy);
+
+undoBtn.addEventListener('click', undo);
+redoBtn.addEventListener('click', redo);
 
 Lbutton.addEventListener('click', () => move(-modifierMove, 0));
 Rbutton.addEventListener('click', () => move(modifierMove, 0));
@@ -137,12 +149,21 @@ flipHBtn.addEventListener('click', () => flip(-1, 1));
 flipVBtn.addEventListener('click', () => flip(1, -1));
 
 mirrorButton.addEventListener('click', changeMirrorMode);
+downloadBtn.addEventListener('click', downloadImage);
+
+fontAllBtn.addEventListener('click', changeCanvasFont);
+fontOneBtn.addEventListener('click', changeElFont);
 
 colorPicker.addEventListener('change', () => {
     chosenColor.style.backgroundColor = colorPicker.value;
     changeColor();
+    changeBgColor(colorPicker.value);
 });
-chosenColor.addEventListener('click', changeColor);
+chosenColor.addEventListener('click', () => {
+    changeColor();
+    changeBgColor(chosenColor.style.backgroundColor);
+});
+bgColor.addEventListener('click', selectBgColor);
 
 
 window.addEventListener('keydown', (event) => {
@@ -151,6 +172,9 @@ window.addEventListener('keydown', (event) => {
     switch (key) {
         case 'delete': deleteElement(); break;
         case 'v': copy(); break;
+        /* --- */
+        case 'z': undo(); break;
+        case 'y': redo(); break;
         /* --- */
         case 'arrowleft': move(-modifierMove, 0); break;
         case 'arrowright': move(modifierMove, 0); break;
@@ -184,8 +208,112 @@ modifierLvl--;
 changeModifier();
 colorPicker.value = '#000000';
 chosenColor.style.backgroundColor = colorPicker.value;
+canvas.style.backgroundColor = 'white';
+saveState();
+undoBtn.style.backgroundColor = "red";
 
 /* ---------------------- */
+
+function downloadImage() {
+    if (selection) {
+        selection.classList.remove('selected');
+        pair = findMirror(selection);
+        if (pair) pair.classList.remove('selected');
+    }
+
+    html2canvas(canvas, {
+        backgroundColor: canvas.style.backgroundColor
+    }).then(canvasImage => {
+        const link = document.createElement('a');
+        link.download = 'canvas.png';
+        link.href = canvasImage.toDataURL('image/png');
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        if (selection) selection.classList.add('selected');
+        if (pair) pair.classList.add('selected');
+    });
+}
+
+/* --- UNDO / REDO ACTIONS --- */
+
+function saveState() {
+    const state = {
+        html: canvas.innerHTML,
+        color: canvas.style.backgroundColor
+    }
+
+    if (undoStack.length === 0 || undoStack[undoStack.length - 1] !== state) undoStack.push(state);
+
+    redoStack = [];
+
+    undoBtn.style.backgroundColor = "green";
+    redoBtn.style.backgroundColor = "red";
+}
+
+function undo() {
+    if (undoStack.length <= 1) return;
+
+    redoStack.push(undoStack.pop());
+    const prevState = undoStack[undoStack.length - 1];
+
+    loadState(prevState);
+
+    redoBtn.style.backgroundColor = "green";
+    if (undoStack.length <= 1) undoBtn.style.backgroundColor = "red";
+}
+
+function redo() {
+    if (redoStack.length === 0) return;
+
+    const nextState = redoStack.pop();
+    undoStack.push(nextState);
+
+    loadState(nextState);
+
+    undoBtn.style.backgroundColor = "green";
+    if (redoStack.length === 0) redoBtn.style.backgroundColor = "red";
+}
+
+function loadState(state) {
+    canvas.innerHTML = state.html;
+    canvas.style.backgroundColor = state.color;
+    bgColor.style.backgroundColor = state.color;
+
+    mirrorMode = globalMirrorMode;
+    mirrorMessage.textContent = mirrorMode;
+
+    const elements = canvas.querySelectorAll('.element');
+    selection = null;
+
+    objCount = elements.length;
+    objCounter.textContent = objCount;
+
+    zIndexCounter = 1;
+    mirrorIdCounter = 1;
+    
+    elements.forEach(el => {
+        const zIndex = parseInt(el.style.zIndex);
+        if (zIndex > zIndexCounter) zIndexCounter = zIndex + 1;
+        
+        if (el.dataset.mirrorId) {
+            const mirrorId = parseInt(el.dataset.mirrorId);
+            if (mirrorId > mirrorIdCounter) mirrorIdCounter = mirrorId + 1;
+        }
+
+        el.classList.remove('selected');
+
+        el.addEventListener('click', function(e) {
+            e.stopPropagation();
+            select(el);
+        });
+        el.addEventListener('mousedown', startDrag);
+    });
+}
+
+/* --------------------------- */
 
 
 function changeAlphabet () {
@@ -223,6 +351,23 @@ function changeFont () {
     previews.forEach(preview => preview.style.fontFamily = fontList[fontLvl]);
 
     fontMessage.textContent = fontNames[fontLvl];
+}
+
+function changeElFont() {
+    if (selection == null) return;
+
+    selection.style.fontFamily = fontList[fontLvl];
+
+    updateMirror(selection);
+
+    saveState();
+}
+
+function changeCanvasFont() {
+    const elements = canvas.querySelectorAll('.element');
+    elements.forEach(el => el.style.fontFamily = fontList[fontLvl]);
+
+    saveState();
 }
 
 function changeModifier () {
@@ -268,6 +413,7 @@ function addColor(color) {
         colorPicker.value = colorBlock.style.backgroundColor;
         chosenColor.style.backgroundColor = colorBlock.style.backgroundColor;
         changeColor();
+        changeBgColor(colorBlock.style.backgroundColor);
     });
 }
 
@@ -289,6 +435,25 @@ function changeColor() {
     selection.style.color = chosenColor.style.backgroundColor;
     updateMirror(selection);
     updateColorList();
+
+    saveState();
+}
+
+function selectBgColor() {
+    if (!bgColor.classList.contains('bgSelected')) {
+        deselect();
+        bgColor.classList.add('bgSelected');
+    }
+    else bgColor.classList.remove('bgSelected');
+}
+
+function changeBgColor(color) {
+    if (!bgColor.classList.contains('bgSelected')) return;
+
+    bgColor.style.backgroundColor = color;
+    canvas.style.backgroundColor = color;
+
+    saveState();
 }
 
 /* ------------------------ */
@@ -307,6 +472,8 @@ function changeMirrorMode() {
             delete pair.dataset.mirrorId;
             delete pair.dataset.mirrorRole;
             mirrorIdCounter--;
+
+            saveState();
         }
 
         globalMirrorMode = 'OFF';
@@ -327,9 +494,8 @@ function findMirror(el) {
 function createMirrorPair(originalEl) {
     const mirrorEl = originalEl.cloneNode(true);
 
-    mirrorIdCounter++;
     originalEl.dataset.mirrorId = mirrorIdCounter;
-    mirrorEl.dataset.mirrorId = mirrorIdCounter;
+    mirrorEl.dataset.mirrorId = mirrorIdCounter++;
 
     originalEl.dataset.mirrorRole = 'original';
     mirrorEl.dataset.mirrorRole = 'mirror';
@@ -470,6 +636,8 @@ function deleteElement() {
 
     selection = null;
     updateColorList();
+
+    saveState();
 }
 
 function clearAll() {
@@ -479,8 +647,12 @@ function clearAll() {
     mirrorIdCounter = 0;
     objCount = 0;
     objCounter.textContent = objCount;
+    canvas.style.backgroundColor = "white";
+    bgColor.style.backgroundColor = "white";
 
     selection = null;
+
+    saveState();
 }
 
 function copy() {
@@ -488,11 +660,19 @@ function copy() {
 
     let elStyle = window.getComputedStyle(selection);
     let fontSize = parseInt(elStyle.fontSize);
+
     let move = modifierMove;
     if (modifierLvl == 0) move = 5;
-    newElement(selection, fontSize, selection.dataset.rotation, selection.dataset.scaleX, selection.dataset.scaleY, selection.offsetLeft + move, selection.offsetTop + move);
+    let posX = selection.offsetLeft + move;
+    let posY = selection.offsetTop + move;
+    posX = checkBorderX(posX);
+    posY = checkBorderY(posY);
+
+    newElement(selection, fontSize, selection.dataset.rotation, selection.dataset.scaleX, selection.dataset.scaleY, posX, posY);
 
     updateMirror(selection);
+
+    saveState();
 }
 
 
@@ -528,6 +708,7 @@ function endDragPreview(e) {
 
     if (e.clientX >= canvasRect.left && e.clientX <= canvasRect.right && e.clientY >= canvasRect.top && e.clientY <= canvasRect.bottom) {
         newElement(previewElement, 80, 0, 1, 1, e.clientX - canvasRect.left, e.clientY - canvasRect.top);
+        saveState();
     }
 
     previewElement.remove();
@@ -564,20 +745,8 @@ function drag(e) {
     posX = e.clientX - dragX;
     posY = e.clientY - dragY;
 
-    const selectionRect = selection.getBoundingClientRect();
-
-    const quarterWidth = selectionRect.width / 4;
-    const quarterHeight = selectionRect.height / 4;
-
-    const minX = -quarterWidth;
-    const maxX = canvas.clientWidth + quarterWidth;
-    const minY = -quarterHeight;
-    const maxY = canvas.clientHeight + quarterHeight;
-
-    if (posX < minX) posX = minX;
-    if (posX > maxX) posX = maxX;
-    if (posY < minY) posY = minY;
-    if (posY > maxY) posY = maxY;
+    posX = checkBorderX(posX);
+    posY = checkBorderY(posY);
 
     selection.style.left = posX + 'px';
     selection.style.top = posY + 'px';
@@ -588,6 +757,8 @@ function drag(e) {
 function endDrag() {
     document.removeEventListener('mousemove', drag);
     document.removeEventListener('mouseup', endDrag);
+
+    saveState();
 }
 
 function move(modifierX, modifierY) {
@@ -596,25 +767,39 @@ function move(modifierX, modifierY) {
     let posX = selection.offsetLeft + modifierX;
     let posY = selection.offsetTop + modifierY;
 
-    const selectionRect = selection.getBoundingClientRect();
-
-    const quarterWidth = selectionRect.width / 4;
-    const quarterHeight = selectionRect.height / 4;
-
-    const minX = -quarterWidth;
-    const maxX = canvas.clientWidth + quarterWidth;
-    const minY = -quarterHeight;
-    const maxY = canvas.clientHeight + quarterHeight;
-
-    if (posX < minX) posX = minX;
-    if (posX > maxX) posX = maxX;
-    if (posY < minY) posY = minY;
-    if (posY > maxY) posY = maxY;
+    posX = checkBorderX(posX);
+    posY = checkBorderY(posY);
     
     selection.style.left = posX + 'px';
     selection.style.top = posY + 'px';
 
     updateMirror(selection);
+
+    saveState();
+}
+
+function checkBorderX(posX) {
+    const selectionRect = selection.getBoundingClientRect();
+    const quarterWidth = selectionRect.width / 4;
+
+    const minX = -quarterWidth;
+    const maxX = canvas.clientWidth + quarterWidth;
+    if (posX < minX) posX = minX;
+    if (posX > maxX) posX = maxX;
+
+    return posX;
+}
+
+function checkBorderY(posY) {
+    const selectionRect = selection.getBoundingClientRect();
+    const quarterHeight = selectionRect.height / 4;
+
+    const minY = -quarterHeight;
+    const maxY = canvas.clientHeight + quarterHeight;
+    if (posY < minY) posY = minY;
+    if (posY > maxY) posY = maxY;
+
+    return posY;
 }
 
 function changeSizeScroll(e) {
@@ -634,6 +819,8 @@ function changeSize(modifier) {
     selection.style.fontSize = newSize + 'px';
 
     updateMirror(selection);
+
+    saveState();
 }
 
 function stretch(modifier) {
@@ -650,6 +837,8 @@ function stretch(modifier) {
 
         updateMirror(selection);
     }
+
+    saveState();
 }
 
 function rotate(modifier) {
@@ -663,6 +852,8 @@ function rotate(modifier) {
     changeTransform(selection);
 
     updateMirror(selection);
+
+    saveState();
 }
 
 function flip(flipH, flipV) {
@@ -678,12 +869,14 @@ function flip(flipH, flipV) {
     changeTransform(selection);
 
     updateMirror(selection);
+
+    saveState();
 }
 
 function changeTransform(el) {
-    const rotation = el.dataset.rotation;
-    const scaleX = el.dataset.scaleX;
-    const scaleY = el.dataset.scaleY;
+    const rotation = el.dataset.rotation || 0;
+    const scaleX = el.dataset.scaleX || 1;
+    const scaleY = el.dataset.scaleY || 1;
 
     el.style.transform = `translate(-50%, -50%) rotate(${rotation}deg) scale(${scaleX}, ${scaleY})`
 }
