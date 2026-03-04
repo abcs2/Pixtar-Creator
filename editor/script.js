@@ -1,15 +1,57 @@
-const alphabetList = [['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'], 
-['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я', 'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я'], 
-['Α', 'Β', 'Γ', 'Δ', 'Ε', 'Ζ', 'Η', 'Θ', 'Ι', 'Κ', 'Λ', 'Μ', 'Ν', 'Ξ', 'Ο', 'Π', 'Ρ', 'Σ', 'Τ', 'Υ', 'Φ', 'Χ', 'Ψ', 'Ω', 'α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'ι', 'κ', 'λ', 'μ', 'ν', 'ξ', 'ο', 'π', 'ρ', 'σ', 'τ', 'υ', 'φ', 'χ', 'ψ', 'ω'], 
-['ش', 'س', 'ز', 'ر', 'ذ', 'د', 'خ', 'ح', 'ج', 'ث', 'ت', 'ب', 'ا', 'ء', 'ي', 'و', 'ه', 'ن', 'م', 'ل', 'ك', 'ق', 'ف', 'غ', 'ع', 'ظ', 'ط', 'ض', 'ص', 'ى', 'ئ', 'ؤ', 'ة'], 
-['あ', 'か', 'さ', 'た', 'な', 'は', 'ま', 'や', 'ら', 'わ', 'が', 'ざ', 'だ', 'ば', 'ぱ', 'い', 'き', 'し', 'ち', 'に', 'ひ', 'み', 'り', 'ぎ', 'じ', 'ぢ', 'び', 'ぴ', 'う', 'く', 'す', 'つ', 'ぬ', 'ふ', 'む', 'ゆ', 'る', 'ぐ', 'ず', 'づ', 'ぶ', 'ぷ', 'え', 'け', 'せ', 'て', 'ね', 'へ', 'め', 'れ', 'げ', 'ぜ', 'で', 'べ', 'ぺ', 'お', 'こ', 'そ', 'と', 'の', 'ほ', 'も', 'よ', 'ろ', 'を', 'ご', 'ぞ', 'ど', 'ぼ', 'ぽ', 'ん'], 
-['ア', 'カ', 'サ', 'タ', 'ナ', 'ハ', 'マ', 'ヤ', 'ラ', 'ワ', 'ガ', 'ザ', 'ダ', 'バ', 'パ', 'イ', 'キ', 'シ', 'チ', 'ニ', 'ヒ', 'ミ', 'リ', 'ギ', 'ジ', 'ヂ', 'ビ', 'ピ', 'ウ', 'ク', 'ス', 'ツ', 'ヌ', 'フ', 'ム', 'ユ', 'ル', 'グ', 'ズ', 'ヅ', 'ブ', 'プ', 'エ', 'ケ', 'セ', 'テ', 'ネ', 'ヘ', 'メ', 'レ', 'ゲ', 'ゼ', 'デ', 'ベ', 'ペ', 'オ', 'コ', 'ソ', 'ト', 'ノ', 'ホ', 'モ', 'ヨ', 'ロ', 'ヲ', 'ゴ', 'ゾ', 'ド', 'ボ', 'ポ', 'ン']];
+const alphabetList =
+    [['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'], 
+    ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я', 'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я'], 
+    ['Α', 'Β', 'Γ', 'Δ', 'Ε', 'Ζ', 'Η', 'Θ', 'Ι', 'Κ', 'Λ', 'Μ', 'Ν', 'Ξ', 'Ο', 'Π', 'Ρ', 'Σ', 'Τ', 'Υ', 'Φ', 'Χ', 'Ψ', 'Ω', 'α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'ι', 'κ', 'λ', 'μ', 'ν', 'ξ', 'ο', 'π', 'ρ', 'σ', 'τ', 'υ', 'φ', 'χ', 'ψ', 'ω'], 
+    ['ش', 'س', 'ز', 'ر', 'ذ', 'د', 'خ', 'ح', 'ج', 'ث', 'ت', 'ب', 'ا', 'ء', 'ي', 'و', 'ه', 'ن', 'م', 'ل', 'ك', 'ق', 'ف', 'غ', 'ع', 'ظ', 'ط', 'ض', 'ص', 'ى', 'ئ', 'ؤ', 'ة'], 
+    ['あ', 'か', 'さ', 'た', 'な', 'は', 'ま', 'や', 'ら', 'わ', 'が', 'ざ', 'だ', 'ば', 'ぱ', 'い', 'き', 'し', 'ち', 'に', 'ひ', 'み', 'り', 'ぎ', 'じ', 'ぢ', 'び', 'ぴ', 'う', 'く', 'す', 'つ', 'ぬ', 'ふ', 'む', 'ゆ', 'る', 'ぐ', 'ず', 'づ', 'ぶ', 'ぷ', 'え', 'け', 'せ', 'て', 'ね', 'へ', 'め', 'れ', 'げ', 'ぜ', 'で', 'べ', 'ぺ', 'お', 'こ', 'そ', 'と', 'の', 'ほ', 'も', 'よ', 'ろ', 'を', 'ご', 'ぞ', 'ど', 'ぼ', 'ぽ', 'ん'], 
+    ['ア', 'カ', 'サ', 'タ', 'ナ', 'ハ', 'マ', 'ヤ', 'ラ', 'ワ', 'ガ', 'ザ', 'ダ', 'バ', 'パ', 'イ', 'キ', 'シ', 'チ', 'ニ', 'ヒ', 'ミ', 'リ', 'ギ', 'ジ', 'ヂ', 'ビ', 'ピ', 'ウ', 'ク', 'ス', 'ツ', 'ヌ', 'フ', 'ム', 'ユ', 'ル', 'グ', 'ズ', 'ヅ', 'ブ', 'プ', 'エ', 'ケ', 'セ', 'テ', 'ネ', 'ヘ', 'メ', 'レ', 'ゲ', 'ゼ', 'デ', 'ベ', 'ペ', 'オ', 'コ', 'ソ', 'ト', 'ノ', 'ホ', 'モ', 'ヨ', 'ロ', 'ヲ', 'ゴ', 'ゾ', 'ド', 'ボ', 'ポ', 'ン']
+    ];
+
+const alphabetNames = 
+    ['Latin', 'Cyrillic', 'Greek', 'Arabic', 'Hiragana', 'Katakana'];
+
+const charList = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.', '-', '!', '#', '$', '&', '(', ')', '*', ',', ';', ':', '?', '@', '[', ']', '^', '_', '~', '{', '}', '|', '+', '=', '<', '>', '/', '\\', '%'];
+
+const fontList =
+    ["Arial, Helvetica, sans-serif",
+    "'Courier New', Courier, monospace",
+    "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
+    "'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif",
+    "'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif",
+    "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+    "'Times New Roman', Times, serif",
+    "'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif",
+    "Cambria, Cochin, Georgia, Times, 'Times New Roman', serif",
+    "Georgia, 'Times New Roman', Times, serif",
+    "Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif",
+    "Verdana, Geneva, Tahoma, sans-serif",
+    "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif"
+    ];
+
+const fontNames = 
+    ['Arial',
+    'Courier New',
+    'Franklin Gothic Medium',
+    'Gill Sans',
+    'Lucida Sans',
+    'Segoe UI',
+    'Times New Roman',
+    'Trebuchet MS',
+    'Cambria',
+    'Georgia',
+    'Impact',
+    'Verdana',
+    'system-ui'
+    ];
+
+const maxSize = 1600;
+const minSize = 20;
 
 let modifierLvl = 1;
-let modifierMove = 20;
-let modifierSize = 20;
-let modifierRotate = 15;
-let modifierStretch = 0.2;
+let modifierMove;
+let modifierSize;
+let modifierRotate;
+let modifierStretch;
 
 let dragX = 0;
 let dragY = 0;
@@ -22,6 +64,9 @@ let mirrorMode = 'OFF';
 
 let objCount = 0;
 let alphabetLvl = 0;
+let fontLvl = 0;
+let zIndexCounter = 1;
+
 let selection = null;
 let previewElement = null;
 
@@ -30,6 +75,8 @@ const canvas = document.getElementById('canvas');
 const modMessage = document.getElementById('modMessage');
 const objCounter = document.getElementById('objCount');
 const mirrorMessage = document.getElementById('mirrorMode');
+const alphabetMessage = document.getElementById('alphabetMessage');
+const fontMessage = document.getElementById('fontMessage');
 
 const Lbutton = document.getElementById('Lbutton');
 const Rbutton = document.getElementById('Rbutton');
@@ -54,6 +101,11 @@ const copyButton = document.getElementById('copy');
 
 const mirrorButton = document.getElementById('mirror');
 
+const colorPicker = document.getElementById('colorInput');
+const chosenColor = document.getElementById('currentColor');
+const colorList = document.getElementById('colorList');
+const bgColor = document.getElementById('bgColor');
+
 const previewButtons = document.querySelectorAll('.preview');
 const alphabet = document.getElementById('alphabet');
 
@@ -61,7 +113,7 @@ canvas.addEventListener('click', deselect);
 canvas.addEventListener('wheel', changeSizeScroll);
 
 //previewButtons.forEach(preview => preview.addEventListener('click', () => newElement(preview, 80, 0, 1, 1, canvas.clientWidth / 2, canvas.clientHeight / 2)));
-previewButtons.forEach(preview => preview.addEventListener('mousedown', startDragPreview));
+//previewButtons.forEach(preview => preview.addEventListener('mousedown', startDragPreview));
 
 clearButton.addEventListener('click', clearAll);
 delButton.addEventListener('click', deleteElement);
@@ -86,45 +138,91 @@ flipVBtn.addEventListener('click', () => flip(1, -1));
 
 mirrorButton.addEventListener('click', changeMirrorMode);
 
+colorPicker.addEventListener('change', () => {
+    chosenColor.style.backgroundColor = colorPicker.value;
+    changeColor();
+});
+chosenColor.addEventListener('click', changeColor);
+
 
 window.addEventListener('keydown', (event) => {
-    switch (event.key) {
-        case 'Delete': deleteElement(); break;
-        case 'ArrowLeft': move(-modifierMove, 0); break;
-        case 'ArrowRight': move(modifierMove, 0); break;
-        case 'ArrowUp': move(0, -modifierMove); break;
-        case 'ArrowDown': move(0, modifierMove); break;
+    const key = event.key.toLowerCase();
+
+    switch (key) {
+        case 'delete': deleteElement(); break;
+        case 'v': copy(); break;
+        /* --- */
+        case 'arrowleft': move(-modifierMove, 0); break;
+        case 'arrowright': move(modifierMove, 0); break;
+        case 'arrowup': move(0, -modifierMove); break;
+        case 'arrowdown': move(0, modifierMove); break;
+        case 'a': move(-modifierMove, 0); break;
+        case 'd': move(modifierMove, 0); break;
+        case 'w': move(0, -modifierMove); break;
+        case 's': move(0, modifierMove); break;
+        /* --- */
         case '+': changeSize(modifierSize); break;
         case '=': changeSize(modifierSize); break;
         case '-': changeSize(-modifierSize); break;
+        /* --- */
         case 'q': rotate(-modifierRotate); break;
         case 'e': rotate(modifierRotate); break;
-        case 'Control': changeModifier(); break;
-        case 'v': copy(); break;
+        /* --- */
+        case 'control': changeModifier(); break;
         case 'ç': changeAlphabet(); break;
+        case 'f': changeFont(); break;
     }
 });
+
+/* --- INITIALIZATION --- */
+
+alphabetLvl--;
+changeAlphabet();
+fontLvl--;
+changeFont();
+modifierLvl--;
+changeModifier();
+colorPicker.value = '#000000';
+chosenColor.style.backgroundColor = colorPicker.value;
+
+/* ---------------------- */
 
 
 function changeAlphabet () {
     alphabet.innerHTML = '';
 
     alphabetLvl++;
-    if (alphabetLvl > 5) alphabetLvl = 0;
+    if (alphabetLvl === alphabetList.length) alphabetLvl = 0;
+    alphabetMessage.textContent = alphabetNames[alphabetLvl];
     
     alphabetList[alphabetLvl].forEach(letter => addLetter(letter));
+
+    alphabet.appendChild(document.createElement('p'));
+
+    charList.forEach(ch => addLetter(ch));
 }
 
 function addLetter(letter) {
     const newLetter = document.createElement('button');
     newLetter.type = 'button';
     newLetter.className = 'preview';
+    newLetter.style.fontFamily = fontList[fontLvl];
     newLetter.textContent = letter;
 
     //newLetter.addEventListener('click', () => newElement(newLetter, 80, 0, 1, 1, canvas.clientWidth / 2, canvas.clientHeight / 2));
     newLetter.addEventListener('mousedown', startDragPreview);
 
     alphabet.appendChild(newLetter);
+}
+
+function changeFont () {
+    fontLvl++;
+    if (fontLvl === fontList.length) fontLvl = 0;
+
+    const previews = alphabet.querySelectorAll('.preview');
+    previews.forEach(preview => preview.style.fontFamily = fontList[fontLvl]);
+
+    fontMessage.textContent = fontNames[fontLvl];
 }
 
 function changeModifier () {
@@ -140,8 +238,8 @@ function changeModifier () {
             modMessage.textContent = "small";
             break;
         case 1:
-            modifierMove = 15;
-            modifierSize = 15;
+            modifierMove = 20;
+            modifierSize = 20;
             modifierRotate = 15;
             modifierStretch = 0.2;
             modMessage.textContent = "medium";
@@ -157,6 +255,45 @@ function changeModifier () {
 }
 
 
+/* --- COLOR OPERATIONS --- */
+
+function addColor(color) {
+    const colorBlock = document.createElement('div');
+    colorBlock.type = 'button';
+    colorBlock.className = 'colorBlock';
+    colorBlock.style.backgroundColor = color;
+    colorList.appendChild(colorBlock);
+
+    colorBlock.addEventListener('click', () => {
+        colorPicker.value = colorBlock.style.backgroundColor;
+        chosenColor.style.backgroundColor = colorBlock.style.backgroundColor;
+        changeColor();
+    });
+}
+
+function updateColorList() {
+    const canvasColors = document.querySelectorAll('.element');
+    const currentColors = new Set();
+
+    canvasColors.forEach(el => {
+        currentColors.add(el.style.color);
+    })
+
+    colorList.innerHTML = '';
+    currentColors.forEach(color => addColor(color));
+}
+
+function changeColor() {
+    if (selection == null) return;
+
+    selection.style.color = chosenColor.style.backgroundColor;
+    updateMirror(selection);
+    updateColorList();
+}
+
+/* ------------------------ */
+
+
 /* --- MIRROR OPERATIONS --- */
 
 function changeMirrorMode() {
@@ -164,6 +301,7 @@ function changeMirrorMode() {
         if (selection != null && selection.dataset.mirrorId) {
             pair = findMirror(selection);
 
+            pair.classList.remove('selected');
             delete selection.dataset.mirrorId;
             delete selection.dataset.mirrorRole;
             delete pair.dataset.mirrorId;
@@ -210,10 +348,13 @@ function createMirrorPair(originalEl) {
 }
 
 function syncMirror(originalEl, mirrorEl) {
+    mirrorEl.style.fontFamily = originalEl.style.fontFamily;
+
     mirrorEl.style.left = (canvas.clientWidth - originalEl.offsetLeft) + 'px';
     mirrorEl.style.top = originalEl.offsetTop + 'px';
 
     mirrorEl.style.fontSize = originalEl.style.fontSize;
+    mirrorEl.style.color = originalEl.style.color;
 
     mirrorEl.dataset.rotation = -originalEl.dataset.rotation;
     mirrorEl.dataset.scaleX = -originalEl.dataset.scaleX;
@@ -236,11 +377,14 @@ function newElement(preview, size, rotation, scaleX, scaleY, posX, posY) {
     const el = document.createElement('span');
     el.className = 'element';
     el.textContent = preview.textContent;
+    el.style.fontFamily = preview.style.fontFamily;
 
     el.style.fontSize = size + 'px';
     el.dataset.rotation = rotation;
     el.dataset.scaleX = scaleX;
     el.dataset.scaleY = scaleY;
+    el.style.color = chosenColor.style.backgroundColor;
+    el.style.zIndex = preview.style.zIndex;
 
     changeTransform(el);
 
@@ -250,6 +394,7 @@ function newElement(preview, size, rotation, scaleX, scaleY, posX, posY) {
     el.style.top = posY + 'px';
     objCount++;
     objCounter.textContent = objCount;
+    updateColorList();
 
     if (mirrorMode === 'ON') {
         createMirrorPair(el);
@@ -266,21 +411,22 @@ function newElement(preview, size, rotation, scaleX, scaleY, posX, posY) {
 
 function select(el) {
     if (selection != null) {
-        selection.classList.remove('selected');
-
         if (selection.dataset.mirrorId) {
             const pair = findMirror(selection);
-            if(pair) pair.classList.remove('selected');
+            if (pair) pair.classList.remove('selected');
         }
+        selection.classList.remove('selected');
     }
     selection = el;
     selection.classList.add('selected');
+    selection.style.zIndex = zIndexCounter++;
 
     if (el.dataset.mirrorId) {
         const pair = findMirror(el);
 
         if (pair) {
             pair.classList.add('selected');
+            pair.style.zIndex = zIndexCounter++;
             mirrorMode = 'ON';
         }
     } else {
@@ -323,12 +469,14 @@ function deleteElement() {
     objCounter.textContent = objCount;
 
     selection = null;
+    updateColorList();
 }
 
 function clearAll() {
-    const elements = canvas.querySelectorAll('.element');
-    elements.forEach(el => el.remove());
     canvas.innerHTML = '';
+    colorList.innerHTML = '';
+    zIndexCounter = 1;
+    mirrorIdCounter = 0;
     objCount = 0;
     objCounter.textContent = objCount;
 
@@ -351,11 +499,15 @@ function copy() {
 /* --- CREATE ELEMENT WITH DRAG --- */
 
 function startDragPreview(e) {
+    e.preventDefault();
     e.stopPropagation();
 
     previewElement = document.createElement('span');
     previewElement.className = 'preview2';
+    previewElement.style.fontFamily = e.target.style.fontFamily;
     previewElement.textContent = e.target.textContent;
+    previewElement.style.color = chosenColor.style.backgroundColor;
+    previewElement.style.zIndex = zIndexCounter++;
     document.body.appendChild(previewElement);
 
     previewElement.style.left = e.pageX + 'px';
@@ -371,6 +523,7 @@ function dragPreview(e) {
 }
 
 function endDragPreview(e) {
+    if (!previewElement) return;
     const canvasRect = canvas.getBoundingClientRect();
 
     if (e.clientX >= canvasRect.left && e.clientX <= canvasRect.right && e.clientY >= canvasRect.top && e.clientY <= canvasRect.bottom) {
@@ -388,16 +541,21 @@ function endDragPreview(e) {
 
 
 function startDrag(e) {
-    if (!selection.classList.contains('selected')) return;
+    if (selection == null) return;
     e.stopPropagation();
 
-    selection = e.currentTarget;
+    if (e.currentTarget.dataset.mirrorId) {
+        const pair = findMirror(e.currentTarget);
+        if (pair && pair === selection) select(e.currentTarget);
+    }
 
-    dragX = e.clientX - selection.offsetLeft;
-    dragY = e.clientY - selection.offsetTop;
+    if (e.currentTarget === selection) {
+        dragX = e.clientX - selection.offsetLeft;
+        dragY = e.clientY - selection.offsetTop;
 
-    document.addEventListener('mousemove', drag);
-    document.addEventListener('mouseup', endDrag);
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('mouseup', endDrag);
+    }
 }
 
 function drag(e) {
@@ -471,7 +629,8 @@ function changeSize(modifier) {
 
     let elStyle = window.getComputedStyle(selection);
     let newSize = parseInt(elStyle.fontSize) + modifier;
-    if (newSize < 10) newSize = 10;
+    if (newSize < minSize) newSize = minSize;
+    else if (newSize > maxSize) newSize = maxSize;
     selection.style.fontSize = newSize + 'px';
 
     updateMirror(selection);
