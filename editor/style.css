@@ -3,7 +3,7 @@
     grid-template-rows: auto auto auto;
     grid-template-columns: auto auto auto;
     background-color: black;
-    height: 100vh;
+    height: calc(100vh - 16px);
 }
 
 .all div {
@@ -26,8 +26,7 @@
 
 #colorList {
     display: flex;
-    position: relative;
-    overflow: wrap;
+    position: fixed;
 }
 
 .colorBlock {
@@ -38,8 +37,7 @@
 }
 
 .colorBlock:active {
-    height: 10px;
-    width: 10px;
+    transform: scale(0.7);
 }
 
 #bgColor {
@@ -48,11 +46,10 @@
 }
 
 #bgColor:active {
-    height: 15px;
-    width: 15px;
+    transform: scale(1);
 }
 
-.bgSelected {
+.buttonSelected {
     border: 2px solid red;
 }
 

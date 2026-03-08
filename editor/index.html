@@ -31,7 +31,6 @@
                     <br>
                     <button type="button" id="rotateDown">rotate <</button>
                     <button type="button" id="rotateUp">rotate ></button>
-                    <br>
                     <button type="button" id="flipH">flip | </button>
                     <button type="button" id="flipV">flip --</button>
                 </p>
@@ -39,23 +38,24 @@
                     <button type="button" id="mirror">mirror: <span id="mirrorMode">OFF</span></button>
                 </p>
                 <p>
-                    <button type="button" id="download">download</button>
-                </p>
-                <p>
+                    <button type="button" id="download">download</button> 
                     <small>Objects: <span id="objCount">0</span></small>
                 </p>
                 <p>
-                    <input type="color" id="colorInput" value="#000000"><button id="currentColor" class="colorBlock"></button><br>
-                    <small>Background color: </small><button id="bgColor" class="colorBlock"></button><br>
+                    <input type="color" id="colorInput" value="#000000"><button id="currentColor" class="colorBlock"></button> | 
+                    <small>Background color: </small><button id="bgColor" class="colorBlock"></button>
                     <div id="colorList"></div>
                 </p>
             </div>
             <div id="charContainer">
-                <div><small>Alphabet: <span id="alphabetMessage"></span> (Ç to change)</small></div>
+                <div>
+                    <small>Alphabet: <span id="alphabetMessage"></span> (Ç to change)</small> | 
+                    <button type="button" id="replaceLetter">replace letter mode</button>
+                </div>
                 <div>
                     <small>Font: <span id="fontMessage"></span> (F to change)</small> | 
                     <button type="button" id="fontOne">replace one</button>
-                    <button type="button" id="fontAll">replace all</button>
+                    <button type="button" id="fontAll">replace all</button><br>
                 </div>
                 <br>
                 <div id="alphabet"></div>

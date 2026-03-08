@@ -68,12 +68,29 @@ let fontLvl = 0;
 let zIndexCounter = 1;
 
 let selection = null;
+let selectionList = [];
 let previewElement = null;
+
+
+let pressingKey = false;
+let scrollTimeout = null;
 
 let undoStack = [];
 let redoStack = [];
 
+const auxCanvas = document.createElement('canvas');
+const auxCtx = auxCanvas.getContext('2d');
+
 const canvas = document.getElementById('canvas');
+
+const maskCanvas = document.createElement('canvas');
+maskCanvas.width = canvas.clientWidth;
+maskCanvas.height = canvas.clientHeight;
+const maskCtx = maskCanvas.getContext('2d');
+maskCtx.imageSmoothingEnabled = false;
+let maskDirty = false;
+
+const colorToId = new Map();
 
 const modMessage = document.getElementById('modMessage');
 const objCounter = document.getElementById('objCount');
@@ -117,12 +134,16 @@ const previewButtons = document.querySelectorAll('.preview');
 const alphabet = document.getElementById('alphabet');
 const fontAllBtn = document.getElementById('fontAll');
 const fontOneBtn = document.getElementById('fontOne');
-
-canvas.addEventListener('click', deselect);
-canvas.addEventListener('wheel', changeSizeScroll);
+const replaceLetterBtn = document.getElementById('replaceLetter');
 
 //previewButtons.forEach(preview => preview.addEventListener('click', () => newElement(preview, 80, 0, 1, 1, canvas.clientWidth / 2, canvas.clientHeight / 2)));
 //previewButtons.forEach(preview => preview.addEventListener('mousedown', startDragPreview));
+
+canvas.addEventListener('click', function () {
+    console.log("deselecionei");
+    deselect();
+});
+canvas.addEventListener('wheel', changeSizeScroll);
 
 clearButton.addEventListener('click', clearAll);
 delButton.addEventListener('click', deleteElement);
@@ -131,28 +152,29 @@ copyButton.addEventListener('click', copy);
 undoBtn.addEventListener('click', undo);
 redoBtn.addEventListener('click', redo);
 
-Lbutton.addEventListener('click', () => move(-modifierMove, 0));
-Rbutton.addEventListener('click', () => move(modifierMove, 0));
-Ubutton.addEventListener('click', () => move(0, -modifierMove));
-Dbutton.addEventListener('click', () => move(0, modifierMove));
+Lbutton.addEventListener('click', () => {move(-modifierMove, 0); maskDirty = true; saveState();});
+Rbutton.addEventListener('click', () => {move(modifierMove, 0); maskDirty = true; saveState();});
+Ubutton.addEventListener('click', () => {move(0, -modifierMove); maskDirty = true; saveState();});
+Dbutton.addEventListener('click', () => {move(0, modifierMove); maskDirty = true; saveState();});
 
-sizeUpBtn.addEventListener('click', () => changeSize(modifierSize));
-sizeDownBtn.addEventListener('click', () => changeSize(-modifierSize));
+sizeUpBtn.addEventListener('click', () => {changeSize(modifierSize); maskDirty = true; saveState();});
+sizeDownBtn.addEventListener('click', () => {changeSize(-modifierSize); maskDirty = true; saveState();});
 
-stretchHBtn.addEventListener('click', () => stretch(modifierStretch));
-stretchVBtn.addEventListener('click', () => stretch(-modifierStretch));
+stretchHBtn.addEventListener('click', () => {stretch(modifierStretch); maskDirty = true; saveState();});
+stretchVBtn.addEventListener('click', () => {stretch(-modifierStretch); maskDirty = true; saveState();});
 
-rotateUpBtn.addEventListener('click', () => rotate(modifierRotate));
-rotateDownBtn.addEventListener('click', () => rotate(-modifierRotate));
+rotateUpBtn.addEventListener('click', () => {rotate(modifierRotate); maskDirty = true; saveState();});
+rotateDownBtn.addEventListener('click', () => {rotate(-modifierRotate); maskDirty = true; saveState();});
 
-flipHBtn.addEventListener('click', () => flip(-1, 1));
-flipVBtn.addEventListener('click', () => flip(1, -1));
+flipHBtn.addEventListener('click', () => {flip(-1, 1); maskDirty = true; saveState();});
+flipVBtn.addEventListener('click', () => {flip(1, -1); maskDirty = true; saveState();});
 
 mirrorButton.addEventListener('click', changeMirrorMode);
 downloadBtn.addEventListener('click', downloadImage);
 
 fontAllBtn.addEventListener('click', changeCanvasFont);
 fontOneBtn.addEventListener('click', changeElFont);
+replaceLetterBtn.addEventListener('click', () => selectButton(replaceLetterBtn));
 
 colorPicker.addEventListener('change', () => {
     chosenColor.style.backgroundColor = colorPicker.value;
@@ -163,7 +185,13 @@ chosenColor.addEventListener('click', () => {
     changeColor();
     changeBgColor(chosenColor.style.backgroundColor);
 });
-bgColor.addEventListener('click', selectBgColor);
+bgColor.addEventListener('click', () => selectButton(bgColor));
+bgColor.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    colorPicker.value = bgColor.style.backgroundColor;
+    chosenColor.style.backgroundColor = bgColor.style.backgroundColor;
+    changeColor();
+})
 
 
 window.addEventListener('keydown', (event) => {
@@ -176,21 +204,21 @@ window.addEventListener('keydown', (event) => {
         case 'z': undo(); break;
         case 'y': redo(); break;
         /* --- */
-        case 'arrowleft': move(-modifierMove, 0); break;
-        case 'arrowright': move(modifierMove, 0); break;
-        case 'arrowup': move(0, -modifierMove); break;
-        case 'arrowdown': move(0, modifierMove); break;
-        case 'a': move(-modifierMove, 0); break;
-        case 'd': move(modifierMove, 0); break;
-        case 'w': move(0, -modifierMove); break;
-        case 's': move(0, modifierMove); break;
+        case 'arrowleft': move(-modifierMove, 0); keysState(); break;
+        case 'arrowright': move(modifierMove, 0); keysState(); break;
+        case 'arrowup': move(0, -modifierMove); keysState(); break;
+        case 'arrowdown': move(0, modifierMove); keysState(); break;
+        case 'a': move(-modifierMove, 0); keysState(); break;
+        case 'd': move(modifierMove, 0); keysState(); break;
+        case 'w': move(0, -modifierMove); keysState(); break;
+        case 's': move(0, modifierMove); keysState(); break;
         /* --- */
-        case '+': changeSize(modifierSize); break;
-        case '=': changeSize(modifierSize); break;
-        case '-': changeSize(-modifierSize); break;
+        case '+': changeSize(modifierSize); keysState(); break;
+        case '=': changeSize(modifierSize); keysState(); break;
+        case '-': changeSize(-modifierSize); keysState(); break;
         /* --- */
-        case 'q': rotate(-modifierRotate); break;
-        case 'e': rotate(modifierRotate); break;
+        case 'q': rotate(-modifierRotate); keysState(); break;
+        case 'e': rotate(modifierRotate); keysState(); break;
         /* --- */
         case 'control': changeModifier(); break;
         case 'ç': changeAlphabet(); break;
@@ -209,6 +237,7 @@ changeModifier();
 colorPicker.value = '#000000';
 chosenColor.style.backgroundColor = colorPicker.value;
 canvas.style.backgroundColor = 'white';
+bgColor.style.backgroundColor = 'white';
 saveState();
 undoBtn.style.backgroundColor = "red";
 
@@ -217,7 +246,7 @@ undoBtn.style.backgroundColor = "red";
 function downloadImage() {
     if (selection) {
         selection.classList.remove('selected');
-        pair = findMirror(selection);
+        const pair = findMirror(selection);
         if (pair) pair.classList.remove('selected');
     }
 
@@ -245,7 +274,10 @@ function saveState() {
         color: canvas.style.backgroundColor
     }
 
-    if (undoStack.length === 0 || undoStack[undoStack.length - 1] !== state) undoStack.push(state);
+    if (undoStack.length === 0) undoStack.push(state);
+    else if (undoStack[undoStack.length - 1].html !== state.html || undoStack[undoStack.length - 1].color !== state.color) {
+        undoStack.push(state);
+    }
 
     redoStack = [];
 
@@ -287,6 +319,7 @@ function loadState(state) {
 
     const elements = canvas.querySelectorAll('.element');
     selection = null;
+    maskDirty = true; 
 
     objCount = elements.length;
     objCounter.textContent = objCount;
@@ -305,11 +338,21 @@ function loadState(state) {
 
         el.classList.remove('selected');
 
-        el.addEventListener('click', function(e) {
-            e.stopPropagation();
-            select(el);
-        });
-        el.addEventListener('mousedown', startDrag);
+        addElEvents(el);
+    });
+    updateColorList();
+}
+
+function keysState() {
+    if (pressingKey) return;
+
+    pressingKey = true;
+
+    document.addEventListener('keyup', function keySave () {
+        pressingKey = false;
+        maskDirty = true; 
+        saveState();
+        document.removeEventListener('keyup', keySave);
     });
 }
 
@@ -337,7 +380,10 @@ function addLetter(letter) {
     newLetter.style.fontFamily = fontList[fontLvl];
     newLetter.textContent = letter;
 
-    //newLetter.addEventListener('click', () => newElement(newLetter, 80, 0, 1, 1, canvas.clientWidth / 2, canvas.clientHeight / 2));
+    // newLetter.addEventListener('click', function () {
+    //     const result = changeLetter(newLetter);
+    //     if (!result) newElement(newLetter, 80, 0, 1, 1, canvas.clientWidth / 2, canvas.clientHeight / 2);
+    // });
     newLetter.addEventListener('mousedown', startDragPreview);
 
     alphabet.appendChild(newLetter);
@@ -359,13 +405,24 @@ function changeElFont() {
     selection.style.fontFamily = fontList[fontLvl];
 
     updateMirror(selection);
+    maskDirty = true; 
 
     saveState();
+}
+
+function changeLetter(preview) {
+    if (!selection || !replaceLetterBtn.classList.contains('buttonSelected')) return false;
+
+    selection.textContent = preview.textContent;
+    maskDirty = true; 
+
+    return true;
 }
 
 function changeCanvasFont() {
     const elements = canvas.querySelectorAll('.element');
     elements.forEach(el => el.style.fontFamily = fontList[fontLvl]);
+    maskDirty = true; 
 
     saveState();
 }
@@ -439,16 +496,16 @@ function changeColor() {
     saveState();
 }
 
-function selectBgColor() {
-    if (!bgColor.classList.contains('bgSelected')) {
-        deselect();
-        bgColor.classList.add('bgSelected');
+function selectButton(button) {
+    if (!button.classList.contains('buttonSelected')) {
+        if (button === bgColor) deselect();
+        button.classList.add('buttonSelected');
     }
-    else bgColor.classList.remove('bgSelected');
+    else button.classList.remove('buttonSelected');
 }
 
 function changeBgColor(color) {
-    if (!bgColor.classList.contains('bgSelected')) return;
+    if (!bgColor.classList.contains('buttonSelected')) return;
 
     bgColor.style.backgroundColor = color;
     canvas.style.backgroundColor = color;
@@ -506,11 +563,7 @@ function createMirrorPair(originalEl) {
     objCount++;
     objCounter.textContent = objCount;
 
-    mirrorEl.addEventListener('click', function(e) {
-        e.stopPropagation();
-        select(mirrorEl);
-    })
-    mirrorEl.addEventListener('mousedown', startDrag);
+    addElEvents(mirrorEl);
 }
 
 function syncMirror(originalEl, mirrorEl) {
@@ -566,14 +619,98 @@ function newElement(preview, size, rotation, scaleX, scaleY, posX, posY) {
         createMirrorPair(el);
     }
 
+    maskDirty = true; 
+    addElEvents(el);
     select(el);
-    el.addEventListener('click', function(e) {
-        e.stopPropagation();
-        select(el);
-    });
-    el.addEventListener('mousedown', startDrag);
 }
 
+function addElEvents(el) {
+    el.addEventListener('click', function(e) {
+        colorEl = getColorFromMask(e);
+        if (colorEl) {
+            e.stopPropagation();
+            select(colorEl);
+        }
+    });
+    el.addEventListener('mousedown', function(e) {
+        colorEl = getColorFromMask(e);
+        if (colorEl) startDrag(e);
+    });
+}
+
+function getColorFromMask (e) {
+        const canvasRect = canvas.getBoundingClientRect();
+        const x = e.clientX - canvasRect.left;
+        const y = e.clientY - canvasRect.top;
+
+        if (maskDirty) {
+            updateMask();
+            maskDirty = false;
+        }
+        const pixel = maskCtx.getImageData(x, y, 1, 1).data;
+        const color = `rgb(${pixel[0]},${pixel[1]},${pixel[2]})`;
+        console.log(x, y);
+        console.log(pixel);
+        console.log(colorToId);
+        console.log(maskCanvas.width, maskCanvas.height);
+        console.log(canvas.clientWidth, canvas.clientHeight);
+
+        return colorToId.get(color);
+}
+
+function updateMask () {
+    maskCtx.clearRect(0, 0, maskCanvas.width, maskCanvas.height);
+    colorToId.clear();
+    const elements = canvas.querySelectorAll('.element');
+
+    elements.forEach((el, index) => {
+        const rect = el.getBoundingClientRect();
+        const canvasRect = canvas.getBoundingClientRect();
+        const elStyle = window.getComputedStyle(el);
+
+        const x = rect.left - canvasRect.left + (rect.width / 2);
+        const y = rect.top - canvasRect.top + (rect.height / 2);
+
+        maskCtx.save();
+        maskCtx.translate(x, y);
+
+        const rotation = parseFloat(el.dataset.rotation) * Math.PI / 180;
+        maskCtx.rotate(rotation);
+
+        const scaleX = parseFloat(el.dataset.scaleX);
+        const scaleY = parseFloat(el.dataset.scaleY);
+        maskCtx.scale(scaleX, scaleY);
+
+        const rgb = [(index+1) & 255, ((index+1) >> 8) & 255, ((index+1) >> 16) & 255];
+        const colorKey = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`
+        colorToId.set(colorKey, el);
+
+        let offsetY = parseFloat(elStyle.fontSize) * 0.036;
+        if(alphabetList[4].includes(el.textContent) || alphabetList[5].includes(el.textContent)) {
+            offsetY = 0;
+        } // If Hiragana or Katakana
+
+        maskCtx.font = `bold ${parseInt(elStyle.fontSize)}px ${elStyle.fontFamily}`;
+        maskCtx.textAlign = 'center';
+        maskCtx.textBaseline = 'middle';
+        maskCtx.fillStyle = colorKey;
+
+        maskCtx.fillText(el.textContent, 0, 0 + offsetY);
+
+        maskCtx.restore();
+
+        // document.body.appendChild(maskCanvas);
+        // maskCanvas.style.position = "absolute";
+        // maskCanvas.style.left = canvas.offsetLeft + "px";
+        // maskCanvas.style.top = canvas.offsetTop + "px";
+        // maskCanvas.style.opacity = "0.5";
+        // maskCanvas.style.pointerEvents = "none";
+        // maskCanvas.style.border = "1px solid red";
+        // maskCanvas.style.zIndex = 90;
+    });
+}
+
+/* --- REGARDING SELECT --- */
 
 function select(el) {
     if (selection != null) {
@@ -617,6 +754,8 @@ function deselect() {
     }
 }
 
+/* ------------------------ */
+
 
 function deleteElement() {
     if (selection == null) return;
@@ -636,6 +775,7 @@ function deleteElement() {
 
     selection = null;
     updateColorList();
+    maskDirty = true; 
 
     saveState();
 }
@@ -651,6 +791,7 @@ function clearAll() {
     bgColor.style.backgroundColor = "white";
 
     selection = null;
+    maskDirty = true; 
 
     saveState();
 }
@@ -758,6 +899,7 @@ function endDrag() {
     document.removeEventListener('mousemove', drag);
     document.removeEventListener('mouseup', endDrag);
 
+    maskDirty = true;
     saveState();
 }
 
@@ -774,8 +916,6 @@ function move(modifierX, modifierY) {
     selection.style.top = posY + 'px';
 
     updateMirror(selection);
-
-    saveState();
 }
 
 function checkBorderX(posX) {
@@ -807,6 +947,10 @@ function changeSizeScroll(e) {
 
     if (e.deltaY < 0) changeSize(modifierSize);
     else if (e.deltaY > 0) changeSize(-modifierSize);
+
+    clearTimeout(scrollTimeout);
+
+    scrollTimeout = setTimeout(() => {maskDirty = true; saveState();}, 200);
 }
 
 function changeSize(modifier) {
@@ -819,8 +963,6 @@ function changeSize(modifier) {
     selection.style.fontSize = newSize + 'px';
 
     updateMirror(selection);
-
-    saveState();
 }
 
 function stretch(modifier) {
@@ -837,8 +979,6 @@ function stretch(modifier) {
 
         updateMirror(selection);
     }
-
-    saveState();
 }
 
 function rotate(modifier) {
@@ -852,8 +992,6 @@ function rotate(modifier) {
     changeTransform(selection);
 
     updateMirror(selection);
-
-    saveState();
 }
 
 function flip(flipH, flipV) {
@@ -869,8 +1007,6 @@ function flip(flipH, flipV) {
     changeTransform(selection);
 
     updateMirror(selection);
-
-    saveState();
 }
 
 function changeTransform(el) {
