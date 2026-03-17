@@ -3,62 +3,109 @@
     <head>
         <title>Editor</title>
         <link rel="stylesheet" href="style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     </head>
     <body>
         <div class="all">
             <div id="ops">
                 <p>
-                    <button type="button" id="undo">undo</button>
-                    <button type="button" id="redo">redo</button><br>
-                    <button type="button" id="clear">clear</button>
-                    <button type="button" id="delete">delete</button>
-                    <button type="button" id="copy">copy</button>
+                    <button type="button" id="undo" data-message="Undo the last modification made.\nKeyboard: Z">undo</button>
+                    <button type="button" id="redo" data-message="Redo the last undone action.\nKeyboard: Y">redo</button>
+                    <button type="button" id="info" data-message="Turn on button descriptions.\nClick to turn off.">?</button><br>
+                    <button type="button" id="clear" data-message="Clear the canvas.">clear</button>
+                    <button type="button" id="delete" data-message="Delete the selected object.\nKeyboard: Del">delete</button>
+                    <button type="button" id="copy" data-message="Make a copy of the selected object.\nKeyboard: V">copy</button>
                 </p>
                 <p>
-                    <small>Modifier: <span id="modMessage"></span> (ctrl to change)</small>
+                    <small>Modifier:</small>
+                    <button type="button" id="modSmall" data-message="The modifier for all transformations.\nSelect small for precise modifications.\nKeyboard: Ctrl to change">small</button>
+                    <button type="button" id="modMedium" data-message="The modifier for all transformations.\nSelect medium for usual modifications.\nKeyboard: Ctrl to change">medium</button>
+                    <button type="button" id="modBig" data-message="The modifier for all transformations.\nSelect big for large modifications.\nKeyboard: Ctrl to change">big</button>
                 </p>
                 <p>
-                    <button type="button" id="Lbutton"><</button>
-                    <button type="button" id="Rbutton">></button>
-                    <button type="button" id="Ubutton">^</button>
-                    <button type="button" id="Dbutton">v</button>
+                    <button type="button" id="Lbutton" data-message="Move the selected object left.\nKeyboard: Left / A"><</button>
+                    <button type="button" id="Rbutton" data-message="Move the selected object right.\nKeyboard: Right / D">></button>
+                    <button type="button" id="Ubutton" data-message="Move the selected object up.\nKeyboard: Up / W">^</button>
+                    <button type="button" id="Dbutton" data-message="Move the selected object down.\nKeyboard: Down / S">v</button>
                     <br><br>
 
-                    <button type="button" id="sizeUp">+</button>
-                    <button type="button" id="sizeDown">-</button>
-                    <button type="button" id="stretchH"><|></button>
-                    <button type="button" id="stretchV">>|<</button>
+                    <button type="button" id="sizeUp" data-message="Make the selected object bigger.\nKeyboard: + / Scroll up">+</button>
+                    <button type="button" id="sizeDown" data-message="Make the selected object smaller.\nKeyboard: - / Scroll down">-</button>
+                    <button type="button" id="stretchH" data-message="Make the selected object thicker.\nKeyboard: ?"><|></button>
+                    <button type="button" id="stretchV" data-message="Make the selected object thinner.\nKeyboard: ?">>|<</button>
                     <br>
-                    <button type="button" id="rotateDown">rotate <</button>
-                    <button type="button" id="rotateUp">rotate ></button>
-                    <button type="button" id="flipH">flip | </button>
-                    <button type="button" id="flipV">flip --</button>
+                    <button type="button" id="rotateDown" data-message="Rotate the selected object counter-clockwise.\nKeyboard: Q">rotate <</button>
+                    <button type="button" id="rotateUp" data-message="Rotate the selected object clockwise.\nKeyboard: E">rotate ></button>
+                    <button type="button" id="flipH" data-message="Flip the selected object horizontally.\nKeyboard: ?">flip | </button>
+                    <button type="button" id="flipV" data-message="Flip the selected object vertically.\nKeyboard: ?">flip --</button>
                 </p>
-                <p>
-                    <button type="button" id="mirror">mirror: <span id="mirrorMode">OFF</span></button>
-                </p>
-                <p>
-                    <button type="button" id="download">download</button> 
-                    <small>Objects: <span id="objCount">0</span></small>
-                </p>
-                <p>
-                    <input type="color" id="colorInput" value="#000000"><button id="currentColor" class="colorBlock"></button> | 
-                    <small>Background color: </small><button id="bgColor" class="colorBlock"></button>
-                    <div id="colorList"></div>
-                </p>
+                <div class="bottomOps">
+                    <div class="leftSide">
+                        <button type="button" id="mirror" data-message="Activate to create objects with mirrors.\nDeactivate to break the selected objects' mirror.">mirror: <span id="mirrorMode">OFF</span></button>
+                        <br>
+                        <button type="button" id="hiddenTop" data-message="Bring all hidden objects back to the top.">bring hidden to top</button>
+                        <br>
+                        <button type="button" id="deselect" data-message="Deselect all objects.">deselect</button>
+                        <br><br>
+                        <small>Objects: <span id="objCount">0</span></small>
+                        <br><br>
+                        <button type="button" id="download" data-message="Download the image on the canvas.">download</button> 
+                    </div>
+                    <div class="colorContainer">
+                        <span class="colorPicker">
+                            <span class="sv">
+                                <canvas id="svRectangle" class="picker" width="160" height="100"></canvas>
+                                <span id="svPicker"></span>
+                            </span>
+                            <span class="hue">
+                                <canvas id="hueBar" class="picker" width="6" height="100"></canvas>
+                                <span id="huePicker"></span>
+                            </span>
+                        </span>
+                        <span class="selectColors">
+                            <button id="currentColor" class="colorBlock" data-message="The selected color.\nClick to change the selected element's color."></button>
+                            <span>
+                                <small>Background color: </small>
+                                <button id="bgColor" class="colorBlock" data-message="Click to activate.\nSelect a color while activated to change the background color.\nRight click to select the current background color."></button>
+                            </span>
+                        </span>
+                        <div id="colorList" data-message="The list of colors currently on the canvas.\nClick on a color to select it.">
+                            <div id="usedColors"></div>
+                            <div class="colorArrows">
+                                <div class="triang up" id="colorsUp"></div>
+                                <div class="triang down" id="colorsDown"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="charContainer">
-                <div>
-                    <small>Alphabet: <span id="alphabetMessage"></span> (Ç to change)</small> | 
-                    <button type="button" id="replaceLetter">replace letter mode</button>
+                <div class="alphabetAndFont">
+                    <div>
+                        <small>Alphabet:</small>
+                        <br>
+                        <small>Font:</small>
+                    </div>
+                    <div>
+                        <div class="letterOptions">
+                            <div class="triang back" id="alphabetDown" data-message="Change the current alphabet.\nKeyboard: ?"></div>
+                            <small><span id="alphabetMessage" class="letterMessage"></span></small>
+                            <div class="triang forward" id="alphabetUp" data-message="Change the current alphabet.\nKeyboard: Ç"></div>
+                        </div>
+                        <div class="letterOptions">
+                            <div class="triang back" id="fontDown" data-message="Change the current font.\nKeyboard: ?"></div>
+                            <small><span id="fontMessage" class="letterMessage"></span></small>
+                            <div class="triang forward" id="fontUp" data-message="Change the current font.\nKeyboard: F"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <button type="button" id="replaceLetter" data-message="Click to activate.\nClicking one of the preview letters will replace the selected object with it.">replace letter mode</button>
+                        <br>
+                        <button type="button" id="fontOne" data-message="Make the selected object have the current font.">replace one</button>
+                        <button type="button" id="fontAll" data-message="Make all objects on the canvas have the current font.">replace all</button>
+                    </div>
                 </div>
-                <div>
-                    <small>Font: <span id="fontMessage"></span> (F to change)</small> | 
-                    <button type="button" id="fontOne">replace one</button>
-                    <button type="button" id="fontAll">replace all</button><br>
-                </div>
-                <br>
-                <div id="alphabet"></div>
+                <div id="alphabet" data-message="Drag a letter to the canvas to create an object.\nClick to create an object on the center of the canvas."></div>
             </div>
             <div id="canvas"></div>
         </div>

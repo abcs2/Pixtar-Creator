@@ -2,7 +2,7 @@ const alphabetList =
     [['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'], 
     ['А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я', 'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я'], 
     ['Α', 'Β', 'Γ', 'Δ', 'Ε', 'Ζ', 'Η', 'Θ', 'Ι', 'Κ', 'Λ', 'Μ', 'Ν', 'Ξ', 'Ο', 'Π', 'Ρ', 'Σ', 'Τ', 'Υ', 'Φ', 'Χ', 'Ψ', 'Ω', 'α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'ι', 'κ', 'λ', 'μ', 'ν', 'ξ', 'ο', 'π', 'ρ', 'σ', 'τ', 'υ', 'φ', 'χ', 'ψ', 'ω'], 
-    ['ش', 'س', 'ز', 'ر', 'ذ', 'د', 'خ', 'ح', 'ج', 'ث', 'ت', 'ب', 'ا', 'ء', 'ي', 'و', 'ه', 'ن', 'م', 'ل', 'ك', 'ق', 'ف', 'غ', 'ع', 'ظ', 'ط', 'ض', 'ص', 'ى', 'ئ', 'ؤ', 'ة'], 
+    ['ش', 'س', 'ز', 'ر', 'ذ', 'د', 'خ', 'ح', 'ج', 'ث', 'ت', 'ب', 'ا', 'ء', 'ي', 'و', 'ه', 'ن', 'م', 'ل', 'ك', 'ق', 'ف', 'غ', 'ع', 'ظ', 'ط', 'ض', 'ص', 'ى', 'ئ', 'ؤ', 'ة', '٠' ,'١' ,'٢' ,'٣' ,'٤' ,'٥' ,'٦' ,'٧' ,'٨' ,'٩'],
     ['あ', 'か', 'さ', 'た', 'な', 'は', 'ま', 'や', 'ら', 'わ', 'が', 'ざ', 'だ', 'ば', 'ぱ', 'い', 'き', 'し', 'ち', 'に', 'ひ', 'み', 'り', 'ぎ', 'じ', 'ぢ', 'び', 'ぴ', 'う', 'く', 'す', 'つ', 'ぬ', 'ふ', 'む', 'ゆ', 'る', 'ぐ', 'ず', 'づ', 'ぶ', 'ぷ', 'え', 'け', 'せ', 'て', 'ね', 'へ', 'め', 'れ', 'げ', 'ぜ', 'で', 'べ', 'ぺ', 'お', 'こ', 'そ', 'と', 'の', 'ほ', 'も', 'よ', 'ろ', 'を', 'ご', 'ぞ', 'ど', 'ぼ', 'ぽ', 'ん'], 
     ['ア', 'カ', 'サ', 'タ', 'ナ', 'ハ', 'マ', 'ヤ', 'ラ', 'ワ', 'ガ', 'ザ', 'ダ', 'バ', 'パ', 'イ', 'キ', 'シ', 'チ', 'ニ', 'ヒ', 'ミ', 'リ', 'ギ', 'ジ', 'ヂ', 'ビ', 'ピ', 'ウ', 'ク', 'ス', 'ツ', 'ヌ', 'フ', 'ム', 'ユ', 'ル', 'グ', 'ズ', 'ヅ', 'ブ', 'プ', 'エ', 'ケ', 'セ', 'テ', 'ネ', 'ヘ', 'メ', 'レ', 'ゲ', 'ゼ', 'デ', 'ベ', 'ペ', 'オ', 'コ', 'ソ', 'ト', 'ノ', 'ホ', 'モ', 'ヨ', 'ロ', 'ヲ', 'ゴ', 'ゾ', 'ド', 'ボ', 'ポ', 'ン']
     ];
@@ -10,38 +10,24 @@ const alphabetList =
 const alphabetNames = 
     ['Latin', 'Cyrillic', 'Greek', 'Arabic', 'Hiragana', 'Katakana'];
 
-const charList = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.', '-', '!', '#', '$', '&', '(', ')', '*', ',', ';', ':', '?', '@', '[', ']', '^', '_', '~', '{', '}', '|', '+', '=', '<', '>', '/', '\\', '%'];
+const charList = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.', '-', '!', '#', '$', '&', '(', ')', '*', ',', ';', ':', '?', '@', '[', ']', '^', '_', '~', '{', '}', '|', '+', '=', '<', '>', '/', '\\', '%', '£', '¢', '§', '€', '₽', '¥'];
 
 const fontList =
     ["Arial, Helvetica, sans-serif",
-    "'Courier New', Courier, monospace",
-    "'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif",
-    "'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif",
-    "'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif",
-    "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-    "'Times New Roman', Times, serif",
-    "'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif",
-    "Cambria, Cochin, Georgia, Times, 'Times New Roman', serif",
-    "Georgia, 'Times New Roman', Times, serif",
-    "Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif",
-    "Verdana, Geneva, Tahoma, sans-serif",
-    "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif"
+    '"Courier New", Courier, monospace',
+    '"Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif',
+    '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
+    '"Times New Roman", Times, serif',
+    'Verdana, Geneva, Tahoma, sans-serif'
     ];
 
 const fontNames = 
     ['Arial',
     'Courier New',
-    'Franklin Gothic',
     'Gill Sans',
-    'Lucida Sans',
     'Segoe UI',
     'Times New Roman',
-    'Trebuchet MS',
-    'Cambria',
-    'Georgia',
-    'Impact',
-    'Verdana',
-    'system-ui'
+    'Verdana'
     ];
 
 const maxSize = 1600;
@@ -53,24 +39,39 @@ let modifierSize;
 let modifierRotate;
 let modifierStretch;
 
-let dragX = 0;
-let dragY = 0;
 let dragPreviewX = 0;
 let dragPreviewY = 0;
+
+let dragStartX, dragStartY;
+let dragStartPositions = [];
+let dragHappened = false;
+
+let selectionBox;
+let dragBoxStartX, dragBoxStartY;
+let dragBoxCreated = false;
 
 let mirrorIdCounter = 1;
 let globalMirrorMode = 'OFF';
 let mirrorMode = 'OFF';
+
+const currentColors = new Set();
+let MaxColorLvl = 0;
+let colorLvl = 0;
 
 let objCount = 0;
 let alphabetLvl = 0;
 let fontLvl = 0;
 let zIndexCounter = 1;
 
+let elements = [];
+
 let selection = null;
 let selectionList = [];
-let previewElement = null;
+let mirrorSelectList = false;
+let maybeSelect = [];
 
+let previewElement = null;
+let currentPreviewButton = null;
 
 let pressingKey = false;
 let scrollTimeout = null;
@@ -78,10 +79,8 @@ let scrollTimeout = null;
 let undoStack = [];
 let redoStack = [];
 
-const auxCanvas = document.createElement('canvas');
-const auxCtx = auxCanvas.getContext('2d');
-
 const canvas = document.getElementById('canvas');
+let canvasRect;
 
 const maskCanvas = document.createElement('canvas');
 maskCanvas.width = canvas.clientWidth;
@@ -92,16 +91,21 @@ let maskDirty = false;
 
 const colorToId = new Map();
 
-const modMessage = document.getElementById('modMessage');
 const objCounter = document.getElementById('objCount');
 const mirrorMessage = document.getElementById('mirrorMode');
 const alphabetMessage = document.getElementById('alphabetMessage');
 const fontMessage = document.getElementById('fontMessage');
 
+const modSmallBtn = document.getElementById('modSmall');
+const modMediumBtn = document.getElementById('modMedium');
+const modBigBtn = document.getElementById('modBig');
+
 const Lbutton = document.getElementById('Lbutton');
 const Rbutton = document.getElementById('Rbutton');
 const Ubutton = document.getElementById('Ubutton');
 const Dbutton = document.getElementById('Dbutton');
+
+const hiddenTopBtn = document.getElementById('hiddenTop');
 
 const sizeUpBtn = document.getElementById('sizeUp');
 const sizeDownBtn = document.getElementById('sizeDown');
@@ -122,28 +126,64 @@ const copyButton = document.getElementById('copy');
 const undoBtn = document.getElementById('undo');
 const redoBtn = document.getElementById('redo');
 
+const deselectBtn = document.getElementById('deselect');
 const mirrorButton = document.getElementById('mirror');
 const downloadBtn = document.getElementById('download');
 
-const colorPicker = document.getElementById('colorInput');
 const chosenColor = document.getElementById('currentColor');
-const colorList = document.getElementById('colorList');
 const bgColor = document.getElementById('bgColor');
 
-const previewButtons = document.querySelectorAll('.preview');
+const colorUpBtn = document.getElementById('colorsUp');
+const colorDownBtn = document.getElementById('colorsDown');
+const colorList = document.getElementById('usedColors');
+const fullColorList = document.getElementById('colorList');
+
 const alphabet = document.getElementById('alphabet');
-const fontAllBtn = document.getElementById('fontAll');
-const fontOneBtn = document.getElementById('fontOne');
+
+const alphabetUpBtn = document.getElementById('alphabetUp');
+const alphabetDownBtn = document.getElementById('alphabetDown');
 const replaceLetterBtn = document.getElementById('replaceLetter');
 
-//previewButtons.forEach(preview => preview.addEventListener('click', () => newElement(preview, 80, 0, 1, 1, canvas.clientWidth / 2, canvas.clientHeight / 2)));
-//previewButtons.forEach(preview => preview.addEventListener('mousedown', startDragPreview));
+const fontUpBtn = document.getElementById('fontUp');
+const fontDownBtn = document.getElementById('fontDown');
+const fontOneBtn = document.getElementById('fontOne');
+const fontAllBtn = document.getElementById('fontAll');
 
-canvas.addEventListener('click', function () {
-    console.log("deselecionei");
-    deselect();
+const infoBtn = document.getElementById('info');
+
+window.addEventListener('beforeunload', saveState);
+
+document.addEventListener('wheel', e => {
+    if (e.ctrlKey) e.preventDefault();
+}, {passive: false});
+
+document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && ['+', '-', '='].includes(e.key)) e.preventDefault();
+});
+
+document.addEventListener('mousedown', function (e) {
+    if (bgColor.classList.contains('buttonSelected')) {
+        if (!(e.target.classList.contains('picker')) && !(e.target.classList.contains('colorPicker')) && !(e.target.classList.contains('colorBlock'))) {
+            bgColor.classList.remove('buttonSelected');
+        }
+    }
+    if (replaceLetterBtn.classList.contains('buttonSelected') && e.target !== replaceLetterBtn) {
+        canvasRect = canvas.getBoundingClientRect();
+        if (e.clientX >= canvasRect.left && e.clientX <= canvasRect.right && e.clientY >= canvasRect.top && e.clientY <= canvasRect.bottom) {
+            const colorEl = getColorFromMask(e);
+            if (!colorEl) replaceLetterBtn.classList.remove('buttonSelected');
+        }
+        else if (!e.target.classList.contains('preview')) replaceLetterBtn.classList.remove('buttonSelected');
+    }
+});
+
+canvas.addEventListener('click', (e) => {
+    if (!dragHappened && !e.shiftKey) deselect();
 });
 canvas.addEventListener('wheel', changeSizeScroll);
+canvas.addEventListener('mousedown', (e) => {
+    if (!e.shiftKey) startDragSelection(e);
+});
 
 clearButton.addEventListener('click', clearAll);
 delButton.addEventListener('click', deleteElement);
@@ -152,10 +192,16 @@ copyButton.addEventListener('click', copy);
 undoBtn.addEventListener('click', undo);
 redoBtn.addEventListener('click', redo);
 
+modSmallBtn.addEventListener('click', () => changeModifier(0));
+modMediumBtn.addEventListener('click', () => changeModifier(1));
+modBigBtn.addEventListener('click', () => changeModifier(2));
+
 Lbutton.addEventListener('click', () => {move(-modifierMove, 0); maskDirty = true; saveState();});
 Rbutton.addEventListener('click', () => {move(modifierMove, 0); maskDirty = true; saveState();});
 Ubutton.addEventListener('click', () => {move(0, -modifierMove); maskDirty = true; saveState();});
 Dbutton.addEventListener('click', () => {move(0, modifierMove); maskDirty = true; saveState();});
+
+hiddenTopBtn.addEventListener('click', bringHiddenToTop);
 
 sizeUpBtn.addEventListener('click', () => {changeSize(modifierSize); maskDirty = true; saveState();});
 sizeDownBtn.addEventListener('click', () => {changeSize(-modifierSize); maskDirty = true; saveState();});
@@ -169,29 +215,48 @@ rotateDownBtn.addEventListener('click', () => {rotate(-modifierRotate); maskDirt
 flipHBtn.addEventListener('click', () => {flip(-1, 1); maskDirty = true; saveState();});
 flipVBtn.addEventListener('click', () => {flip(1, -1); maskDirty = true; saveState();});
 
+deselectBtn.addEventListener('click', deselect);
 mirrorButton.addEventListener('click', changeMirrorMode);
 downloadBtn.addEventListener('click', downloadImage);
 
-fontAllBtn.addEventListener('click', changeCanvasFont);
-fontOneBtn.addEventListener('click', changeElFont);
-replaceLetterBtn.addEventListener('click', () => selectButton(replaceLetterBtn));
+alphabetUpBtn.addEventListener('click', () => changeAlphabet(1));
+alphabetDownBtn.addEventListener('click', () => changeAlphabet(-1));
+replaceLetterBtn.addEventListener('click', function(e) {selectButton(e, replaceLetterBtn)});
 
-colorPicker.addEventListener('change', () => {
-    chosenColor.style.backgroundColor = colorPicker.value;
-    changeColor();
-    changeBgColor(colorPicker.value);
+fontUpBtn.addEventListener('click', () => changeFont(1));
+fontDownBtn.addEventListener('click', () => changeFont(-1));
+fontOneBtn.addEventListener('click', changeElFont);
+fontAllBtn.addEventListener('click', changeCanvasFont);
+
+infoBtn.addEventListener('click', function(e) {selectButton(e, infoBtn)});
+
+chosenColor.addEventListener('mousedown', () => {
+    if (selectionList.length !== 0 || bgColor.classList.contains('buttonSelected')) {
+        removeSelectColor();
+        changeColor();
+        changeBgColor(chosenColor.style.backgroundColor);
+
+        document.addEventListener('mouseup', releaseColorButton);
+    }
 });
-chosenColor.addEventListener('click', () => {
-    changeColor();
-    changeBgColor(chosenColor.style.backgroundColor);
-});
-bgColor.addEventListener('click', () => selectButton(bgColor));
+bgColor.addEventListener('click', function(e) {selectButton(e, bgColor)});
 bgColor.addEventListener('contextmenu', function(e) {
     e.preventDefault();
-    colorPicker.value = bgColor.style.backgroundColor;
-    chosenColor.style.backgroundColor = bgColor.style.backgroundColor;
-    changeColor();
-})
+    chosenColor.style.backgroundColor = getComputedStyle(bgColor).backgroundColor;
+    updatePickersRGBtoHSV();
+    if (selectionList.length !== 0) {
+        changeColor();
+        saveState();
+    }
+});
+
+colorUpBtn.addEventListener('click', () => showColorPage(-1));
+colorDownBtn.addEventListener('click', () => showColorPage(1));
+fullColorList.addEventListener('wheel', e => {
+    e.preventDefault();
+    if (e.deltaY > 0) showColorPage(1);
+    else showColorPage(-1);
+}, {passive: false});
 
 
 window.addEventListener('keydown', (event) => {
@@ -220,34 +285,262 @@ window.addEventListener('keydown', (event) => {
         case 'q': rotate(-modifierRotate); keysState(); break;
         case 'e': rotate(modifierRotate); keysState(); break;
         /* --- */
-        case 'control': changeModifier(); break;
-        case 'ç': changeAlphabet(); break;
-        case 'f': changeFont(); break;
+        case 'control': changeModifier(null); break;
+        case 'ç': changeAlphabet(1); break;
+        case 'f': changeFont(1); break;
+        /* --- */
+        case 'enter':
+            if (maybeSelect.length !== 0) {
+                maybeSelect.forEach(el => selectMultiple(el));
+                if (visibleInfoBox) removeInfoboxSelection();
+                maybeSelect = [];
+            }
     }
 });
 
+
+/* --- COLOR PICKER ---*/
+
+const hueBar = document.getElementById('hueBar');
+const hueCtx = hueBar.getContext('2d');
+let hueRect = hueBar.getBoundingClientRect();
+
+const hueGradient = hueCtx.createLinearGradient(0, 0, 0, hueBar.height);
+
+hueGradient.addColorStop(0, 'red');
+hueGradient.addColorStop(0.17, 'yellow');
+hueGradient.addColorStop(0.34, 'lime');
+hueGradient.addColorStop(0.51, 'cyan');
+hueGradient.addColorStop(0.68, 'blue');
+hueGradient.addColorStop(0.85, 'magenta');
+hueGradient.addColorStop(1, 'red');
+
+hueCtx.fillStyle = hueGradient;
+hueCtx.fillRect(0, 0, hueBar.width, hueBar.height);
+
+const svRectangle = document.getElementById('svRectangle');
+const svCtx = svRectangle.getContext('2d');
+let svRect = svRectangle.getBoundingClientRect();
+
+const saturationGrad = svCtx.createLinearGradient(0, 0, svRectangle.width, 0);
+saturationGrad.addColorStop(0, 'white');
+saturationGrad.addColorStop(1, 'transparent');
+const brightnessGrad = svCtx.createLinearGradient(0, 0, 0, svRectangle.height);
+brightnessGrad.addColorStop(0, 'transparent');
+brightnessGrad.addColorStop(1, 'black');
+
+huePicker = document.getElementById('huePicker');
+huePicker.style.left = (hueBar.width / 2) + 'px';
+svPicker = document.getElementById('svPicker');
+svPicker.style.top = (svRectangle.height) + 'px';
+
+let currentHue = 0;
+let currentSaturation = 0;
+let currentValue = 0;
+
+let pickerX, pickerY;
+
+function updateSVRectangle() {
+    svCtx.fillStyle = `hsl(${currentHue}, 100%, 50%)`;
+    svCtx.fillRect(0, 0, svRectangle.width, svRectangle.height);
+
+    svCtx.fillStyle = saturationGrad;
+    svCtx.fillRect(0, 0, svRectangle.width, svRectangle.height);
+
+    svCtx.fillStyle = brightnessGrad;
+    svCtx.fillRect(0, 0, svRectangle.width, svRectangle.height);
+}
+
+hueBar.addEventListener('mousedown', function(e) {
+    hueRect = hueBar.getBoundingClientRect();
+    e.preventDefault();
+    pickerY = e.clientY - hueRect.top;
+    currentHue = (pickerY / hueBar.height) * 360;
+    updateSVRectangle(currentHue);
+    updateHuePicker();
+
+    chosenColor.style.backgroundColor = HSVtoRGB(currentHue, currentSaturation, currentValue);
+    removeSelectColor();
+    changeColor();
+    changeBgColor(chosenColor.style.backgroundColor);
+
+    document.addEventListener('mousemove', dragHuePicker);
+    document.addEventListener('mouseup', releaseHuePicker);
+});
+
+function dragHuePicker(e) {
+    e.preventDefault();
+    pickerY = e.clientY - hueRect.top;
+
+    if (pickerY < 0) pickerY = 0;
+    if (pickerY > hueBar.height) pickerY = hueBar.height;
+
+    currentHue = (pickerY / hueBar.height) * 360;
+    updateSVRectangle();
+    updateHuePicker();
+
+    chosenColor.style.backgroundColor = HSVtoRGB(currentHue, currentSaturation, currentValue);
+    changeColor();
+    changeBgColor(chosenColor.style.backgroundColor);
+}
+
+function releaseHuePicker() {
+    if (selectionList.length !== 0 || bgColor.classList.contains('buttonSelected')) {
+        returnSelectColor();
+        saveState();
+    }
+    document.removeEventListener('mousemove', dragHuePicker);
+    document.removeEventListener('mouseup', releaseHuePicker);
+}
+
+function updateHuePicker() {
+    huePicker.style.top = pickerY + 'px';
+}
+
+svRectangle.addEventListener('mousedown', function(e) {
+    svRect = svRectangle.getBoundingClientRect();
+    e.preventDefault();
+    pickerX = e.clientX - svRect.left;
+    pickerY = e.clientY - svRect.top;
+
+    currentSaturation = pickerX / svRectangle.width;
+    currentValue = 1 - (pickerY / svRectangle.height);
+    updateSVPicker(e);
+
+    chosenColor.style.backgroundColor = HSVtoRGB(currentHue, currentSaturation, currentValue);
+    removeSelectColor();
+    changeColor();
+    changeBgColor(chosenColor.style.backgroundColor);
+
+    document.addEventListener('mousemove', dragSVPicker);
+    document.addEventListener('mouseup', releaseSVPicker);
+});
+
+function dragSVPicker(e) {
+    e.preventDefault();
+    pickerX = e.clientX - svRect.left;
+    pickerY = e.clientY - svRect.top;
+
+    if (pickerX < 0) pickerX = 0;
+    if (pickerX > svRectangle.width) pickerX = svRectangle.width;
+    if (pickerY < 0) pickerY = 0;
+    if (pickerY > svRectangle.height) pickerY = svRectangle.height;
+
+    currentSaturation = pickerX / svRectangle.width;
+    currentValue = 1 - (pickerY / svRectangle.height);
+    updateSVPicker();
+    
+    chosenColor.style.backgroundColor = HSVtoRGB(currentHue, currentSaturation, currentValue);
+    changeColor();
+    changeBgColor(chosenColor.style.backgroundColor);
+}
+
+function releaseSVPicker() {
+    if (selectionList.length !== 0 || bgColor.classList.contains('buttonSelected')) {
+        returnSelectColor();
+        saveState();
+    }
+    document.removeEventListener('mousemove', dragSVPicker);
+    document.removeEventListener('mouseup', releaseSVPicker);
+}
+
+function updateSVPicker() {
+    svPicker.style.left = pickerX + 'px';
+    svPicker.style.top = pickerY + 'px';
+}
+
+
+function HSVtoRGB() {
+    let c = currentValue * currentSaturation;
+    let x = c * (1 - Math.abs(((currentHue / 60) % 2) - 1));
+    let m = currentValue - c;
+
+    let r, g, b;
+    if (currentHue < 60)       {r=c; g=x; b=0;}
+    else if (currentHue < 120) {r=x; g=c; b=0;}
+    else if (currentHue < 180) {r=0; g=c; b=x;}
+    else if (currentHue < 240) {r=0; g=x; b=c;}
+    else if (currentHue < 300) {r=x; g=0; b=c;}
+    else                       {r=c; g=0; b=x;}
+
+    r = Math.round((r + m) * 255);
+    g = Math.round((g + m) * 255);
+    b = Math.round((b + m) * 255);
+
+    return `rgb(${r}, ${g}, ${b})`;
+}
+
+function updatePickersRGBtoHSV() {
+    const values = chosenColor.style.backgroundColor.match(/\d+/g);
+    let r = parseInt(values[0]) / 255;
+    let g = parseInt(values[1]) / 255;
+    let b = parseInt(values[2]) / 255;
+    let h, s, v;
+
+    let max = Math.max(r, g, b);
+    let min = Math.min(r, g, b);
+    v = max;
+    let d = max - min;
+
+    if (max === 0) s = 0;
+    else s = d / max;
+
+    if (d === 0) h = 0;
+    else switch(max) {
+        case r: h = 60 * (((g - b) / d) % 6); break;
+        case g: h = 60 * (((b - r) / d) + 2); break;
+        case b: h = 60 * (((r - g) / d) + 4); break;
+    }
+    if (h < 0) h += 360;
+
+    currentHue = h;
+    currentSaturation = s;
+    currentValue = v;
+
+    pickerY = (currentHue / 360) * hueBar.height;
+    updateHuePicker();
+    updateSVRectangle();
+    pickerX = currentSaturation * svRectangle.width;
+    pickerY =  (1 - currentValue) * svRectangle.height;
+    updateSVPicker();
+}
+
 /* --- INITIALIZATION --- */
 
+updateSVRectangle(0);
+
 alphabetLvl--;
-changeAlphabet();
+changeAlphabet(1);
 fontLvl--;
-changeFont();
+changeFont(1);
 modifierLvl--;
-changeModifier();
-colorPicker.value = '#000000';
-chosenColor.style.backgroundColor = colorPicker.value;
-canvas.style.backgroundColor = 'white';
-bgColor.style.backgroundColor = 'white';
+changeModifier(null);
+chosenColor.style.backgroundColor = 'rgb(0, 0, 0)';
+canvas.style.backgroundColor = 'rgb(255, 255, 255)';
+bgColor.style.backgroundColor = 'rgb(255, 255, 255)';
+
+const loadedState = localStorage.getItem('savedState');
+if (loadedState) {
+    try {
+        loadState(JSON.parse(loadedState));
+        localStorage.clear();
+    }
+    catch {
+        console.warn("Erro ao recarregar");
+    }
+}
 saveState();
-undoBtn.style.backgroundColor = "red";
+undoBtn.classList.add('inactiveBtn');
 
 /* ---------------------- */
 
 function downloadImage() {
-    if (selection) {
-        selection.classList.remove('selected');
-        const pair = findMirror(selection);
-        if (pair) pair.classList.remove('selected');
+    if (selectionList.length !== 0) {
+        selectionList.forEach(el => {
+            el.classList.remove('selected');
+            const pair = findMirror(el);
+            if (pair) pair.classList.remove('selected');
+        });
     }
 
     html2canvas(canvas, {
@@ -261,8 +554,13 @@ function downloadImage() {
         link.click();
         document.body.removeChild(link);
 
-        if (selection) selection.classList.add('selected');
-        if (pair) pair.classList.add('selected');
+        if (selectionList.length !== 0) {
+            selectionList.forEach(el => {
+                el.classList.add('selected');
+                const pair = findMirror(el);
+                if (pair) pair.classList.add('selected');
+            });
+        }
     });
 }
 
@@ -271,18 +569,22 @@ function downloadImage() {
 function saveState() {
     const state = {
         html: canvas.innerHTML,
-        color: canvas.style.backgroundColor
+        color: canvas.style.backgroundColor,
+        zIndex: zIndexCounter,
+        mirrorId: mirrorIdCounter,
     }
 
-    if (undoStack.length === 0) undoStack.push(state);
+    if (undoStack.length === 0) undoStack.push(JSON.parse(JSON.stringify(state)));
     else if (undoStack[undoStack.length - 1].html !== state.html || undoStack[undoStack.length - 1].color !== state.color) {
         undoStack.push(state);
     }
 
     redoStack = [];
 
-    undoBtn.style.backgroundColor = "green";
-    redoBtn.style.backgroundColor = "red";
+    undoBtn.classList.remove('inactiveBtn');
+    redoBtn.classList.add('inactiveBtn');
+
+    localStorage.setItem('savedState', JSON.stringify(state));
 }
 
 function undo() {
@@ -293,8 +595,8 @@ function undo() {
 
     loadState(prevState);
 
-    redoBtn.style.backgroundColor = "green";
-    if (undoStack.length <= 1) undoBtn.style.backgroundColor = "red";
+    redoBtn.classList.remove('inactiveBtn');
+    if (undoStack.length <= 1) undoBtn.classList.add('inactiveBtn');
 }
 
 function redo() {
@@ -305,42 +607,32 @@ function redo() {
 
     loadState(nextState);
 
-    undoBtn.style.backgroundColor = "green";
-    if (redoStack.length === 0) redoBtn.style.backgroundColor = "red";
+    undoBtn.classList.remove('inactiveBtn');
+    if (redoStack.length === 0) redoBtn.classList.add('inactiveBtn');
 }
 
 function loadState(state) {
     canvas.innerHTML = state.html;
     canvas.style.backgroundColor = state.color;
     bgColor.style.backgroundColor = state.color;
+    zIndexCounter = state.zIndex;
+    mirrorIdCounter = state.mirrorId;
+
+    elements = [...canvas.querySelectorAll('.element')];
 
     mirrorMode = globalMirrorMode;
     mirrorMessage.textContent = mirrorMode;
 
-    const elements = canvas.querySelectorAll('.element');
-    selection = null;
-    maskDirty = true; 
-
     objCount = elements.length;
     objCounter.textContent = objCount;
-
-    zIndexCounter = 1;
-    mirrorIdCounter = 1;
     
+    deselect();
     elements.forEach(el => {
-        const zIndex = parseInt(el.style.zIndex);
-        if (zIndex > zIndexCounter) zIndexCounter = zIndex + 1;
-        
-        if (el.dataset.mirrorId) {
-            const mirrorId = parseInt(el.dataset.mirrorId);
-            if (mirrorId > mirrorIdCounter) mirrorIdCounter = mirrorId + 1;
-        }
-
         el.classList.remove('selected');
-
         addElEvents(el);
     });
     updateColorList();
+    maskDirty = true; 
 }
 
 function keysState() {
@@ -359,11 +651,12 @@ function keysState() {
 /* --------------------------- */
 
 
-function changeAlphabet () {
+function changeAlphabet (num) {
     alphabet.innerHTML = '';
 
-    alphabetLvl++;
+    alphabetLvl += num;
     if (alphabetLvl === alphabetList.length) alphabetLvl = 0;
+    else if (alphabetLvl < 0) alphabetLvl = alphabetList.length - 1;
     alphabetMessage.textContent = alphabetNames[alphabetLvl];
     
     alphabetList[alphabetLvl].forEach(letter => addLetter(letter));
@@ -380,18 +673,15 @@ function addLetter(letter) {
     newLetter.style.fontFamily = fontList[fontLvl];
     newLetter.textContent = letter;
 
-    // newLetter.addEventListener('click', function () {
-    //     const result = changeLetter(newLetter);
-    //     if (!result) newElement(newLetter, 80, 0, 1, 1, canvas.clientWidth / 2, canvas.clientHeight / 2);
-    // });
     newLetter.addEventListener('mousedown', startDragPreview);
 
     alphabet.appendChild(newLetter);
 }
 
-function changeFont () {
-    fontLvl++;
+function changeFont (num) {
+    fontLvl += num;
     if (fontLvl === fontList.length) fontLvl = 0;
+    else if (fontLvl < 0) fontLvl = fontList.length - 1;
 
     const previews = alphabet.querySelectorAll('.preview');
     previews.forEach(preview => preview.style.fontFamily = fontList[fontLvl]);
@@ -400,36 +690,47 @@ function changeFont () {
 }
 
 function changeElFont() {
-    if (selection == null) return;
+    if (selectionList.length === 0) return;
 
-    selection.style.fontFamily = fontList[fontLvl];
+    selectionList.forEach(el => {
+        el.style.fontFamily = fontList[fontLvl];
+        updateMirror(el);
+    });
 
-    updateMirror(selection);
     maskDirty = true; 
-
     saveState();
 }
 
 function changeLetter(preview) {
-    if (!selection || !replaceLetterBtn.classList.contains('buttonSelected')) return false;
+    if (selectionList.length === 0 || !replaceLetterBtn.classList.contains('buttonSelected')) return;
 
-    selection.textContent = preview.textContent;
-    maskDirty = true; 
+    selectionList.forEach(el => {
+        el.textContent = preview.textContent;
+        el.style.fontFamily = preview.style.fontFamily;
 
-    return true;
+        updateMirror(el);
+    });
+
+    maskDirty = true;
+    saveState();
 }
 
 function changeCanvasFont() {
-    const elements = canvas.querySelectorAll('.element');
     elements.forEach(el => el.style.fontFamily = fontList[fontLvl]);
     maskDirty = true; 
 
     saveState();
 }
 
-function changeModifier () {
-    modifierLvl++;
-    if (modifierLvl > 2) modifierLvl = 0;
+function changeModifier (level) {
+    if (level === null) {
+        modifierLvl++;
+        if (modifierLvl > 2) modifierLvl = 0;
+    }
+    else modifierLvl = level;
+    modSmallBtn.classList.remove('inactiveBtn');
+    modMediumBtn.classList.remove('inactiveBtn');
+    modBigBtn.classList.remove('inactiveBtn');
 
     switch (modifierLvl) {
         case 0:
@@ -437,21 +738,21 @@ function changeModifier () {
             modifierSize = 5;
             modifierRotate = 5;
             modifierStretch = 0.1;
-            modMessage.textContent = "small";
+            modSmallBtn.classList.add('inactiveBtn');
             break;
         case 1:
             modifierMove = 20;
             modifierSize = 20;
             modifierRotate = 15;
             modifierStretch = 0.2;
-            modMessage.textContent = "medium";
+            modMediumBtn.classList.add('inactiveBtn');
             break;
         case 2:
             modifierMove = 50;
             modifierSize = 50;
             modifierRotate = 30;
             modifierStretch = 0.3;
-            modMessage.textContent = "big";
+            modBigBtn.classList.add('inactiveBtn');
             break;
     }
 }
@@ -466,42 +767,111 @@ function addColor(color) {
     colorBlock.style.backgroundColor = color;
     colorList.appendChild(colorBlock);
 
-    colorBlock.addEventListener('click', () => {
-        colorPicker.value = colorBlock.style.backgroundColor;
+    colorBlock.addEventListener('mousedown', () => {
         chosenColor.style.backgroundColor = colorBlock.style.backgroundColor;
-        changeColor();
-        changeBgColor(colorBlock.style.backgroundColor);
+        updatePickersRGBtoHSV();
+
+        if (selectionList.length !== 0 || bgColor.classList.contains('buttonSelected')) {
+            removeSelectColor();
+            changeColor();
+            changeBgColor(chosenColor.style.backgroundColor);
+
+            document.addEventListener('mouseup', releaseColorButton); 
+        }
     });
 }
 
-function updateColorList() {
-    const canvasColors = document.querySelectorAll('.element');
-    const currentColors = new Set();
+function releaseColorButton() {
+    returnSelectColor();
+    saveState();
+    document.removeEventListener('mouseup', releaseColorButton);
+}
 
-    canvasColors.forEach(el => {
+function updateColorList() {
+    currentColors.clear()
+    colorList.innerHTML = '';
+
+    elements.forEach(el => {
         currentColors.add(el.style.color);
     })
+    currentColors.forEach(color => addColor(color));
+
+    showColorPage(0);
+}
+
+function showColorPage(modifier) {
+    const MaxColorLvl = Math.max(Math.ceil(currentColors.size / 14) - 1, 0);
+    colorLvl += modifier;
+    
+    if (colorLvl < 0) {
+        colorLvl = 0;
+    }
+    else if (colorLvl > MaxColorLvl) {
+        colorLvl = MaxColorLvl;
+    }
+    if (colorLvl === 0) colorUpBtn.classList.add('inactiveUp');
+    else colorUpBtn.classList.remove('inactiveUp');
+    if (colorLvl === MaxColorLvl) colorDownBtn.classList.add('inactiveDown');
+    else colorDownBtn.classList.remove('inactiveDown');
+
+
+    const pageStart = colorLvl * 14;
+    const pageEnd = pageStart + 14;
+
+    const visibleColors = [...currentColors].slice(pageStart, pageEnd);
 
     colorList.innerHTML = '';
-    currentColors.forEach(color => addColor(color));
+    visibleColors.forEach(c => {
+        addColor(c);
+    })
 }
 
 function changeColor() {
-    if (selection == null) return;
-
-    selection.style.color = chosenColor.style.backgroundColor;
-    updateMirror(selection);
+    if (selectionList.length === 0) return;
+    
+    selectionList.forEach(el => {
+        el.style.color = chosenColor.style.backgroundColor;
+        updateMirror(el);
+    });
     updateColorList();
-
-    saveState();
 }
 
-function selectButton(button) {
+function removeSelectColor() {
+    if (selectionList.length === 0) return;
+
+    selectionList.forEach(el => {
+        el.classList.remove('selected');
+        if (mirrorSelectList) {
+            const pair = findMirror(el);
+            if (pair) pair.classList.remove('selected');
+        }
+    });
+}
+
+function returnSelectColor() {
+    if (selectionList.length === 0) return;
+
+    selectionList.forEach(el => {
+        el.classList.add('selected');
+        if (mirrorSelectList) {
+            const pair = findMirror(el);
+            if (pair) pair.classList.add('selected');
+        }
+    });
+}
+
+function selectButton(e, button) {
+    e.stopPropagation();
     if (!button.classList.contains('buttonSelected')) {
-        if (button === bgColor) deselect();
         button.classList.add('buttonSelected');
+
+        if (button === bgColor) deselect();
+        else if (button === infoBtn) displayInfobox(e);
     }
-    else button.classList.remove('buttonSelected');
+    else {
+        if (button === infoBtn) removeInfobox();
+        button.classList.remove('buttonSelected');
+    }
 }
 
 function changeBgColor(color) {
@@ -509,8 +879,6 @@ function changeBgColor(color) {
 
     bgColor.style.backgroundColor = color;
     canvas.style.backgroundColor = color;
-
-    saveState();
 }
 
 /* ------------------------ */
@@ -520,24 +888,30 @@ function changeBgColor(color) {
 
 function changeMirrorMode() {
     if (mirrorMode == 'ON') {
-        if (selection != null && selection.dataset.mirrorId) {
-            pair = findMirror(selection);
+        if (selectionList.length !== 0 && mirrorSelectList) {
+            selectionList.forEach(el => {
+                const pair = findMirror(el);
 
-            pair.classList.remove('selected');
-            delete selection.dataset.mirrorId;
-            delete selection.dataset.mirrorRole;
-            delete pair.dataset.mirrorId;
-            delete pair.dataset.mirrorRole;
-            mirrorIdCounter--;
-
+                pair.classList.remove('selected');
+                delete el.dataset.mirrorId;
+                delete el.dataset.mirrorRole;
+                delete pair.dataset.mirrorId;
+                delete pair.dataset.mirrorRole;
+            });
             saveState();
         }
-
-        globalMirrorMode = 'OFF';
+        else globalMirrorMode = 'OFF';
         mirrorMode = 'OFF';
     }
     else {
-        globalMirrorMode = 'ON';
+        if (selectionList.length !== 0 && !mirrorSelectList) {
+            selectionList.forEach(el => createMirrorPair(el));
+
+            mirrorSelectList = true;
+            maskDirty = true;
+            saveState();
+        }
+        else globalMirrorMode = 'ON';
         mirrorMode = 'ON';
     }
     
@@ -557,6 +931,7 @@ function createMirrorPair(originalEl) {
     originalEl.dataset.mirrorRole = 'original';
     mirrorEl.dataset.mirrorRole = 'mirror';
 
+    elements.push(mirrorEl);
     canvas.appendChild(mirrorEl);
     syncMirror(originalEl, mirrorEl);
 
@@ -567,11 +942,11 @@ function createMirrorPair(originalEl) {
 }
 
 function syncMirror(originalEl, mirrorEl) {
-    mirrorEl.style.fontFamily = originalEl.style.fontFamily;
-
     mirrorEl.style.left = (canvas.clientWidth - originalEl.offsetLeft) + 'px';
     mirrorEl.style.top = originalEl.offsetTop + 'px';
 
+    mirrorEl.textContent = originalEl.textContent;
+    mirrorEl.style.fontFamily = originalEl.style.fontFamily;
     mirrorEl.style.fontSize = originalEl.style.fontSize;
     mirrorEl.style.color = originalEl.style.color;
 
@@ -592,7 +967,7 @@ function updateMirror(el) {
 /* ------------------------- */
 
 
-function newElement(preview, size, rotation, scaleX, scaleY, posX, posY) {
+function newElement(preview, size, rotation, scaleX, scaleY, posX, posY, color) {
     const el = document.createElement('span');
     el.className = 'element';
     el.textContent = preview.textContent;
@@ -602,11 +977,12 @@ function newElement(preview, size, rotation, scaleX, scaleY, posX, posY) {
     el.dataset.rotation = rotation;
     el.dataset.scaleX = scaleX;
     el.dataset.scaleY = scaleY;
-    el.style.color = chosenColor.style.backgroundColor;
+    el.style.color = color;
     el.style.zIndex = preview.style.zIndex;
 
     changeTransform(el);
 
+    elements.push(el);
     canvas.appendChild(el);
 
     el.style.left = posX + 'px';
@@ -622,57 +998,141 @@ function newElement(preview, size, rotation, scaleX, scaleY, posX, posY) {
     maskDirty = true; 
     addElEvents(el);
     select(el);
+
+    return el;
 }
 
 function addElEvents(el) {
     el.addEventListener('click', function(e) {
-        colorEl = getColorFromMask(e);
-        if (colorEl) {
-            e.stopPropagation();
-            select(colorEl);
+        if (!dragHappened) {
+            const colorEl = getColorFromMask(e);
+            if (colorEl) {
+                e.stopPropagation();
+                if (e.shiftKey) {
+                    if (!colorEl.classList.contains('selected')) selectMultiple(colorEl);
+                    else deselectShift(colorEl);
+                }
+                else select(colorEl);
+            }
         }
     });
     el.addEventListener('mousedown', function(e) {
-        colorEl = getColorFromMask(e);
-        if (colorEl) startDrag(e);
+        if (!e.shiftKey) {
+            const colorEl = getColorFromMask(e);
+            if (colorEl && colorEl === e.currentTarget) {
+                e.stopPropagation();
+                startDrag(e);
+            }
+        }
     });
 }
 
-function getColorFromMask (e) {
-        const canvasRect = canvas.getBoundingClientRect();
-        const x = e.clientX - canvasRect.left;
-        const y = e.clientY - canvasRect.top;
+// function debugMaskColors() {
+//     const width = maskCanvas.width;
+//     const height = maskCanvas.height;
+//     const imageData = maskCtx.getImageData(0, 0, width, height).data;
 
-        if (maskDirty) {
-            updateMask();
-            maskDirty = false;
+//     const colorCounts = new Map();
+
+//     for (let i = 0; i < imageData.length; i += 4) {
+//         const r = Math.round(imageData[i]);
+//         const g = Math.round(imageData[i + 1]);
+//         const b = Math.round(imageData[i + 2]);
+
+//         const colorKey = (r << 16) | (g << 8) | b;
+
+//         colorCounts.set(colorKey, (colorCounts.get(colorKey) || 0) + 1);
+//     }
+
+//     console.log("Cores únicas no maskCanvas:", colorCounts.size);
+
+//     colorCounts.forEach((count, colorKey) => {
+//         const r = (colorKey >> 16) & 0xFF;
+//         const g = (colorKey >> 8) & 0xFF;
+//         const b = colorKey & 0xFF;
+
+//         const element = colorToId.get(colorKey);
+
+//         if (element) {
+//             console.log(`rgb(${r}, ${g}, ${b}): ${count} pixels → Elemento:`, element.textContent, imageData[3]);
+//         } else {
+//             console.log(`rgb(${r}, ${g}, ${b}): ${count} pixels → Nenhum elemento`, imageData[3]);
+//         }
+//     });
+//     if (colorCounts.size > elements.length + 1) console.log("COM cor adicional");
+//     else console.log("SEM cor adicional");
+// }
+
+function bringHiddenToTop() {
+    //document.body.style.cursor = 'wait';
+    let gotHidden = false;
+    deselect();
+    const visibleIds = new Map();
+    updateMask();
+
+    const data = maskCtx.getImageData(0, 0, maskCanvas.width, maskCanvas.height).data;
+
+    for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i+1];
+        const b = data[i+2];
+
+        const id = (r << 16) | (g << 8) | b;
+        if (id !== 0) visibleIds.set(id, (visibleIds.get(id) || 0) + 1);
+    }
+    //console.log(visibleIds);
+
+    colorToId.forEach((el, key) => {
+        const pixels = visibleIds.get(key) || 0;
+        //console.log(pixels, el.textContent);
+
+        if (pixels < 100) {
+            el.style.zIndex = zIndexCounter++;
+            gotHidden = true;
         }
-        const pixel = maskCtx.getImageData(x, y, 1, 1).data;
-        const color = `rgb(${pixel[0]},${pixel[1]},${pixel[2]})`;
-        console.log(x, y);
-        console.log(pixel);
-        console.log(colorToId);
-        console.log(maskCanvas.width, maskCanvas.height);
-        console.log(canvas.clientWidth, canvas.clientHeight);
+    });
+    if (gotHidden) maskDirty = true;
+}
 
-        return colorToId.get(color);
+function getColorFromMask (e) {
+    canvasRect = canvas.getBoundingClientRect();
+    const x = Math.floor(e.clientX - canvasRect.left);
+    const y = Math.floor(e.clientY - canvasRect.top);
+
+    if (maskDirty) updateMask();
+
+    //debugMaskColors();
+    const pixel = maskCtx.getImageData(x, y, 1, 1).data;
+
+    const r = Math.round(pixel[0]);
+    const g = Math.round(pixel[1]);
+    const b = Math.round(pixel[2]);
+
+    const colorKey = (r << 16) | (g << 8) | b;
+    if (colorKey % 8 !== 0) colorKey = null;
+
+    let onCursor = document.elementsFromPoint(e.clientX, e.clientY);
+    onCursor = onCursor.filter(el => el.classList.contains('element'));
+    const colorEl = colorToId.get(colorKey);
+    if (onCursor.includes(colorEl)) return colorEl;
+    else return null;
 }
 
 function updateMask () {
     maskCtx.clearRect(0, 0, maskCanvas.width, maskCanvas.height);
     colorToId.clear();
-    const elements = canvas.querySelectorAll('.element');
+
+    elements.sort((a, b) => {
+        return parseInt(a.style.zIndex) - parseInt(b.style.zIndex);
+    });
 
     elements.forEach((el, index) => {
-        const rect = el.getBoundingClientRect();
-        const canvasRect = canvas.getBoundingClientRect();
+        el.style.zIndex = index;
+
         const elStyle = window.getComputedStyle(el);
 
-        const x = rect.left - canvasRect.left + (rect.width / 2);
-        const y = rect.top - canvasRect.top + (rect.height / 2);
-
         maskCtx.save();
-        maskCtx.translate(x, y);
+        maskCtx.translate(el.offsetLeft, el.offsetTop);
 
         const rotation = parseFloat(el.dataset.rotation) * Math.PI / 180;
         maskCtx.rotate(rotation);
@@ -681,19 +1141,21 @@ function updateMask () {
         const scaleY = parseFloat(el.dataset.scaleY);
         maskCtx.scale(scaleX, scaleY);
 
-        const rgb = [(index+1) & 255, ((index+1) >> 8) & 255, ((index+1) >> 16) & 255];
-        const colorKey = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`
-        colorToId.set(colorKey, el);
+        const id = (index + 1) * 8;
+        const r = id & 255;
+        const g = (id >> 8) & 255;
+        const b = (id >> 16) & 255;
+
+        const colorKey = (r << 16) | (g << 8) | b;
+        if (id !== 0) colorToId.set(colorKey, el);
 
         let offsetY = parseFloat(elStyle.fontSize) * 0.036;
-        if(alphabetList[4].includes(el.textContent) || alphabetList[5].includes(el.textContent)) {
-            offsetY = 0;
-        } // If Hiragana or Katakana
+        offsetY = fontOffsets(el, elStyle, offsetY);
 
         maskCtx.font = `bold ${parseInt(elStyle.fontSize)}px ${elStyle.fontFamily}`;
         maskCtx.textAlign = 'center';
         maskCtx.textBaseline = 'middle';
-        maskCtx.fillStyle = colorKey;
+        maskCtx.fillStyle = `rgb(${r},${g},${b})`;
 
         maskCtx.fillText(el.textContent, 0, 0 + offsetY);
 
@@ -703,28 +1165,62 @@ function updateMask () {
         // maskCanvas.style.position = "absolute";
         // maskCanvas.style.left = canvas.offsetLeft + "px";
         // maskCanvas.style.top = canvas.offsetTop + "px";
-        // maskCanvas.style.opacity = "0.5";
+        // maskCanvas.style.opacity = "0.4";
         // maskCanvas.style.pointerEvents = "none";
         // maskCanvas.style.border = "1px solid red";
         // maskCanvas.style.zIndex = 90;
     });
+    zIndexCounter = elements.length + 1;
+    maskDirty = false;
+}
+
+function fontOffsets(el, elStyle, offsetY) {
+    if(alphabetList[4].includes(el.textContent) || alphabetList[5].includes(el.textContent)) {
+        switch(elStyle.fontFamily) {
+            case(fontList[0]): offsetY *= -0.02; break;
+            case(fontList[1]): offsetY *= 1.73; break;
+            case(fontList[2]): offsetY *= 0.17; break;
+            case(fontList[3]): offsetY *= 0.07; break;
+            case(fontList[4]): offsetY *= 0.93; break;
+            case(fontList[5]): offsetY *= -0.25; break;
+        }
+    } // If Hiragana or Katakana
+
+    switch(elStyle.fontFamily) {
+        case(fontList[1]): offsetY *= 0.87; break;
+        case(fontList[2]): offsetY *= 1.33; break;
+        case(fontList[3]): offsetY *= 2.85; break;
+        case(fontList[4]): offsetY *= 0.9; break;
+        case(fontList[5]): offsetY *= 1.95; break;
+    }
+
+    if(alphabetList[1].includes(el.textContent) || alphabetList[2].includes(el.textContent) || alphabetList[3].includes(el.textContent)) {
+        switch(elStyle.fontFamily) {
+            case(fontList[2]): offsetY *= 0.84; break;
+        }
+    } // if Cyrillic, Greek or Arabic
+
+    return offsetY;
 }
 
 /* --- REGARDING SELECT --- */
 
 function select(el) {
-    if (selection != null) {
-        if (selection.dataset.mirrorId) {
-            const pair = findMirror(selection);
+    maybeSelect = [];
+    removeInfoboxSelection();
+
+    selectionList.forEach(sel => {
+        sel.classList.remove('selected');
+
+        if (sel.dataset.mirrorId) {
+            const pair = findMirror(sel);
             if (pair) pair.classList.remove('selected');
         }
-        selection.classList.remove('selected');
-    }
-    selection = el;
-    selection.classList.add('selected');
-    selection.style.zIndex = zIndexCounter++;
+    });
+    selectionList = [];
 
     if (el.dataset.mirrorId) {
+        mirrorSelectList = true;
         const pair = findMirror(el);
 
         if (pair) {
@@ -733,47 +1229,160 @@ function select(el) {
             mirrorMode = 'ON';
         }
     } else {
+        mirrorSelectList = false;
         mirrorMode = 'OFF'
+    }
+    selectionList.push(el);
+    el.classList.add('selected');
+    el.style.zIndex = zIndexCounter++;
+    maskDirty = true;
+
+    mirrorMessage.textContent = mirrorMode;
+}
+
+function deselectShift(el) {
+    maybeSelect = [];
+    removeInfoboxSelection();
+
+    if (el.dataset.mirrorId) {
+        const pair = findMirror(el);
+        if (pair) {
+            pair.classList.remove('selected');
+        }
+    }
+    selectionList.splice(selectionList.indexOf(el), 1);
+    el.classList.remove('selected');
+
+    if (selectionList.length === 0) {
+        mirrorSelectList = false;
+        mirrorMode = globalMirrorMode;
+        mirrorMessage.textContent = mirrorMode;
+    }
+}
+
+function selectMultiple(el) {
+    if (selectionList.length === 0 && el.dataset.mirrorId) mirrorSelectList = true;
+    if (!dragHappened && !maybeSelect.includes(el)) {
+        maybeSelect = [];
+        removeInfoboxSelection();
+    }
+
+    if (mirrorSelectList) {
+        if (el.dataset.mirrorId) {
+            const pair = findMirror(el);
+            if (pair) pair.classList.add('selected');
+
+            el.classList.add('selected');
+            selectionList.push(el);
+
+            mirrorMode = 'ON';
+        }
+        else {
+            if (maybeSelect.includes(el)) {
+                const pairList = [];
+                selectionList.forEach(sel => {
+                    const pair = findMirror(sel);
+                    delete(pair.dataset.mirrorId);
+                    delete(pair.dataset.mirrorRole);
+                    delete(sel.dataset.mirrorId);
+                    delete(sel.dataset.mirrorRole);
+
+                    pair.classList.add('selected');
+                    pairList.push(pair);
+                })
+                selectionList.concat(pairList);
+                el.classList.add('selected');
+                selectionList.push(el);
+                mirrorSelectList = false;
+
+                maybeSelect.splice(maybeSelect.indexOf(el), 1);
+
+                setTimeout(() => {
+                    saveState();
+                }, 0);
+            }
+            else {
+                maybeSelect.push(el);
+                displayInfoboxSelection();
+                console.log("Não pode selecionar espelho com não espelho");
+            }
+        }
+    }
+    else {
+        if (!el.dataset.mirrorId) {
+            mirrorMode = 'OFF';
+            selectionList.push(el);
+            el.classList.add('selected');
+        }
+        else {
+            if (maybeSelect.includes(el)) {
+                const pair = findMirror(el);
+                delete(pair.dataset.mirrorId);
+                delete(pair.dataset.mirrorRole);
+                delete(el.dataset.mirrorId);
+                delete(el.dataset.mirrorRole);
+
+                pair.classList.add('selected');
+                selectionList.push(pair);
+                el.classList.add('selected');
+                selectionList.push(el);
+
+                maybeSelect.splice(maybeSelect.indexOf(el), 1);
+
+                setTimeout(() => {
+                    saveState();
+                }, 0);
+            }
+            else {
+                maybeSelect.push(el);
+                displayInfoboxSelection();
+                console.log("Não pode selecionar espelho com não espelho");
+            }
+        }
     }
     mirrorMessage.textContent = mirrorMode;
 }
 
 function deselect() {
-    if (selection != null) {
-        selection.classList.remove('selected');
+    selectionList.forEach(el => {
+        el.classList.remove('selected');
 
-        if (selection.dataset.mirrorId) {
-            const pair = findMirror(selection);
+        if (el.dataset.mirrorId) {
+            const pair = findMirror(el);
 
             if (pair) pair.classList.remove('selected');
         }
-        selection = null;
-
-        mirrorMode = globalMirrorMode;
-        mirrorMessage.textContent = mirrorMode;
-    }
+    });
+    selectionList = [];
+    mirrorSelectList = false;
+    mirrorMode = globalMirrorMode;
+    mirrorMessage.textContent = mirrorMode;
 }
 
 /* ------------------------ */
 
 
 function deleteElement() {
-    if (selection == null) return;
+    if (selectionList.length === 0) return;
 
-    if (selection.dataset.mirrorId) {
-        const pair = findMirror(selection);
+    selectionList.forEach(el => {
+        if (mirrorSelectList) {
+            const pair = findMirror(el);
 
-        if (pair) {
-            pair.remove();
-            objCount--;
+            if (pair) {
+                elements.splice(elements.indexOf(pair), 1);
+                pair.remove();
+                objCount--;
+            }
         }
-    }
+        elements.splice(elements.indexOf(el), 1);
+        el.remove();
+        objCount--;
+    });
 
-    selection.remove();
-    objCount--;
     objCounter.textContent = objCount;
-
-    selection = null;
+    selectionList = [];
+    mirrorSelectList = false;
     updateColorList();
     maskDirty = true; 
 
@@ -782,73 +1391,176 @@ function deleteElement() {
 
 function clearAll() {
     canvas.innerHTML = '';
-    colorList.innerHTML = '';
+    elements = [];
+    updateColorList();
+    selectionList = [];
+    mirrorSelectList = false;
     zIndexCounter = 1;
-    mirrorIdCounter = 0;
+    mirrorIdCounter = 1;
     objCount = 0;
     objCounter.textContent = objCount;
-    canvas.style.backgroundColor = "white";
-    bgColor.style.backgroundColor = "white";
+    canvas.style.backgroundColor = "rgb(255, 255, 255)";
+    bgColor.style.backgroundColor = "rgb(255, 255, 255)";
 
-    selection = null;
     maskDirty = true; 
-
     saveState();
 }
 
 function copy() {
-    if (selection == null) return;
+    if (selectionList.length === 0) return;
+    const newSelectList = [];
 
-    let elStyle = window.getComputedStyle(selection);
-    let fontSize = parseInt(elStyle.fontSize);
+    selectionList.forEach(el => {
+        let elStyle = window.getComputedStyle(el);
+        let fontSize = parseInt(elStyle.fontSize);
 
-    let move = modifierMove;
-    if (modifierLvl == 0) move = 5;
-    let posX = selection.offsetLeft + move;
-    let posY = selection.offsetTop + move;
-    posX = checkBorderX(posX);
-    posY = checkBorderY(posY);
+        let move = modifierMove;
+        if (modifierLvl == 0) move = 5;
+        let posX = el.offsetLeft + move;
+        let posY = el.offsetTop + move;
+        posX = checkBorderX(el, posX);
+        posY = checkBorderY(el, posY);
 
-    newElement(selection, fontSize, selection.dataset.rotation, selection.dataset.scaleX, selection.dataset.scaleY, posX, posY);
+        const newEl = newElement(el, fontSize, el.dataset.rotation, el.dataset.scaleX, el.dataset.scaleY, posX, posY, el.style.color);
 
-    updateMirror(selection);
+        newSelectList.push(newEl);
+    })
+    deselect();
+    newSelectList.forEach(el => selectMultiple(el));
 
     saveState();
+}
+
+/* --- Drag Drag Drag --- */
+
+function startDragSelection(e) {
+    e.preventDefault();
+    canvasRect = canvas.getBoundingClientRect();
+    dragBoxCreated = false;
+
+    selectionBox = document.createElement('div');
+    selectionBox.className = 'dragSelection';
+
+    dragBoxStartX = e.clientX - canvasRect.left;
+    dragBoxStartY = e.clientY - canvasRect.top;
+
+    selectionBox.style.left = dragBoxStartX + 'px';
+    selectionBox.style.top = dragBoxStartY + 'px';
+    selectionBox.style.width = '0px';
+    selectionBox.style.height = '0px';
+
+    document.addEventListener('mousemove', dragSelection);
+    document.addEventListener('mouseup', endDragSelection);
+}
+
+function dragSelection(e) {
+    e.preventDefault();
+    const x = e.clientX - canvasRect.left;
+    const y = e.clientY - canvasRect.top;
+
+    selectionBox.style.left = Math.min(dragBoxStartX, x) + 'px';
+    selectionBox.style.top = Math.min(dragBoxStartY, y) + 'px';
+    selectionBox.style.width = Math.abs(x - dragBoxStartX) + 'px';
+    selectionBox.style.height = Math.abs(y - dragBoxStartY) + 'px';
+
+    if (!dragBoxCreated && parseInt(selectionBox.style.width) > 1 && parseInt(selectionBox.style.height) > 1) {
+        canvas.appendChild(selectionBox);
+        dragBoxCreated = true;
+    }
+}
+
+function endDragSelection() {
+    const left = parseInt(selectionBox.style.left);
+    const top = parseInt(selectionBox.style.top);
+    const width = parseInt(selectionBox.style.width);
+    const height = parseInt(selectionBox.style.height);
+
+    if (!dragBoxCreated || width <= 0 || height <= 0) {
+        selectionBox.remove();
+        document.removeEventListener('mousemove', dragSelection);
+        document.removeEventListener('mouseup', endDragSelection);
+        return;
+    }
+
+    dragHappened = true;
+    const foundEls = new Set();
+    if (maskDirty) updateMask();
+    const pixelList = maskCtx.getImageData(left, top, width, height).data;
+
+    for (let i = 0; i < pixelList.length; i += 4) {
+        const r = pixelList[i];
+        const g = pixelList[i+1];
+        const b = pixelList[i+2];
+
+        const id = (r << 16) | (g << 8) | b;
+        const found = colorToId.get(id);
+        if (found) foundEls.add(found);
+    }
+
+    deselect();
+    foundEls.forEach(el => {
+        const rect = el.getBoundingClientRect();
+
+        if (rect.left + rect.width >= (left + canvasRect.left) && rect.left <= (left + canvasRect.left) + width && rect.top + rect.height >= (top + canvasRect.top) && rect.top <= (top + canvasRect.top) + height) {
+            selectMultiple(el);
+        }
+    });
+    selectionBox.remove();
+
+    setTimeout(() => {
+        dragHappened = false;
+    }, 0);
+
+    document.removeEventListener('mousemove', dragSelection);
+    document.removeEventListener('mouseup', endDragSelection);
 }
 
 
 /* --- CREATE ELEMENT WITH DRAG --- */
 
+
 function startDragPreview(e) {
     e.preventDefault();
     e.stopPropagation();
+    currentPreviewButton = e.currentTarget;
 
     previewElement = document.createElement('span');
     previewElement.className = 'preview2';
-    previewElement.style.fontFamily = e.target.style.fontFamily;
-    previewElement.textContent = e.target.textContent;
+    previewElement.style.fontFamily = e.currentTarget.style.fontFamily;
+    previewElement.textContent = e.currentTarget.textContent;
     previewElement.style.color = chosenColor.style.backgroundColor;
     previewElement.style.zIndex = zIndexCounter++;
     document.body.appendChild(previewElement);
 
-    previewElement.style.left = e.pageX + 'px';
-    previewElement.style.top = e.pageY + 'px';
+    previewElement.style.left = e.clientX + 'px';
+    previewElement.style.top = e.clientY + 'px';
 
     document.addEventListener('mousemove', dragPreview);
     document.addEventListener('mouseup', endDragPreview);
 }
 
 function dragPreview(e) {
-    previewElement.style.left = e.pageX + 'px';
-    previewElement.style.top = e.pageY + 'px';
+    previewElement.style.left = e.clientX + 'px';
+    previewElement.style.top = e.clientY + 'px';
 }
 
 function endDragPreview(e) {
     if (!previewElement) return;
-    const canvasRect = canvas.getBoundingClientRect();
+    canvasRect = canvas.getBoundingClientRect();
+    const buttonRect = currentPreviewButton.getBoundingClientRect();
 
-    if (e.clientX >= canvasRect.left && e.clientX <= canvasRect.right && e.clientY >= canvasRect.top && e.clientY <= canvasRect.bottom) {
-        newElement(previewElement, 80, 0, 1, 1, e.clientX - canvasRect.left, e.clientY - canvasRect.top);
+    if (e.clientX >= buttonRect.left && e.clientX <= buttonRect.right && e.clientY >= buttonRect.top && e.clientY <= buttonRect.bottom) {
+        changeLetter(previewElement);
+
+        if (replaceLetterBtn.classList.contains('buttonSelected')) e.stopPropagation();
+        else {
+            newElement(previewElement, 80, 0, 1, 1, canvasRect.width / 2, canvasRect.height / 2, chosenColor.style.backgroundColor);
+            saveState();
+        }
+    }
+
+    else if (previewElement.offsetLeft >= canvasRect.left && previewElement.offsetLeft <= canvasRect.right && previewElement.offsetTop >= canvasRect.top && previewElement.offsetTop <= canvasRect.bottom) {
+        newElement(previewElement, 80, 0, 1, 1, e.clientX - canvasRect.left, e.clientY - canvasRect.top, chosenColor.style.backgroundColor);
         saveState();
     }
 
@@ -863,63 +1575,88 @@ function endDragPreview(e) {
 
 
 function startDrag(e) {
-    if (selection == null) return;
     e.stopPropagation();
+    if (selectionList.length === 0 || !e.currentTarget.classList.contains('selected')) return;
+    maybeSelect = [];
+    removeInfoboxSelection();
 
     if (e.currentTarget.dataset.mirrorId) {
         const pair = findMirror(e.currentTarget);
-        if (pair && pair === selection) select(e.currentTarget);
+        if (pair && selectionList.includes(pair)) {
+            const pairList = [];
+            selectionList.forEach(el => {
+                pairList.push(findMirror(el));
+            });
+            selectionList = pairList;
+        }
     }
 
-    if (e.currentTarget === selection) {
-        dragX = e.clientX - selection.offsetLeft;
-        dragY = e.clientY - selection.offsetTop;
+    dragStartX = e.clientX;
+    dragStartY = e.clientY;
 
-        document.addEventListener('mousemove', drag);
-        document.addEventListener('mouseup', endDrag);
-    }
+    dragStartPositions = selectionList.map(el => ({el: el, x: el.offsetLeft, y: el.offsetTop}));
+
+    document.addEventListener('mousemove', drag);
+    document.addEventListener('mouseup', endDrag);
 }
 
 function drag(e) {
-    if (selection == null) return;
+    e.stopPropagation();
+    const dx = e.clientX - dragStartX;
+    const dy = e.clientY - dragStartY;
 
-    posX = e.clientX - dragX;
-    posY = e.clientY - dragY;
+    dragStartPositions.forEach(obj => {
+        let posX = obj.x + dx;
+        let posY = obj.y + dy;
 
-    posX = checkBorderX(posX);
-    posY = checkBorderY(posY);
+        posX = checkBorderX(obj.el, posX);
+        posY = checkBorderY(obj.el, posY);
 
-    selection.style.left = posX + 'px';
-    selection.style.top = posY + 'px';
+        obj.el.style.left = posX + 'px';
+        obj.el.style.top = posY + 'px';
 
-    updateMirror(selection);
+        updateMirror(obj.el);
+    })
 }
 
-function endDrag() {
+function endDrag(e) {
+    e.stopPropagation();
+
+    dragHappened = true;
+    setTimeout(() => {
+        dragHappened = false;
+    }, 0);
+
     document.removeEventListener('mousemove', drag);
     document.removeEventListener('mouseup', endDrag);
 
+    if (selectionList[0].offsetLeft === dragStartPositions[0].x && selectionList[0].offsetTop === dragStartPositions[0].y) {
+        if (e.target.classList.contains('element')) select(e.target);
+        return;
+    }
     maskDirty = true;
     saveState();
 }
 
 function move(modifierX, modifierY) {
-    if (selection == null) return;
+    if (selectionList.length === 0) return;
 
-    let posX = selection.offsetLeft + modifierX;
-    let posY = selection.offsetTop + modifierY;
+    selectionList.forEach(el => {
+        let posX = el.offsetLeft + modifierX;
+        let posY = el.offsetTop + modifierY;
 
-    posX = checkBorderX(posX);
-    posY = checkBorderY(posY);
-    
-    selection.style.left = posX + 'px';
-    selection.style.top = posY + 'px';
+        posX = checkBorderX(el, posX);
+        posY = checkBorderY(el, posY);
+        
+        el.style.left = posX + 'px';
+        el.style.top = posY + 'px';
 
-    updateMirror(selection);
+        updateMirror(el);
+    })
 }
 
-function checkBorderX(posX) {
-    const selectionRect = selection.getBoundingClientRect();
+function checkBorderX(el, posX) {
+    const selectionRect = el.getBoundingClientRect();
     const quarterWidth = selectionRect.width / 4;
 
     const minX = -quarterWidth;
@@ -930,8 +1667,8 @@ function checkBorderX(posX) {
     return posX;
 }
 
-function checkBorderY(posY) {
-    const selectionRect = selection.getBoundingClientRect();
+function checkBorderY(el, posY) {
+    const selectionRect = el.getBoundingClientRect();
     const quarterHeight = selectionRect.height / 4;
 
     const minY = -quarterHeight;
@@ -943,70 +1680,79 @@ function checkBorderY(posY) {
 }
 
 function changeSizeScroll(e) {
-    if (selection == null) return;
+    if (selectionList.length === 0 || selectionList.length > 1) return;
 
     if (e.deltaY < 0) changeSize(modifierSize);
     else if (e.deltaY > 0) changeSize(-modifierSize);
 
     clearTimeout(scrollTimeout);
-
-    scrollTimeout = setTimeout(() => {maskDirty = true; saveState();}, 200);
+    scrollTimeout = setTimeout(() => {
+        maskDirty = true;
+        saveState();
+    }, 200);
 }
 
 function changeSize(modifier) {
-    if (selection == null) return;
+    if (selectionList.length === 0 || selectionList.length > 1) return;
 
-    let elStyle = window.getComputedStyle(selection);
-    let newSize = parseInt(elStyle.fontSize) + modifier;
-    if (newSize < minSize) newSize = minSize;
-    else if (newSize > maxSize) newSize = maxSize;
-    selection.style.fontSize = newSize + 'px';
+    selectionList.forEach(el => {
+        let elStyle = window.getComputedStyle(el);
+        let newSize = parseInt(elStyle.fontSize) + modifier;
+        if (newSize < minSize) newSize = minSize;
+        else if (newSize > maxSize) newSize = maxSize;
+        el.style.fontSize = newSize + 'px';
 
-    updateMirror(selection);
+        updateMirror(el);
+    });
 }
 
 function stretch(modifier) {
-    if (selection == null) return;
+    if (selectionList.length === 0 || selectionList.length > 1) return;
 
-    let newStretch = selection.dataset.scaleX;
-    let multiplier = 1;
-    if (newStretch < 0) multiplier = -1;
-    newStretch = (Math.abs(parseFloat(newStretch)) + modifier) * multiplier;
-    if (Math.abs(newStretch) >= 0.1 && parseFloat(newStretch) * parseFloat(selection.dataset.scaleX) > 0) {
-        selection.dataset.scaleX = newStretch;
+    selectionList.forEach(el => {
+        let newStretch = parseFloat(el.dataset.scaleX);
+        let multiplier = 1 * Math.sign(newStretch);
 
-        changeTransform(selection);
+        newStretch = (Math.abs(newStretch) + modifier) * multiplier;
+        if (Math.abs(newStretch) >= 0.1 && newStretch * parseFloat(el.dataset.scaleX) > 0) {
+            el.dataset.scaleX = newStretch;
 
-        updateMirror(selection);
-    }
+            changeTransform(el);
+            updateMirror(el);
+        }
+    });
 }
 
 function rotate(modifier) {
-    if (selection == null) return;
+    if (selectionList.length === 0 || selectionList.length > 1) return;
 
-    let newRotate = selection.dataset.rotation;
-    newRotate = parseInt(newRotate) + modifier;
-    newRotate %= 360;
-    selection.dataset.rotation = newRotate;
+    selectionList.forEach(el => {
+        let newRotate = parseInt(el.dataset.rotation);
+        newRotate = newRotate + modifier;
+        newRotate %= 360;
+        el.dataset.rotation = newRotate;
 
-    changeTransform(selection);
-
-    updateMirror(selection);
+        changeTransform(el);
+        updateMirror(el);
+    });
 }
 
 function flip(flipH, flipV) {
-    if (selection == null) return;
+    if (selectionList.length === 0 || selectionList.length > 1) return;
 
-    let newFlipX = selection.dataset.scaleX;
-    let newFlipY = selection.dataset.scaleY;
-    newFlipX = parseFloat(newFlipX) * flipH;
-    newFlipY = parseFloat(newFlipY) * flipV;
-    selection.dataset.scaleX = newFlipX;
-    selection.dataset.scaleY = newFlipY;
+    selectionList.forEach(el => {
+        let newFlipX = el.dataset.scaleX;
+        let newFlipY = el.dataset.scaleY;
+        newFlipX = parseFloat(newFlipX) * flipH;
+        newFlipY = parseFloat(newFlipY) * flipV;
+        el.dataset.scaleX = newFlipX;
+        el.dataset.scaleY = newFlipY;
 
-    changeTransform(selection);
+        el.dataset.rotation *= -1;
 
-    updateMirror(selection);
+        changeTransform(el);
+        updateMirror(el);
+    });
 }
 
 function changeTransform(el) {
@@ -1015,4 +1761,74 @@ function changeTransform(el) {
     const scaleY = el.dataset.scaleY || 1;
 
     el.style.transform = `translate(-50%, -50%) rotate(${rotation}deg) scale(${scaleX}, ${scaleY})`
+}
+
+/* --- INFOBOX --- */
+
+const infoBox = document.createElement('span');
+infoBox.className = 'infobox';
+infoBox.style.zIndex = '9999';
+let visibleInfoBox = false;
+
+const buttonsInfo = [undoBtn, redoBtn, infoBtn, clearButton, delButton, copyButton, Lbutton, Rbutton, Ubutton, Dbutton,
+    sizeUpBtn, sizeDownBtn, stretchHBtn, stretchVBtn, rotateDownBtn, rotateUpBtn, flipVBtn, flipHBtn, mirrorButton, downloadBtn,
+    chosenColor, bgColor, replaceLetterBtn, fontOneBtn, fontAllBtn, alphabet, modSmallBtn, modMediumBtn, modBigBtn, fontUpBtn,
+    fontDownBtn, alphabetUpBtn, alphabetDownBtn, colorList, deselectBtn, hiddenTopBtn
+];
+buttonsInfo.forEach(b => {
+    b.addEventListener('mouseover', displayInfobox);
+    b.addEventListener('mouseleave', removeInfobox);
+})
+
+function displayInfobox(e) {
+    if (!infoBtn.classList.contains('buttonSelected')) return;
+
+    infoBox.style.left = (e.clientX + 10) + 'px';
+    infoBox.style.top = e.clientY + 'px';
+    infoBox.textContent = e.currentTarget.dataset.message.replace(/\\n/g, "\n");
+
+    document.body.appendChild(infoBox);
+    visibleInfoBox = true;
+
+    document.addEventListener('mousemove', moveInfoBox);
+}
+
+function moveInfoBox(e) {
+    infoBox.style.left = (e.clientX + 10) + 'px';
+    infoBox.style.top = (e.clientY) + 'px';
+}
+
+function removeInfobox () {
+    if (!infoBtn.classList.contains('buttonSelected')) return;
+
+    if (visibleInfoBox === true) {
+        document.body.removeChild(infoBox);
+
+        document.removeEventListener('mousemove', moveInfoBox);
+    }
+    visibleInfoBox = false;
+}
+
+function displayInfoboxSelection() {
+    canvasRect = canvas.getBoundingClientRect();
+    infoBox.textContent = 'Selecting mirrored objects with non mirrored ones will automatically break all mirrors.\nShift+click the objects again or press Enter to select them.';
+    infoBox.style.left = (canvasRect.left - infoBox.style.maxWidth) + 'px';
+    infoBox.style.top = canvasRect.top + 'px';
+
+    document.body.appendChild(infoBox);
+    visibleInfoBox = true;
+    canvas.addEventListener('click', () => {
+        if (!dragHappened) removeInfoboxSelection();
+    });
+}
+
+function removeInfoboxSelection() {
+    maybeSelect = [];
+    if (visibleInfoBox) {
+        document.body.removeChild(infoBox);
+        canvas.removeEventListener('click', () => {
+            if (!dragHappened) removeInfoboxSelection();
+        });
+        visibleInfoBox = false;
+    }
 }
