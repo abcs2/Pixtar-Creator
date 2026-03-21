@@ -55,7 +55,6 @@ let globalMirrorMode = 'OFF';
 let mirrorMode = 'OFF';
 
 const currentColors = new Set();
-let MaxColorLvl = 0;
 let colorLvl = 0;
 
 let objCount = 0;
@@ -69,6 +68,12 @@ let selection = null;
 let selectionList = [];
 let mirrorSelectList = false;
 let maybeSelect = [];
+
+let selectionCenter = {
+    x: 0,
+    y: 0
+};
+let newSelectionCenter = false;
 
 let previewElement = null;
 let currentPreviewButton = null;
@@ -291,10 +296,13 @@ window.addEventListener('keydown', (event) => {
         /* --- */
         case 'enter':
             if (maybeSelect.length !== 0) {
-                maybeSelect.forEach(el => selectMultiple(el));
-                if (visibleInfoBox) removeInfoboxSelection();
+                const auxList = [...maybeSelect];
+                auxList.forEach(el => {
+                    confirmSelect(el);
+                });
                 maybeSelect = [];
             }
+            break;
     }
 });
 
@@ -577,14 +585,13 @@ function saveState() {
     if (undoStack.length === 0) undoStack.push(JSON.parse(JSON.stringify(state)));
     else if (undoStack[undoStack.length - 1].html !== state.html || undoStack[undoStack.length - 1].color !== state.color) {
         undoStack.push(state);
+        redoStack = [];
+
+        undoBtn.classList.remove('inactiveBtn');
+        redoBtn.classList.add('inactiveBtn');
+
+        localStorage.setItem('savedState', JSON.stringify(state));
     }
-
-    redoStack = [];
-
-    undoBtn.classList.remove('inactiveBtn');
-    redoBtn.classList.add('inactiveBtn');
-
-    localStorage.setItem('savedState', JSON.stringify(state));
 }
 
 function undo() {
@@ -800,18 +807,18 @@ function updateColorList() {
 }
 
 function showColorPage(modifier) {
-    const MaxColorLvl = Math.max(Math.ceil(currentColors.size / 14) - 1, 0);
+    const maxColorLvl = Math.max(Math.ceil(currentColors.size / 14) - 1, 0);
     colorLvl += modifier;
     
     if (colorLvl < 0) {
         colorLvl = 0;
     }
-    else if (colorLvl > MaxColorLvl) {
-        colorLvl = MaxColorLvl;
+    else if (colorLvl > maxColorLvl) {
+        colorLvl = maxColorLvl;
     }
     if (colorLvl === 0) colorUpBtn.classList.add('inactiveUp');
     else colorUpBtn.classList.remove('inactiveUp');
-    if (colorLvl === MaxColorLvl) colorDownBtn.classList.add('inactiveDown');
+    if (colorLvl === maxColorLvl) colorDownBtn.classList.add('inactiveDown');
     else colorDownBtn.classList.remove('inactiveDown');
 
 
@@ -942,14 +949,13 @@ function createMirrorPair(originalEl) {
 }
 
 function syncMirror(originalEl, mirrorEl) {
-    mirrorEl.style.left = (canvas.clientWidth - originalEl.offsetLeft) + 'px';
-    mirrorEl.style.top = originalEl.offsetTop + 'px';
-
     mirrorEl.textContent = originalEl.textContent;
     mirrorEl.style.fontFamily = originalEl.style.fontFamily;
-    mirrorEl.style.fontSize = originalEl.style.fontSize;
     mirrorEl.style.color = originalEl.style.color;
 
+    mirrorEl.dataset.x = (canvas.clientWidth - parseFloat(originalEl.dataset.x));
+    mirrorEl.dataset.y = originalEl.dataset.y;
+    mirrorEl.dataset.fontSize = originalEl.dataset.fontSize;
     mirrorEl.dataset.rotation = -originalEl.dataset.rotation;
     mirrorEl.dataset.scaleX = -originalEl.dataset.scaleX;
     mirrorEl.dataset.scaleY = originalEl.dataset.scaleY;
@@ -972,21 +978,20 @@ function newElement(preview, size, rotation, scaleX, scaleY, posX, posY, color) 
     el.className = 'element';
     el.textContent = preview.textContent;
     el.style.fontFamily = preview.style.fontFamily;
+    el.style.color = color;
+    el.style.zIndex = preview.style.zIndex;
 
-    el.style.fontSize = size + 'px';
+    el.dataset.x = posX;
+    el.dataset.y = posY;
+    el.dataset.fontSize = size;
     el.dataset.rotation = rotation;
     el.dataset.scaleX = scaleX;
     el.dataset.scaleY = scaleY;
-    el.style.color = color;
-    el.style.zIndex = preview.style.zIndex;
 
     changeTransform(el);
 
     elements.push(el);
     canvas.appendChild(el);
-
-    el.style.left = posX + 'px';
-    el.style.top = posY + 'px';
     objCount++;
     objCounter.textContent = objCount;
     updateColorList();
@@ -1019,8 +1024,7 @@ function addElEvents(el) {
     el.addEventListener('mousedown', function(e) {
         if (!e.shiftKey) {
             const colorEl = getColorFromMask(e);
-            if (colorEl && colorEl === e.currentTarget) {
-                e.stopPropagation();
+            if (colorEl && selectionList.includes(colorEl)) {
                 startDrag(e);
             }
         }
@@ -1132,7 +1136,7 @@ function updateMask () {
         const elStyle = window.getComputedStyle(el);
 
         maskCtx.save();
-        maskCtx.translate(el.offsetLeft, el.offsetTop);
+        maskCtx.translate(el.dataset.x, el.dataset.y);
 
         const rotation = parseFloat(el.dataset.rotation) * Math.PI / 180;
         maskCtx.rotate(rotation);
@@ -1149,10 +1153,10 @@ function updateMask () {
         const colorKey = (r << 16) | (g << 8) | b;
         if (id !== 0) colorToId.set(colorKey, el);
 
-        let offsetY = parseFloat(elStyle.fontSize) * 0.036;
+        let offsetY = parseFloat(el.dataset.fontSize) * 0.036;
         offsetY = fontOffsets(el, elStyle, offsetY);
 
-        maskCtx.font = `bold ${parseInt(elStyle.fontSize)}px ${elStyle.fontFamily}`;
+        maskCtx.font = `bold ${parseFloat(el.dataset.fontSize)}px ${elStyle.fontFamily}`;
         maskCtx.textAlign = 'center';
         maskCtx.textBaseline = 'middle';
         maskCtx.fillStyle = `rgb(${r},${g},${b})`;
@@ -1238,6 +1242,11 @@ function select(el) {
     maskDirty = true;
 
     mirrorMessage.textContent = mirrorMode;
+
+    sizeUpBtn.classList.remove('inactiveBtn');
+    sizeDownBtn.classList.remove('inactiveBtn');
+    stretchHBtn.classList.remove('inactiveBtn');
+    stretchVBtn.classList.remove('inactiveBtn');
 }
 
 function deselectShift(el) {
@@ -1258,11 +1267,23 @@ function deselectShift(el) {
         mirrorMode = globalMirrorMode;
         mirrorMessage.textContent = mirrorMode;
     }
+    newSelectionCenter = true;
+
+    if (selectionList.length <= 1) {
+        sizeUpBtn.classList.remove('inactiveBtn');
+        sizeDownBtn.classList.remove('inactiveBtn');
+        stretchHBtn.classList.remove('inactiveBtn');
+        stretchVBtn.classList.remove('inactiveBtn');
+    }
 }
 
 function selectMultiple(el) {
+    if (maybeSelect.includes(el)) {
+        confirmSelect(el);
+        return;
+    }
     if (selectionList.length === 0 && el.dataset.mirrorId) mirrorSelectList = true;
-    if (!dragHappened && !maybeSelect.includes(el)) {
+    if (!dragHappened && maybeSelect.length !== 0) {
         maybeSelect = [];
         removeInfoboxSelection();
     }
@@ -1278,34 +1299,8 @@ function selectMultiple(el) {
             mirrorMode = 'ON';
         }
         else {
-            if (maybeSelect.includes(el)) {
-                const pairList = [];
-                selectionList.forEach(sel => {
-                    const pair = findMirror(sel);
-                    delete(pair.dataset.mirrorId);
-                    delete(pair.dataset.mirrorRole);
-                    delete(sel.dataset.mirrorId);
-                    delete(sel.dataset.mirrorRole);
-
-                    pair.classList.add('selected');
-                    pairList.push(pair);
-                })
-                selectionList.concat(pairList);
-                el.classList.add('selected');
-                selectionList.push(el);
-                mirrorSelectList = false;
-
-                maybeSelect.splice(maybeSelect.indexOf(el), 1);
-
-                setTimeout(() => {
-                    saveState();
-                }, 0);
-            }
-            else {
-                maybeSelect.push(el);
-                displayInfoboxSelection();
-                console.log("Não pode selecionar espelho com não espelho");
-            }
+            //maybeSelect.push(el);
+            displayInfoboxSelection();
         }
     }
     else {
@@ -1315,32 +1310,58 @@ function selectMultiple(el) {
             el.classList.add('selected');
         }
         else {
-            if (maybeSelect.includes(el)) {
-                const pair = findMirror(el);
-                delete(pair.dataset.mirrorId);
-                delete(pair.dataset.mirrorRole);
-                delete(el.dataset.mirrorId);
-                delete(el.dataset.mirrorRole);
-
-                pair.classList.add('selected');
-                selectionList.push(pair);
-                el.classList.add('selected');
-                selectionList.push(el);
-
-                maybeSelect.splice(maybeSelect.indexOf(el), 1);
-
-                setTimeout(() => {
-                    saveState();
-                }, 0);
-            }
-            else {
-                maybeSelect.push(el);
-                displayInfoboxSelection();
-                console.log("Não pode selecionar espelho com não espelho");
-            }
+            //maybeSelect.push(el);
+            displayInfoboxSelection();
         }
     }
     mirrorMessage.textContent = mirrorMode;
+    newSelectionCenter = true;
+
+    if (selectionList.length > 1) {
+        sizeUpBtn.classList.add('inactiveBtn');
+        sizeDownBtn.classList.add('inactiveBtn');
+        stretchHBtn.classList.add('inactiveBtn');
+        stretchVBtn.classList.add('inactiveBtn');
+    }
+}
+
+function confirmSelect(el) {
+    if (mirrorSelectList) {
+        selectionList.forEach(el => {
+            if (el.dataset.mirrorId) {
+                const pair = findMirror(el);
+                if (pair) {
+                    delete pair.dataset.mirrorId;
+                    delete pair.dataset.mirrorRole;
+                    selectionList.push(pair);
+                }
+                delete el.dataset.mirrorId;
+                delete el.dataset.mirrorRole;
+            }
+        });
+    }
+
+    maybeSelect.splice(maybeSelect.indexOf(el), 1);
+    if (el.dataset.mirrorId) {
+        const pair = findMirror(el);
+        if (pair) {
+            delete pair.dataset.mirrorId;
+            delete pair.dataset.mirrorRole;
+            selectionList.push(pair);
+            pair.classList.add('selected');
+        }
+        delete el.dataset.mirrorId;
+        delete el.dataset.mirrorRole;
+    }
+    if (visibleInfoBox) removeInfoboxSelection();
+    mirrorSelectList = false;
+    mirrorMode = 'OFF';
+    selectionList.push(el);
+    el.classList.add('selected');
+    
+    setTimeout(() => {
+        saveState();
+    }, 0);
 }
 
 function deselect() {
@@ -1354,9 +1375,15 @@ function deselect() {
         }
     });
     selectionList = [];
+    maybeSelect = [];
     mirrorSelectList = false;
     mirrorMode = globalMirrorMode;
     mirrorMessage.textContent = mirrorMode;
+
+    sizeUpBtn.classList.remove('inactiveBtn');
+    sizeDownBtn.classList.remove('inactiveBtn');
+    stretchHBtn.classList.remove('inactiveBtn');
+    stretchVBtn.classList.remove('inactiveBtn');
 }
 
 /* ------------------------ */
@@ -1383,8 +1410,15 @@ function deleteElement() {
     objCounter.textContent = objCount;
     selectionList = [];
     mirrorSelectList = false;
+    mirrorMode = globalMirrorMode;
+    mirrorMessage.textContent = mirrorMode;
     updateColorList();
     maskDirty = true; 
+
+    sizeUpBtn.classList.remove('inactiveBtn');
+    sizeDownBtn.classList.remove('inactiveBtn');
+    stretchHBtn.classList.remove('inactiveBtn');
+    stretchVBtn.classList.remove('inactiveBtn');
 
     saveState();
 }
@@ -1402,6 +1436,11 @@ function clearAll() {
     canvas.style.backgroundColor = "rgb(255, 255, 255)";
     bgColor.style.backgroundColor = "rgb(255, 255, 255)";
 
+    sizeUpBtn.classList.remove('inactiveBtn');
+    sizeDownBtn.classList.remove('inactiveBtn');
+    stretchHBtn.classList.remove('inactiveBtn');
+    stretchVBtn.classList.remove('inactiveBtn');
+
     maskDirty = true; 
     saveState();
 }
@@ -1411,17 +1450,14 @@ function copy() {
     const newSelectList = [];
 
     selectionList.forEach(el => {
-        let elStyle = window.getComputedStyle(el);
-        let fontSize = parseInt(elStyle.fontSize);
-
         let move = modifierMove;
         if (modifierLvl == 0) move = 5;
-        let posX = el.offsetLeft + move;
-        let posY = el.offsetTop + move;
+        let posX = parseFloat(el.dataset.x) + move;
+        let posY = parseFloat(el.dataset.y) + move;
         posX = checkBorderX(el, posX);
         posY = checkBorderY(el, posY);
 
-        const newEl = newElement(el, fontSize, el.dataset.rotation, el.dataset.scaleX, el.dataset.scaleY, posX, posY, el.style.color);
+        const newEl = newElement(el, el.dataset.fontSize, el.dataset.rotation, el.dataset.scaleX, el.dataset.scaleY, posX, posY, el.style.color);
 
         newSelectList.push(newEl);
     })
@@ -1455,13 +1491,22 @@ function startDragSelection(e) {
 
 function dragSelection(e) {
     e.preventDefault();
-    const x = e.clientX - canvasRect.left;
-    const y = e.clientY - canvasRect.top;
+    let x = e.clientX - canvasRect.left;
+    if (x < 1) x = 1;
+    else if (x > canvasRect.width - 2) x = canvasRect.width - 2;
+    let y = e.clientY - canvasRect.top;
+    if (y < 2) y = 2;
+    else if (y > canvasRect.height - 2) y = canvasRect.height - 2;
 
-    selectionBox.style.left = Math.min(dragBoxStartX, x) + 'px';
-    selectionBox.style.top = Math.min(dragBoxStartY, y) + 'px';
-    selectionBox.style.width = Math.abs(x - dragBoxStartX) + 'px';
-    selectionBox.style.height = Math.abs(y - dragBoxStartY) + 'px';
+    let left = Math.min(dragBoxStartX, x);
+    let top = Math.min(dragBoxStartY, y);
+    let width = Math.abs(x - dragBoxStartX);
+    let height = Math.abs(y - dragBoxStartY);
+
+    selectionBox.style.left = left + 'px';
+    selectionBox.style.top = top + 'px';
+    selectionBox.style.width = width + 'px';
+    selectionBox.style.height = height + 'px';
 
     if (!dragBoxCreated && parseInt(selectionBox.style.width) > 1 && parseInt(selectionBox.style.height) > 1) {
         canvas.appendChild(selectionBox);
@@ -1497,11 +1542,24 @@ function endDragSelection() {
         if (found) foundEls.add(found);
     }
 
+    let removeList = [];
+    foundEls.forEach(el => {
+        if (el.dataset.mirrorId) {
+            const pair = findMirror(el);
+            if (pair && foundEls.has(pair)) {
+                if (el.dataset.x > pair.dataset.x) removeList.push(pair);
+                else removeList.push(el);
+            }
+        }
+    });
+    removeList.forEach (el => foundEls.delete(el));
+
     deselect();
     foundEls.forEach(el => {
+        console.log(el.textContent);
         const rect = el.getBoundingClientRect();
 
-        if (rect.left + rect.width >= (left + canvasRect.left) && rect.left <= (left + canvasRect.left) + width && rect.top + rect.height >= (top + canvasRect.top) && rect.top <= (top + canvasRect.top) + height) {
+        if (rect.right >= (left + canvasRect.left) && rect.left <= (left + width + canvasRect.left) && rect.bottom >= (top + canvasRect.top) && rect.top <= (top + height + canvasRect.top)) {
             selectMultiple(el);
         }
     });
@@ -1575,8 +1633,8 @@ function endDragPreview(e) {
 
 
 function startDrag(e) {
-    e.stopPropagation();
     if (selectionList.length === 0 || !e.currentTarget.classList.contains('selected')) return;
+    e.stopPropagation();
     maybeSelect = [];
     removeInfoboxSelection();
 
@@ -1594,7 +1652,7 @@ function startDrag(e) {
     dragStartX = e.clientX;
     dragStartY = e.clientY;
 
-    dragStartPositions = selectionList.map(el => ({el: el, x: el.offsetLeft, y: el.offsetTop}));
+    dragStartPositions = selectionList.map(el => ({el: el, x: parseFloat(el.dataset.x), y: parseFloat(el.dataset.y)}));
 
     document.addEventListener('mousemove', drag);
     document.addEventListener('mouseup', endDrag);
@@ -1612,11 +1670,13 @@ function drag(e) {
         posX = checkBorderX(obj.el, posX);
         posY = checkBorderY(obj.el, posY);
 
-        obj.el.style.left = posX + 'px';
-        obj.el.style.top = posY + 'px';
+        obj.el.dataset.x = posX;
+        obj.el.dataset.y = posY;
 
+        changeTransform(obj.el);
         updateMirror(obj.el);
     })
+    newSelectionCenter = true;
 }
 
 function endDrag(e) {
@@ -1630,7 +1690,7 @@ function endDrag(e) {
     document.removeEventListener('mousemove', drag);
     document.removeEventListener('mouseup', endDrag);
 
-    if (selectionList[0].offsetLeft === dragStartPositions[0].x && selectionList[0].offsetTop === dragStartPositions[0].y) {
+    if (parseFloat(selectionList[0].dataset.x) === dragStartPositions[0].x && parseFloat(selectionList[0].dataset.y) === dragStartPositions[0].y) {
         if (e.target.classList.contains('element')) select(e.target);
         return;
     }
@@ -1642,17 +1702,19 @@ function move(modifierX, modifierY) {
     if (selectionList.length === 0) return;
 
     selectionList.forEach(el => {
-        let posX = el.offsetLeft + modifierX;
-        let posY = el.offsetTop + modifierY;
+        let posX = parseFloat(el.dataset.x) + modifierX;
+        let posY = parseFloat(el.dataset.y) + modifierY;
 
         posX = checkBorderX(el, posX);
         posY = checkBorderY(el, posY);
-        
-        el.style.left = posX + 'px';
-        el.style.top = posY + 'px';
 
+        el.dataset.x = posX;
+        el.dataset.y = posY;
+
+        changeTransform(el);
         updateMirror(el);
     })
+    newSelectionCenter = true;
 }
 
 function checkBorderX(el, posX) {
@@ -1679,8 +1741,32 @@ function checkBorderY(el, posY) {
     return posY;
 }
 
+function getSelectionCenter() {
+    if (!newSelectionCenter) return;
+    canvasRect = canvas.getBoundingClientRect();
+
+    let minX = Infinity, maxX = -Infinity;
+    let minY = Infinity, maxY = -Infinity;
+    selectionList.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const left = rect.left - canvasRect.left;
+        const right = rect.right - canvasRect.left;
+        const top = rect.top - canvasRect.top;
+        const bottom = rect.bottom - canvasRect.top;
+
+        if (left < minX) minX = left;
+        if (right > maxX) maxX = right;
+        if (top < minY) minY = top;
+        if (bottom > maxY) maxY = bottom;
+    });
+    selectionCenter.x = (minX + maxX) / 2;
+    selectionCenter.y = (minY + maxY) / 2;
+
+    newSelectionCenter = false;
+}
+
 function changeSizeScroll(e) {
-    if (selectionList.length === 0 || selectionList.length > 1) return;
+    if (selectionList.length === 0) return;
 
     if (e.deltaY < 0) changeSize(modifierSize);
     else if (e.deltaY > 0) changeSize(-modifierSize);
@@ -1693,17 +1779,43 @@ function changeSizeScroll(e) {
 }
 
 function changeSize(modifier) {
-    if (selectionList.length === 0 || selectionList.length > 1) return;
+    if (selectionList.length === 0) return;
+    if (selectionList.length === 1) {
+        selectionList.forEach(el => {
+            let newSize = parseFloat(el.dataset.fontSize) + modifier;
+            if (newSize < minSize) newSize = minSize;
+            else if (newSize > maxSize) newSize = maxSize;
+            el.dataset.fontSize = newSize;
 
-    selectionList.forEach(el => {
-        let elStyle = window.getComputedStyle(el);
-        let newSize = parseInt(elStyle.fontSize) + modifier;
-        if (newSize < minSize) newSize = minSize;
-        else if (newSize > maxSize) newSize = maxSize;
-        el.style.fontSize = newSize + 'px';
+            changeTransform(el);
+            updateMirror(el);
+        });
+    }
+    // else {
+    //     getSelectionCenter();
+    //     let limitReached = false;
+    //     selectionList.forEach(el => {
+    //         let newSize = parseFloat(el.dataset.fontSize) + modifier;
+    //         if (newSize < minSize || newSize > maxSize) limitReached = true;
+    //     });
+    //     if (!limitReached) {
+    //         selectionList.forEach(el => {
+    //             let newSize = parseFloat(el.dataset.fontSize) + modifier;
 
-        updateMirror(el);
-    });
+    //             const dx = parseFloat(el.dataset.x) - selectionCenter.x;
+    //             const dy = parseFloat(el.dataset.y) - selectionCenter.y;
+    //             const factor = newSize / parseFloat(el.dataset.fontSize);
+
+    //             el.dataset.x = selectionCenter.x + (dx * factor);
+    //             el.dataset.y = selectionCenter.y + (dy * factor);
+
+    //             el.dataset.fontSize = newSize;
+
+    //             changeTransform(el);
+    //             updateMirror(el);
+    //         });
+    //     }
+    // }
 }
 
 function stretch(modifier) {
@@ -1724,35 +1836,72 @@ function stretch(modifier) {
 }
 
 function rotate(modifier) {
-    if (selectionList.length === 0 || selectionList.length > 1) return;
+    if (selectionList.length === 0) return;
+    if (selectionList.length === 1) {
+        selectionList.forEach(el => {
+            let newRotate = parseFloat(el.dataset.rotation);
+            newRotate = newRotate + modifier;
+            newRotate %= 360;
+            el.dataset.rotation = newRotate;
 
-    selectionList.forEach(el => {
-        let newRotate = parseInt(el.dataset.rotation);
-        newRotate = newRotate + modifier;
-        newRotate %= 360;
-        el.dataset.rotation = newRotate;
+            changeTransform(el);
+            updateMirror(el);
+        });
+    }
+    else {
+        const angle = modifier * Math.PI / 180;
+        getSelectionCenter();
 
-        changeTransform(el);
-        updateMirror(el);
-    });
+        selectionList.forEach(el => {
+            const dx = parseFloat(el.dataset.x) - selectionCenter.x;
+            const dy = parseFloat(el.dataset.y) - selectionCenter.y;
+
+            const newX = selectionCenter.x + (dx * Math.cos(angle)) - (dy * Math.sin(angle));
+            const newY = selectionCenter.y + (dx * Math.sin(angle)) + (dy * Math.cos(angle));
+
+            el.dataset.x = newX;
+            el.dataset.y = newY;
+            el.dataset.rotation = (parseFloat(el.dataset.rotation) + modifier) % 360;
+
+            changeTransform(el);
+            updateMirror(el);
+        });
+    }
 }
 
 function flip(flipH, flipV) {
-    if (selectionList.length === 0 || selectionList.length > 1) return;
+    if (selectionList.length === 0) return;
+    if (selectionList.length === 1) {
+        selectionList.forEach(el => {
+            let newFlipX = parseFloat(el.dataset.scaleX) * flipH;
+            let newFlipY = parseFloat(el.dataset.scaleY) * flipV;
+            el.dataset.scaleX = newFlipX;
+            el.dataset.scaleY = newFlipY;
 
-    selectionList.forEach(el => {
-        let newFlipX = el.dataset.scaleX;
-        let newFlipY = el.dataset.scaleY;
-        newFlipX = parseFloat(newFlipX) * flipH;
-        newFlipY = parseFloat(newFlipY) * flipV;
-        el.dataset.scaleX = newFlipX;
-        el.dataset.scaleY = newFlipY;
+            el.dataset.rotation *= -1;
 
-        el.dataset.rotation *= -1;
+            changeTransform(el);
+            updateMirror(el);
+        });
+    }
+    else {
+        getSelectionCenter();
+        selectionList.forEach(el => {
+            const dx = (parseFloat(el.dataset.x) - selectionCenter.x) * flipH;
+            const dy = (parseFloat(el.dataset.y) - selectionCenter.y) * flipV;
 
-        changeTransform(el);
-        updateMirror(el);
-    });
+            el.dataset.x = selectionCenter.x + dx;
+            el.dataset.y = selectionCenter.y + dy;
+
+            el.dataset.scaleX *= flipH;
+            el.dataset.scaleY *= flipV;
+
+            el.dataset.rotation *= -1;
+
+            changeTransform(el);
+            updateMirror(el);
+        });
+    }
 }
 
 function changeTransform(el) {
@@ -1760,7 +1909,11 @@ function changeTransform(el) {
     const scaleX = el.dataset.scaleX || 1;
     const scaleY = el.dataset.scaleY || 1;
 
-    el.style.transform = `translate(-50%, -50%) rotate(${rotation}deg) scale(${scaleX}, ${scaleY})`
+    el.style.left = el.dataset.x + 'px';
+    el.style.top = el.dataset.y + 'px';
+    el.style.fontSize = el.dataset.fontSize + 'px';
+
+    el.style.transform = `translate(-50%, -50%) rotate(${rotation}deg) scale(${scaleX}, ${scaleY})`;
 }
 
 /* --- INFOBOX --- */
@@ -1773,7 +1926,7 @@ let visibleInfoBox = false;
 const buttonsInfo = [undoBtn, redoBtn, infoBtn, clearButton, delButton, copyButton, Lbutton, Rbutton, Ubutton, Dbutton,
     sizeUpBtn, sizeDownBtn, stretchHBtn, stretchVBtn, rotateDownBtn, rotateUpBtn, flipVBtn, flipHBtn, mirrorButton, downloadBtn,
     chosenColor, bgColor, replaceLetterBtn, fontOneBtn, fontAllBtn, alphabet, modSmallBtn, modMediumBtn, modBigBtn, fontUpBtn,
-    fontDownBtn, alphabetUpBtn, alphabetDownBtn, colorList, deselectBtn, hiddenTopBtn
+    fontDownBtn, alphabetUpBtn, alphabetDownBtn, fullColorList, deselectBtn, hiddenTopBtn
 ];
 buttonsInfo.forEach(b => {
     b.addEventListener('mouseover', displayInfobox);
@@ -1811,7 +1964,8 @@ function removeInfobox () {
 
 function displayInfoboxSelection() {
     canvasRect = canvas.getBoundingClientRect();
-    infoBox.textContent = 'Selecting mirrored objects with non mirrored ones will automatically break all mirrors.\nShift+click the objects again or press Enter to select them.';
+    //infoBox.textContent = 'Selecting mirrored objects with non mirrored ones will automatically break all mirrors.\nShift+click the objects again or press Enter to select them.';
+    infoBox.textContent = "you can't select mirrored objects with non-mirrored ones.";
     infoBox.style.left = (canvasRect.left - infoBox.style.maxWidth) + 'px';
     infoBox.style.top = canvasRect.top + 'px';
 
