@@ -1,8 +1,9 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
     <head>
         <title>Editor</title>
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     </head>
     <body>
@@ -49,7 +50,8 @@
                         <br><br>
                         <small>Objects: <span id="objCount">0</span></small>
                         <br><br>
-                        <button type="button" id="download" data-message="Download the image on the canvas.">download</button> 
+                        <button type="button" id="download" data-message="Download the image on the canvas.">download</button>
+                        <a href="{% url 'pixtar:index'%}"><button type="button">back to menu</button></a>
                     </div>
                     <div class="colorContainer">
                         <span class="colorPicker">
@@ -111,5 +113,5 @@
         </div>
     </body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="script.js"></script>
+    <script src="{% static 'js/script.js' %}"></script>
 </html>
