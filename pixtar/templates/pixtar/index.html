@@ -1,0 +1,14 @@
+{% extends 'pixtar/base.html' %}
+
+{% block content %}
+{% if imagens %}
+    <h2>Lista de imagens</h2>
+    <ul>
+        {% for imagem in imagens %}
+            <li>{{ imagem }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <h2>Nenhuma imagem ainda</h2>
+{% endif %}
+{% endblock %}
