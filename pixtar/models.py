@@ -5,8 +5,8 @@ from django.utils import timezone
 # Create your models here.
 
 class Imagem(models.Model):
-    titulo = models.CharField(max_length=200, null=False, default='Untitled')
-    autor = models.CharField(max_length=200, null=False, default='Anonymous')
+    titulo = models.CharField(max_length=50, null=False, default='Untitled')
+    autor = models.CharField(max_length=50, null=False, default='Anonymous')
     data_envio = models.DateTimeField('Enviado em ', default=timezone.now)
 
     qtdObjetos = models.IntegerField(default=0)
@@ -27,5 +27,13 @@ class Imagem(models.Model):
 
     def tempoParaExcluir(self):
         if self.rejeitado:
-            tempoLimite = self.data_julgamento + datetime.timedelta(days=2)
+            tempoLimite = self.data_julgamento + datetime.timedelta(days=5)
             return tempoLimite - timezone.now()
+        
+class Usuario(models.Model):
+    nome = models.CharField(max_length=50, null=False)
+    #listaImagens = models.ManyToManyField(Imagem, blank=True)
+
+    #listaLikes = models.ManyToManyField(Imagem, blank=True)
+
+    moderador = models.BooleanField(default=False)

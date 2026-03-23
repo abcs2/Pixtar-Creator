@@ -8,6 +8,7 @@ from django.views import View
 from django.utils import timezone
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -20,3 +21,24 @@ class MainView(View):
 class EditorView(View):
     def get(self, request):
         return render(request, 'pixtar/editor.html')
+
+
+def salvar(request):
+    if request.method == 'POST':
+        titulo = request.POST.get('titulo', 'Untitled')
+        autor = request.POST.get('autor', 'Anonymous')
+        qtdObjetos = int(request.POST.get('qtdObjetos', 0))
+        qtdAlfabetos = int(request.POST.get('qtdAlfabetos', 0))
+        qtdFontes = int(request.POST.get('qtdFontes', 0))
+        estado = request.POST.get('estado', '')
+
+        imagem = Imagem.objects.create(
+            titulo = titulo,
+            autor = autor,
+            qtdObjetos = qtdObjetos,
+            qtdAlfabetos = qtdAlfabetos,
+            qtdFontes = qtdFontes,
+            estado = estado
+        )
+        return JsonResponse({'success': True, 'id': imagem.id})
+    return JsonResponse({'success': False})

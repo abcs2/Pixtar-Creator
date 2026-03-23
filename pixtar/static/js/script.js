@@ -157,6 +157,7 @@ const fontAllBtn = document.getElementById('fontAll');
 const infoBtn = document.getElementById('info');
 
 const backBtn = document.getElementById('back');
+const saveBtn = document.getElementById('save');
 
 window.addEventListener('beforeunload', saveState);
 
@@ -266,6 +267,7 @@ fullColorList.addEventListener('wheel', e => {
 }, {passive: false});
 
 backBtn.addEventListener('click', saveState);
+saveBtn.addEventListener('click', saveToBase);
 
 window.addEventListener('keydown', (event) => {
     const key = event.key.toLowerCase();
@@ -544,6 +546,81 @@ saveState();
 undoBtn.classList.add('inactiveBtn');
 
 /* ---------------------- */
+
+function saveToBase() {
+    if (canvas.innerHTML === '') {
+        console.log("canvas vazio");
+        return;
+    }
+    const state = {
+        html: canvas.innerHTML,
+        color: canvas.style.backgroundColor,
+        zIndex: zIndexCounter,
+        mirrorId: mirrorIdCounter,
+    }
+    const stateJSON = JSON.stringify(state);
+
+    const alphabetCount = getAlphabetCount();
+    const fontCount = getFontCount();
+
+    const formData = new FormData();
+    formData.append('titulo', 'Untitled');
+    formData.append('autor', 'Anonymous');
+    formData.append('qtdObjetos', objCount);
+    formData.append('qtdAlfabetos', alphabetCount);
+    formData.append('qtdFontes', fontCount);
+    formData.append('estado', stateJSON);
+
+    fetch('/salvar/', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getTokenFromCookies('csrftoken')
+        },
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) console.log('imagem salva no banco - ', data.id);
+        else console.log('erro ao salvar');
+    });
+}
+
+function getTokenFromCookies(name) {
+    let tokenValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + '=')) {
+                tokenValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break
+            }
+        }
+    }
+    return tokenValue;
+}
+
+function getAlphabetCount() {
+    const currentAlphabets = new Set();
+    elements.forEach(el => {
+        alphabetList.forEach((alphabet, index) => {
+            if (alphabet.includes(el.textContent)) {
+                currentAlphabets.add(index);
+                return;
+            }
+        });
+    });
+    return currentAlphabets.size;
+}
+
+function getFontCount() {
+    const currentFonts = new Set();
+    elements.forEach(el => {
+        currentFonts.add(el.style.fontFamily);
+    });
+    return currentFonts.size;
+}
 
 function downloadImage() {
     if (selectionList.length !== 0) {
@@ -1929,7 +2006,7 @@ let visibleInfoBox = false;
 const buttonsInfo = [undoBtn, redoBtn, infoBtn, clearButton, delButton, copyButton, Lbutton, Rbutton, Ubutton, Dbutton,
     sizeUpBtn, sizeDownBtn, stretchHBtn, stretchVBtn, rotateDownBtn, rotateUpBtn, flipVBtn, flipHBtn, mirrorButton, downloadBtn,
     chosenColor, bgColor, replaceLetterBtn, fontOneBtn, fontAllBtn, alphabet, modSmallBtn, modMediumBtn, modBigBtn, fontUpBtn,
-    fontDownBtn, alphabetUpBtn, alphabetDownBtn, fullColorList, deselectBtn, hiddenTopBtn
+    fontDownBtn, alphabetUpBtn, alphabetDownBtn, fullColorList, deselectBtn, hiddenTopBtn, backBtn, saveBtn
 ];
 buttonsInfo.forEach(b => {
     b.addEventListener('mouseover', displayInfobox);

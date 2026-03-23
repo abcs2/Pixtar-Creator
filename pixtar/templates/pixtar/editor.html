@@ -7,6 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     </head>
     <body>
+        {% csrf_token %}
         <div class="all">
             <div id="ops">
                 <p>
@@ -52,7 +53,7 @@
                         <br><br>
                         <a href="{% url 'pixtar:index'%}"><button type="button" id="back" data-message="Go back to the main menu.">back to menu</button></a>
                         <button type="button" id="download" data-message="Download the image on the canvas.">download</button>
-                        <button type="button" id="save" data-message="Save the image to database">save</button>
+                        <button type="button" id="save" data-message="Save the image to the database.">save</button>
                     </div>
                     <div class="colorContainer">
                         <span class="colorPicker">
