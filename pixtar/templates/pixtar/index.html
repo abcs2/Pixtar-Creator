@@ -5,10 +5,54 @@
     <h2>Lista de imagens</h2>
     <ul>
         {% for imagem in imagens %}
-            <li>{{ imagem }}</li>
+            <li>
+                {{ imagem }}
+                <div class="previewImage">
+                    <script type="application/json" class="estadoJSON">
+                        {{ imagem.estado|safe }}
+                    </script>
+                </div>
+            </li>
         {% endfor %}
     </ul>
 {% else %}
     <h2>Nenhuma imagem ainda</h2>
 {% endif %}
+
+<script>
+    document.querySelectorAll(".previewImage").forEach(div => {
+        const jsonScript = div.querySelector(".estadoJSON");
+        const estado = JSON.parse(jsonScript.textContent);
+
+        div.style.backgroundColor = 'black';
+        div.style.padding = '5px';
+
+        const container = document.createElement('div');
+        container.className = 'previewContent';
+        container.innerHTML = estado.html;
+        container.style.backgroundColor = estado.color;
+        container.style.fontWeight = 'bold';
+        container.style.position = 'relative';
+        container.style.width = '1375px';
+        container.style.height = '887px'
+
+        div.appendChild(container);
+
+        container.querySelectorAll('.element').forEach(el => {
+            el.style.position = 'absolute';
+            el.style.pointerEvents = 'none';
+
+            const rotation = el.dataset.rotation || 0;
+            const scaleX = el.dataset.scaleX || 1;
+            const scaleY = el.dataset.scaleY || 1;
+
+            el.style.left = el.dataset.x + 'px';
+            el.style.top = el.dataset.y + 'px';
+            el.style.fontSize = el.dataset.fontSize + 'px';
+
+            el.style.transform = `translate(-50%, -50%) rotate(${rotation}deg) scale(${scaleX}, ${scaleY})`;
+        });
+    });
+</script>
+
 {% endblock %}
