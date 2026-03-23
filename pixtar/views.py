@@ -13,7 +13,7 @@ from django.urls import reverse
 
 class MainView(View):
     def get(self, request):
-        ultimas_imagens = Imagem.objects.order_by('-data_criacao')
+        ultimas_imagens = Imagem.objects.order_by('-data_envio')
         contexto = {'imagens': ultimas_imagens}
         return render(request, 'pixtar/index.html', contexto)
 

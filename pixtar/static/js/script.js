@@ -156,6 +156,8 @@ const fontAllBtn = document.getElementById('fontAll');
 
 const infoBtn = document.getElementById('info');
 
+const backBtn = document.getElementById('back');
+
 window.addEventListener('beforeunload', saveState);
 
 document.addEventListener('wheel', e => {
@@ -263,6 +265,7 @@ fullColorList.addEventListener('wheel', e => {
     else showColorPage(-1);
 }, {passive: false});
 
+backBtn.addEventListener('click', saveState);
 
 window.addEventListener('keydown', (event) => {
     const key = event.key.toLowerCase();
