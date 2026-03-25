@@ -557,6 +557,8 @@ function saveToBase() {
         color: canvas.style.backgroundColor,
         zIndex: zIndexCounter,
         mirrorId: mirrorIdCounter,
+        width: canvas.offsetWidth,
+        height: canvas.offsetHeight
     }
     const stateJSON = JSON.stringify(state);
 

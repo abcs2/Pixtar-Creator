@@ -1,54 +1,54 @@
 {% extends 'pixtar/base.html' %}
 
+{% block style %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
 {% block content %}
 {% if imagens %}
     <h2>Lista de imagens</h2>
-    <ul>
+    <div class="imageList">
         {% for imagem in imagens %}
-            <li>
+            <div class="block">
                 {{ imagem }}
                 <div class="previewImage">
                     <script type="application/json" class="estadoJSON">
                         {{ imagem.estado|safe }}
                     </script>
                 </div>
-            </li>
+            </div>
         {% endfor %}
-    </ul>
+    </div>
 {% else %}
     <h2>Nenhuma imagem ainda</h2>
 {% endif %}
 
 <script>
     document.querySelectorAll(".previewImage").forEach(div => {
+        const scale = 0.3;
+
         const jsonScript = div.querySelector(".estadoJSON");
         const estado = JSON.parse(jsonScript.textContent);
-
-        div.style.backgroundColor = 'black';
-        div.style.padding = '5px';
 
         const container = document.createElement('div');
         container.className = 'previewContent';
         container.innerHTML = estado.html;
+
         container.style.backgroundColor = estado.color;
-        container.style.fontWeight = 'bold';
-        container.style.position = 'relative';
-        container.style.width = '1375px';
-        container.style.height = '887px'
+        container.style.width = (estado.width * scale) + 'px';
+        container.style.height = (estado.height * scale) + 'px';
 
         div.appendChild(container);
 
         container.querySelectorAll('.element').forEach(el => {
-            el.style.position = 'absolute';
-            el.style.pointerEvents = 'none';
-
             const rotation = el.dataset.rotation || 0;
             const scaleX = el.dataset.scaleX || 1;
             const scaleY = el.dataset.scaleY || 1;
 
-            el.style.left = el.dataset.x + 'px';
-            el.style.top = el.dataset.y + 'px';
-            el.style.fontSize = el.dataset.fontSize + 'px';
+            el.style.left = (el.dataset.x * scale) + 'px';
+            el.style.top = (el.dataset.y * scale) + 'px';
+            el.style.fontSize = (el.dataset.fontSize * scale) + 'px';
 
             el.style.transform = `translate(-50%, -50%) rotate(${rotation}deg) scale(${scaleX}, ${scaleY})`;
         });

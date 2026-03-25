@@ -1,0 +1,21 @@
+.imageList {
+    width: calc(100vw - 16px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.previewImage {
+    border: 3px solid black;
+    width: fit-content;
+}
+
+.previewContent {
+    font-weight: bold;
+    position: relative;
+}
+
+.element {
+    position: absolute;
+    pointer-events: none;
+}
