@@ -11,12 +11,12 @@
     <div class="imageList">
         {% for imagem in imagens %}
             <div class="block">
-                {{ imagem }}
                 <div class="previewImage">
                     <script type="application/json" class="estadoJSON">
                         {{ imagem.estado|safe }}
                     </script>
                 </div>
+                {{ imagem.titulo }}<br>by {{ imagem.autor }}
             </div>
         {% endfor %}
     </div>

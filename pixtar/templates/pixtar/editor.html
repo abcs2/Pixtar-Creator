@@ -1,5 +1,5 @@
-{% load static %}
 <!DOCTYPE html>
+{% load static %}
 <html>
     <head>
         <title>Editor</title>
@@ -52,8 +52,7 @@
                         <small>Objects: <span id="objCount">0</span></small>
                         <br><br>
                         <a href="{% url 'pixtar:index'%}"><button type="button" id="back" data-message="Go back to the main menu.">back to menu</button></a>
-                        <button type="button" id="download" data-message="Download the image on the canvas.">download</button>
-                        <button type="button" id="save" data-message="Save the image to the database.">save</button>
+                        <button type="button" id="conclude" data-message="Download or share the image">conclude</button>
                     </div>
                     <div class="colorContainer">
                         <span class="colorPicker">
@@ -112,6 +111,24 @@
                 <div id="alphabet" data-message="Drag a letter to the canvas to create an object.\nClick to create an object on the center of the canvas."></div>
             </div>
             <div id="canvas"></div>
+        </div>
+        <div class="hidden" id="overlay"></div>
+        <div class="popup hidden" id="concludeScreen">
+            <div class="previewImage"></div>
+            <div class="concludeOps">
+                <button type="button" id="concludeBack">back</button>
+                <button type="button" id="download">download</button>
+                <button type="button" id="share">share</button>
+            </div>
+        </div>
+        <div class="popup hidden" id="shareScreen">
+            <div class="previewImage"></div>
+            <div class="concludeOps">
+                <button type="button" id="shareBack">back</button>
+                <span>Title: <input type="text" id="titleInput"></span>
+                <span>Author: <input type="text" id="authorInput"></span>
+                <button type="button" id="save">save</button>
+            </div>
         </div>
     </body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>

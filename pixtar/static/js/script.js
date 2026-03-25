@@ -531,6 +531,7 @@ changeModifier(null);
 chosenColor.style.backgroundColor = 'rgb(0, 0, 0)';
 canvas.style.backgroundColor = 'rgb(255, 255, 255)';
 bgColor.style.backgroundColor = 'rgb(255, 255, 255)';
+updateColorList();
 
 const loadedState = localStorage.getItem('savedState');
 if (loadedState) {
@@ -565,9 +566,17 @@ function saveToBase() {
     const alphabetCount = getAlphabetCount();
     const fontCount = getFontCount();
 
+    const title = titleInput.value;
+    const author = authorInput.value;
+
+    if (title.trim() === "" || author.trim() === "") {
+        console.log("Give your board a title and an author name.");
+        return;
+    }
+
     const formData = new FormData();
-    formData.append('titulo', 'Untitled');
-    formData.append('autor', 'Anonymous');
+    formData.append('titulo', title || 'Untitled');
+    formData.append('autor', author || 'Anonymous');
     formData.append('qtdObjetos', objCount);
     formData.append('qtdAlfabetos', alphabetCount);
     formData.append('qtdFontes', fontCount);
@@ -2067,4 +2076,79 @@ function removeInfoboxSelection() {
         });
         visibleInfoBox = false;
     }
+}
+
+/* --- */
+
+const concludeBtn = document.getElementById('conclude');
+
+const overlay = document.getElementById('overlay');
+const concludeScreen = document.getElementById('concludeScreen');
+
+const concludeBack = document.getElementById('concludeBack');
+
+const shareBtn = document.getElementById('share');
+const shareScreen = document.getElementById('shareScreen');
+
+const shareBack = document.getElementById('shareBack');
+
+const titleInput = document.getElementById('titleInput');
+const authorInput = document.getElementById('authorInput');
+
+concludeBtn.addEventListener('click', openConclude);
+
+concludeBack.addEventListener('click', closeConclude);
+
+shareBtn.addEventListener('click', openShare);
+
+shareBack.addEventListener('click', closeShare);
+
+// overlay.addEventListener('click', () => {
+//     overlay.classList.add('hidden');
+//     concludeScreen.classList.add('hidden');
+//     shareScreen.classList.add('hidden');
+// });
+
+function openConclude() {
+    overlay.classList.remove('hidden');
+    concludeScreen.classList.remove('hidden');
+    makePreview(concludeScreen.querySelector('.previewImage'));
+}
+
+function closeConclude() {
+    overlay.classList.add('hidden');
+    concludeScreen.classList.add('hidden');
+}
+
+function openShare() {
+    shareScreen.classList.remove('hidden');
+    concludeScreen.classList.add('hidden');
+    makePreview(shareScreen.querySelector('.previewImage'));
+}
+
+function closeShare() {
+    concludeScreen.classList.remove('hidden');
+    shareScreen.classList.add('hidden');
+}
+
+function makePreview(previewImage) {
+    const scale = 0.4;
+
+    previewImage.innerHTML = canvas.innerHTML;
+    previewImage.style.backgroundColor = canvas.style.backgroundColor;
+
+    previewImage.style.width = (canvas.offsetWidth * scale) + 'px';
+    previewImage.style.height = (canvas.offsetHeight * scale) + 'px';
+
+    previewImage.querySelectorAll('.element').forEach(el => {
+        const rotation = el.dataset.rotation || 0;
+        const scaleX = el.dataset.scaleX || 1;
+        const scaleY = el.dataset.scaleY || 1;
+
+        el.style.left = (el.dataset.x * scale) + 'px';
+        el.style.top = (el.dataset.y * scale) + 'px';
+        el.style.fontSize = (el.dataset.fontSize * scale) + 'px';
+
+        el.style.transform = `translate(-50%, -50%) rotate(${rotation}deg) scale(${scaleX}, ${scaleY})`;
+    });
 }
