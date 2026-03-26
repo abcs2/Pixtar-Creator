@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from django.http import HttpResponse, Http404
-from .models import Imagem
+from .models import Imagem, sharedImage
 
 from django.views import View
 
@@ -14,7 +14,7 @@ from django.http import JsonResponse
 
 class MainView(View):
     def get(self, request):
-        ultimas_imagens = Imagem.objects.order_by('-data_envio')
+        ultimas_imagens = sharedImage.objects.order_by('-data_envio')
         contexto = {'imagens': ultimas_imagens}
         return render(request, 'pixtar/index.html', contexto)
 
@@ -32,7 +32,7 @@ def salvar(request):
         qtdFontes = int(request.POST.get('qtdFontes', 0))
         estado = request.POST.get('estado', '')
 
-        imagem = Imagem.objects.create(
+        imagem = sharedImage.objects.create(
             titulo = titulo,
             autor = autor,
             qtdObjetos = qtdObjetos,

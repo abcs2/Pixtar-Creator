@@ -549,10 +549,6 @@ undoBtn.classList.add('inactiveBtn');
 /* ---------------------- */
 
 function saveToBase() {
-    if (canvas.innerHTML === '') {
-        console.log("canvas vazio");
-        return;
-    }
     const state = {
         html: canvas.innerHTML,
         color: canvas.style.backgroundColor,
@@ -573,7 +569,7 @@ function saveToBase() {
     else author = authorInput.value;
 
     if (title.trim() === "" || author.trim() === "") {
-        console.log("Give your board a title and an author name.");
+        openPopup("Give your board a title and an author name.");
         return;
     }
 
@@ -594,8 +590,12 @@ function saveToBase() {
     })
     .then(response => response.json())
     .then(data => {
-        if (data.success) console.log('imagem salva no banco - ', data.id);
-        else console.log('erro ao salvar');
+        if (data.success) {
+            openPopup("Image saved.");
+        }
+        else {
+            openPopup("Image save failed.");
+        }
     });
 }
 
@@ -2101,6 +2101,12 @@ const authorInput = document.getElementById('authorInput');
 const untitledInput = document.getElementById('untitled');
 const anonymousInput = document.getElementById('anonymous');
 
+
+const overlay2 = document.getElementById('overlay2');
+const popupSmall = document.getElementById('popupSmall');
+const popupMessage = document.getElementById('popupMessage');
+const okButton = document.getElementById('ok');
+
 concludeBtn.addEventListener('click', openConclude);
 
 concludeBack.addEventListener('click', closeConclude);
@@ -2114,6 +2120,8 @@ anonymousInput.addEventListener('change', markAnonymous);
 
 untitledInput.checked = false;
 anonymousInput.checked = false;
+
+okButton.addEventListener('click', closePopup);
 
 // overlay.addEventListener('click', () => {
 //     overlay.classList.add('hidden');
@@ -2133,6 +2141,10 @@ function closeConclude() {
 }
 
 function openShare() {
+    if (canvas.innerHTML === '') {
+        openPopup("You can't share an empty canvas.");
+        return;
+    }
     shareScreen.classList.remove('hidden');
     concludeScreen.classList.add('hidden');
     makePreview(shareScreen.querySelector('.previewImage'));
@@ -2191,4 +2203,18 @@ function markAnonymous() {
         authorInput.style.filter = 'brightness(1)';
         authorInput.style.pointerEvents = 'all';
     }
+}
+
+function openPopup(message) {
+    popupMessage.textContent = message;
+
+    overlay.classList.add('hidden');
+    overlay2.classList.remove('hidden');
+    popupSmall.classList.remove('hidden');
+}
+
+function closePopup() {
+    overlay.classList.remove('hidden');
+    overlay2.classList.add('hidden');
+    popupSmall.classList.add('hidden');
 }

@@ -5,13 +5,23 @@ from django.utils import timezone
 # Create your models here.
 
 class Imagem(models.Model):
-    titulo = models.CharField(max_length=50, null=False, default='Untitled')
-    autor = models.CharField(max_length=50, null=False, default='Anonymous')
-    data_envio = models.DateTimeField('Enviado em ', default=timezone.now)
-
+    estado = models.TextField(blank=True, null=True)
+    
     qtdObjetos = models.IntegerField(default=0)
     qtdAlfabetos = models.IntegerField(default=0)
     qtdFontes = models.IntegerField(default=0)
+
+
+class userImage(Imagem):
+    userId = models.IntegerField(null=False)
+
+        
+class sharedImage(Imagem):
+    userId = models.IntegerField(blank=True, null=True)
+
+    titulo = models.CharField(max_length=50, null=False, default='Untitled')
+    autor = models.CharField(max_length=50, null=False, default='Anonymous')
+    data_envio = models.DateTimeField('Enviado em ', default=timezone.now)
 
     paraAprovar = models.BooleanField(default=False)
     rejeitado = models.BooleanField(default=False)
@@ -20,8 +30,6 @@ class Imagem(models.Model):
     exposto = models.BooleanField(default=False)
     qtdLikes = models.IntegerField(default=0)
 
-    estado = models.TextField(blank=True, null=True)
-
     def __str__(self):
         return '[' + str(self.id) + '] ' + self.titulo + ' by ' + self.autor
 
@@ -29,6 +37,7 @@ class Imagem(models.Model):
         if self.rejeitado:
             tempoLimite = self.data_julgamento + datetime.timedelta(days=5)
             return tempoLimite - timezone.now()
+        
         
 class Usuario(models.Model):
     nome = models.CharField(max_length=50, null=False)

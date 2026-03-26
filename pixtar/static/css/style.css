@@ -261,7 +261,7 @@
     white-space: pre-line;
 }
 
-#overlay {
+.overlay {
     background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
     top: 0;
@@ -269,6 +269,16 @@
     height: 100vh;
     width: 100vw;
     z-index: 1000;
+}
+
+.overlay2 {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 1002;
 }
 
 .popup {
@@ -283,6 +293,24 @@
     z-index: 1001;
     align-items: center;
     display: flex;
+    padding: 20px;
+}
+
+.popupSmall {
+    background-color: white;
+    border: 5px solid black;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    height: 30%;
+    width: 20%;
+    transform: translate(-50%, -50%);
+    z-index: 1003;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    gap: 50px;
     padding: 20px;
 }
 
