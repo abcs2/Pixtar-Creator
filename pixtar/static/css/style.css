@@ -305,6 +305,12 @@
     border: 3px solid black;
 }
 
+.inactiveForm {
+    background-color: gray;
+    filter: brightness(0.7);
+    pointer-events: none;
+}
+
 .fonts {
     font-family: 'Courier New', Courier, monospace;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;

@@ -566,8 +566,11 @@ function saveToBase() {
     const alphabetCount = getAlphabetCount();
     const fontCount = getFontCount();
 
-    const title = titleInput.value;
-    const author = authorInput.value;
+    let title, author;
+    if (untitledInput.checked) title = "Untitled";
+    else title = titleInput.value;
+    if (anonymousInput.checked) author = "Anonymous";
+    else author = authorInput.value;
 
     if (title.trim() === "" || author.trim() === "") {
         console.log("Give your board a title and an author name.");
@@ -575,8 +578,8 @@ function saveToBase() {
     }
 
     const formData = new FormData();
-    formData.append('titulo', title || 'Untitled');
-    formData.append('autor', author || 'Anonymous');
+    formData.append('titulo', title);
+    formData.append('autor', author);
     formData.append('qtdObjetos', objCount);
     formData.append('qtdAlfabetos', alphabetCount);
     formData.append('qtdFontes', fontCount);
@@ -2095,6 +2098,9 @@ const shareBack = document.getElementById('shareBack');
 const titleInput = document.getElementById('titleInput');
 const authorInput = document.getElementById('authorInput');
 
+const untitledInput = document.getElementById('untitled');
+const anonymousInput = document.getElementById('anonymous');
+
 concludeBtn.addEventListener('click', openConclude);
 
 concludeBack.addEventListener('click', closeConclude);
@@ -2102,6 +2108,12 @@ concludeBack.addEventListener('click', closeConclude);
 shareBtn.addEventListener('click', openShare);
 
 shareBack.addEventListener('click', closeShare);
+
+untitledInput.addEventListener('change', markUntitled);
+anonymousInput.addEventListener('change', markAnonymous);
+
+untitledInput.checked = false;
+anonymousInput.checked = false;
 
 // overlay.addEventListener('click', () => {
 //     overlay.classList.add('hidden');
@@ -2151,4 +2163,32 @@ function makePreview(previewImage) {
 
         el.style.transform = `translate(-50%, -50%) rotate(${rotation}deg) scale(${scaleX}, ${scaleY})`;
     });
+}
+
+function markUntitled() {
+    if (untitledInput.checked) {
+        titleInput.value = "";
+        titleInput.classList.add('inactiveForm');
+        titleInput.style.filter = 'brightness(0.8)';
+        titleInput.style.pointerEvents = 'none';
+    }
+    else {
+        titleInput.classList.remove('inactiveForm');
+        titleInput.style.filter = 'brightness(1)';
+        titleInput.style.pointerEvents = 'all';
+    }
+}
+
+function markAnonymous() {
+    if (anonymousInput.checked) {
+        authorInput.value = "";
+        authorInput.classList.add('inactiveForm');
+        authorInput.style.filter = 'brightness(0.8)';
+        authorInput.style.pointerEvents = 'none';
+    }
+    else {
+        authorInput.classList.remove('inactiveForm');
+        authorInput.style.filter = 'brightness(1)';
+        authorInput.style.pointerEvents = 'all';
+    }
 }

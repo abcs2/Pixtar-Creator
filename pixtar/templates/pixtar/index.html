@@ -25,6 +25,7 @@
 {% endif %}
 
 <script>
+    document.addEventListener('mousedown', (e) => {e.preventDefault()});
     document.querySelectorAll(".previewImage").forEach(div => {
         const scale = 0.3;
 
