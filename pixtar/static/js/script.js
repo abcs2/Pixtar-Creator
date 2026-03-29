@@ -84,6 +84,8 @@ let scrollTimeout = null;
 let undoStack = [];
 let redoStack = [];
 
+let imageShared = false;
+
 const canvas = document.getElementById('canvas');
 let canvasRect;
 
@@ -592,6 +594,7 @@ function saveToBase() {
     .then(data => {
         if (data.success) {
             openPopup("Image saved.");
+            imageShared = true;
         }
         else {
             openPopup("Image save failed.");
@@ -637,13 +640,7 @@ function getFontCount() {
 }
 
 function downloadImage() {
-    if (selectionList.length !== 0) {
-        selectionList.forEach(el => {
-            el.classList.remove('selected');
-            const pair = findMirror(el);
-            if (pair) pair.classList.remove('selected');
-        });
-    }
+    removeSelectColor();
 
     html2canvas(canvas, {
         backgroundColor: canvas.style.backgroundColor
@@ -656,13 +653,7 @@ function downloadImage() {
         link.click();
         document.body.removeChild(link);
 
-        if (selectionList.length !== 0) {
-            selectionList.forEach(el => {
-                el.classList.add('selected');
-                const pair = findMirror(el);
-                if (pair) pair.classList.add('selected');
-            });
-        }
+        returnSelectColor();
     });
 }
 
@@ -2130,6 +2121,7 @@ okButton.addEventListener('click', closePopup);
 // });
 
 function openConclude() {
+    deselect();
     overlay.classList.remove('hidden');
     concludeScreen.classList.remove('hidden');
     makePreview(concludeScreen.querySelector('.previewImage'));
@@ -2181,28 +2173,16 @@ function markUntitled() {
     if (untitledInput.checked) {
         titleInput.value = "";
         titleInput.classList.add('inactiveForm');
-        titleInput.style.filter = 'brightness(0.8)';
-        titleInput.style.pointerEvents = 'none';
     }
-    else {
-        titleInput.classList.remove('inactiveForm');
-        titleInput.style.filter = 'brightness(1)';
-        titleInput.style.pointerEvents = 'all';
-    }
+    else titleInput.classList.remove('inactiveForm');
 }
 
 function markAnonymous() {
     if (anonymousInput.checked) {
         authorInput.value = "";
         authorInput.classList.add('inactiveForm');
-        authorInput.style.filter = 'brightness(0.8)';
-        authorInput.style.pointerEvents = 'none';
     }
-    else {
-        authorInput.classList.remove('inactiveForm');
-        authorInput.style.filter = 'brightness(1)';
-        authorInput.style.pointerEvents = 'all';
-    }
+    else authorInput.classList.remove('inactiveForm');
 }
 
 function openPopup(message) {
@@ -2215,4 +2195,10 @@ function openPopup(message) {
 function closePopup() {
     overlay2.classList.add('hidden');
     popupSmall.classList.add('hidden');
+
+    if (imageShared) {
+        closeShare();
+        closeConclude();
+        imageShared = false;
+    }
 }

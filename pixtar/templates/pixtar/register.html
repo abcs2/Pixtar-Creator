@@ -1,21 +1,20 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Pixtar</title>
-        {% block style %}
-        {% endblock %}
-    </head>
-    <body>
-        <a href="{% url 'pixtar:index' %}">Back to title</a>
-        <form method="POST">
-            {% csrf_token %}
-            <input type="text" name="username" placeholder="Username"><br>
-            <input type="password" name="password" placeholder="Password"><br>
-            <input type="password" name="confirmPassword" placeholder="Confirm password"><br>
+{% extends 'pixtar/base.html' %}
+
+{% block content %}
+<a class="backButton" href="{% url 'pixtar:index' %}">←</a>
+<div class="topButtons">
+    <form method="POST">
+        {% csrf_token %}
+        <div>
+            <input type="text" class="form" name="username" placeholder="Username"><br>
+            <input type="password" class="form" name="password" placeholder="Password"><br>
+            <input type="password" class="form" name="confirmPassword" placeholder="Confirm password"><br>
             {% if error %}
-                <div>{{ error }}</div>
+                {{ error }}
             {% endif %}
-            <button type="submit">Register</button>
-        </form>
-    </body>
-</html>
+        </div>
+        <button type="submit" class="linkButton btn loginButton">Register</button>
+    </form>
+    <a href="{% url 'pixtar:login' %}">Login</a>
+</div>
+{% endblock %}

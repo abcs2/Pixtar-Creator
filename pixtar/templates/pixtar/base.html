@@ -1,17 +1,11 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
     <head>
         <title>Pixtar</title>
-        {% block style %}
-        {% endblock %}
+            <link rel="stylesheet" href="{% static 'css/title.css' %}">
     </head>
     <body>
-        <header>
-            <h1>Pixtar Creator</h1>
-            {% block user %}
-            {% endblock %}
-        </header>
-
         <main>
             <div class="overlay"></div>
             <div class="mainBlock">

@@ -1,22 +1,24 @@
 {% extends 'pixtar/base.html' %}
 
-{% block style %}
-{% load static %}
-<link rel="stylesheet" href="{% static 'css/index.css' %}">
-{% endblock %}
-
-{% block user %}
-<br>
-{% if user.is_authenticated %}
-    User: {{ user.username }}<br>
-    <a href="{% url 'pixtar:logout' %}">Logout</a>
-{% else %}
-    <a href="{% url 'pixtar:login' %}">Login</a>
-{% endif %}
-<br>
-{% endblock %}
-
 {% block content %}
-<a href="{% url 'pixtar:editor' %}">Acessar editor</a><br>
-<a href="{% url 'pixtar:imagens' %}">Ver imagens</a>
+<div class="openingText">This site is a recreation of the character editor from the 2005 brazilian game Cosmopax.</div>
+<div class="menuButtons">
+    <div class="topButtons">
+        <a class="linkButton editorButton" href="{% url 'pixtar:editor' %}">Create image</a>
+        <a class="linkButton" href="{% url 'pixtar:imagens' %}">See exposition</a>
+    </div>
+    {% if user.is_authenticated %}
+        <div>
+            <hr>
+            User: {{ user.username }}<br>
+            Id: {{ user.id }}<br><br>
+            <div class="userArea">
+                <a class="linkButton" href="{% url 'pixtar:imagens' %}">Your images</a>
+                <div class="logout"><a href="{% url 'pixtar:logout' %}">Logout</a></div>
+            </div>
+        </div>
+    {% else %}
+        <a class="linkButton loginButton" href="{% url 'pixtar:login' %}">Login</a>
+    {% endif %}
+</div>
 {% endblock %}
