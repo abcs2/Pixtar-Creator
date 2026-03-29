@@ -8,12 +8,16 @@
     <body>
         <header>
             <h1>Pixtar Creator</h1>
-            <a href="{% url 'pixtar:editor' %}">Acessar editor</a>
+            {% block user %}
+            {% endblock %}
         </header>
 
         <main>
-            {% block content %}
-            {% endblock %}
+            <div class="overlay"></div>
+            <div class="mainBlock">
+                {% block content %}
+                {% endblock %}
+            </div>
         </main>
     </body>
 </html>

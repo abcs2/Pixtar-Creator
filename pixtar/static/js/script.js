@@ -2208,13 +2208,11 @@ function markAnonymous() {
 function openPopup(message) {
     popupMessage.textContent = message;
 
-    overlay.classList.add('hidden');
     overlay2.classList.remove('hidden');
     popupSmall.classList.remove('hidden');
 }
 
 function closePopup() {
-    overlay.classList.remove('hidden');
     overlay2.classList.add('hidden');
     popupSmall.classList.add('hidden');
 }

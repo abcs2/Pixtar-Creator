@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pixtar</title>
+        {% block style %}
+        {% endblock %}
+    </head>
+    <body>
+        <a href="{% url 'pixtar:index' %}">Back to title</a><br>
+        <a href="{% url 'pixtar:register' %}">Register</a>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Username"><br>
+            <input type="password" name="password" placeholder="Password"><br>
+            {% if error %}
+                <div>{{ error }}</div>
+            {% endif %}
+            <button type="submit">Login</button>
+        </form>
+    </body>
+</html>
