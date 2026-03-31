@@ -37,3 +37,5 @@ O editor será implementado em JavaScript, e as funcionalidades do site em Pytho
 ![quadro jira](zquadrojira2.png)
 
 ![backlog jira](zbacklogjira2.png)
+
+![issue](zbug2.png)
