@@ -6,10 +6,11 @@ from django.utils import timezone
 
 class Imagem(models.Model):
     estado = models.TextField(blank=True, null=True)
-    
+
     qtdObjetos = models.IntegerField(default=0)
     qtdAlfabetos = models.IntegerField(default=0)
     qtdFontes = models.IntegerField(default=0)
+    qtdCores = models.IntegerField(default=0)
 
 
 class userImage(Imagem):
@@ -19,8 +20,8 @@ class userImage(Imagem):
 class sharedImage(Imagem):
     userId = models.IntegerField(blank=True, null=True)
 
-    titulo = models.CharField(max_length=50, null=False, default='Untitled')
-    autor = models.CharField(max_length=50, null=False, default='Anonymous')
+    titulo = models.CharField(max_length=35, null=False, default='Untitled')
+    autor = models.CharField(max_length=35, null=False, default='Anonymous')
     data_envio = models.DateTimeField('Enviado em ', default=timezone.now)
 
     paraAprovar = models.BooleanField(default=False)

@@ -10,14 +10,17 @@
         {% csrf_token %}
         <div class="all">
             <div id="ops">
-                <p>
-                    <button type="button" id="undo" data-message="Undo the last modification made.\nKeyboard: Z">undo</button>
-                    <button type="button" id="redo" data-message="Redo the last undone action.\nKeyboard: Y">redo</button>
-                    <button type="button" id="info" data-message="Turn on button descriptions.\nClick to turn off.">?</button><br>
-                    <button type="button" id="clear" data-message="Clear the canvas.">clear</button>
-                    <button type="button" id="delete" data-message="Delete the selected object.\nKeyboard: Del">delete</button>
-                    <button type="button" id="copy" data-message="Make a copy of the selected object.\nKeyboard: V">copy</button>
-                </p>
+                <div class="upperOps">
+                    <a href="{% url 'pixtar:index'%}"><button type="button" class="backMenuButton" id="back" data-message="Go back to the main menu.">←</button></a>
+                    <div>
+                        <button type="button" id="undo" data-message="Undo the last modification made.\nKeyboard: Z">↩</button>
+                        <button type="button" id="redo" data-message="Redo the last undone action.\nKeyboard: Y">↪</button>
+                        <button type="button" id="info" data-message="Turn on button descriptions.\nClick to turn off.">?</button><br>
+                        <button type="button" id="clear" data-message="Clear the canvas.">clear</button>
+                        <button type="button" id="delete" data-message="Delete the selected object.\nKeyboard: Del">delete</button>
+                        <button type="button" id="copy" data-message="Make a copy of the selected object.\nKeyboard: V">copy</button>
+                    </div>
+                </div>
                 <p>
                     <small>Modifier:</small>
                     <button type="button" id="modSmall" data-message="The modifier for all transformations.\nSelect small for precise modifications.\nKeyboard: Ctrl to change">small</button>
@@ -30,16 +33,15 @@
                     <button type="button" id="Ubutton" data-message="Move the selected object up.\nKeyboard: Up / W">^</button>
                     <button type="button" id="Dbutton" data-message="Move the selected object down.\nKeyboard: Down / S">v</button>
                     <br><br>
-
                     <button type="button" id="sizeUp" data-message="Make the selected object bigger.\nKeyboard: + / Scroll up">+</button>
                     <button type="button" id="sizeDown" data-message="Make the selected object smaller.\nKeyboard: - / Scroll down">-</button>
-                    <button type="button" id="stretchH" data-message="Make the selected object thicker.\nKeyboard: ?"><|></button>
-                    <button type="button" id="stretchV" data-message="Make the selected object thinner.\nKeyboard: ?">>|<</button>
+                    <button type="button" id="stretchV" data-message="Make the selected object thinner.\nKeyboard: R">>|<</button>
+                    <button type="button" id="stretchH" data-message="Make the selected object thicker.\nKeyboard: T"><|></button>
                     <br>
-                    <button type="button" id="rotateDown" data-message="Rotate the selected object counter-clockwise.\nKeyboard: Q">rotate <</button>
-                    <button type="button" id="rotateUp" data-message="Rotate the selected object clockwise.\nKeyboard: E">rotate ></button>
-                    <button type="button" id="flipH" data-message="Flip the selected object horizontally.\nKeyboard: ?">flip | </button>
-                    <button type="button" id="flipV" data-message="Flip the selected object vertically.\nKeyboard: ?">flip --</button>
+                    <button type="button" id="rotateDown" data-message="Rotate the selected object counter-clockwise.\nKeyboard: Q">↺</button>
+                    <button type="button" id="rotateUp" data-message="Rotate the selected object clockwise.\nKeyboard: E">↻</button>
+                    <button type="button" id="flipH" data-message="Flip the selected object horizontally.\nKeyboard: X">flip | </button>
+                    <button type="button" id="flipV" data-message="Flip the selected object vertically.\nKeyboard: C">flip --</button>
                 </p>
                 <div class="bottomOps">
                     <div class="leftSide">
@@ -51,8 +53,7 @@
                         <br><br>
                         <small>Objects: <span id="objCount">0</span></small>
                         <br><br>
-                        <a href="{% url 'pixtar:index'%}"><button type="button" id="back" data-message="Go back to the main menu.">back to menu</button></a>
-                        <button type="button" id="conclude" data-message="Download or share the image">conclude</button>
+                        <button type="button" id="conclude" class="concludeButtons smaller" data-message="Download or share the image">Complete</button>
                     </div>
                     <div class="colorContainer">
                         <span class="colorPicker">
@@ -91,12 +92,12 @@
                     </div>
                     <div>
                         <div class="letterOptions">
-                            <div class="triang back" id="alphabetDown" data-message="Change the current alphabet.\nKeyboard: ?"></div>
+                            <div class="triang back" id="alphabetDown" data-message="Change the current alphabet.\nKeyboard: G"></div>
                             <small><span id="alphabetMessage" class="letterMessage"></span></small>
-                            <div class="triang forward" id="alphabetUp" data-message="Change the current alphabet.\nKeyboard: Ç"></div>
+                            <div class="triang forward" id="alphabetUp" data-message="Change the current alphabet.\nKeyboard: G"></div>
                         </div>
                         <div class="letterOptions">
-                            <div class="triang back" id="fontDown" data-message="Change the current font.\nKeyboard: ?"></div>
+                            <div class="triang back" id="fontDown" data-message="Change the current font.\nKeyboard: F"></div>
                             <small><span id="fontMessage" class="letterMessage"></span></small>
                             <div class="triang forward" id="fontUp" data-message="Change the current font.\nKeyboard: F"></div>
                         </div>
@@ -116,30 +117,37 @@
         <div class="popup hidden" id="concludeScreen">
             <div class="previewImage"></div>
             <div class="concludeOps">
-                <button type="button" id="concludeBack">back</button>
-                <button type="button" id="download">download</button>
-                <button type="button" id="share">share</button>
+                <div class="backButton" id="concludeBack">→</div>
+                <div>
+                    Objects: <span id="objCount2"></span><br>
+                    Alphabets: <span id="alphabetCount"></span><br>
+                    Fonts: <span id="fontCount"></span><br>
+                    Colors: <span id="colorCount"></span><br>
+                </div>
+                <button type="button" class="concludeButtons" id="download">Download</button>
+                <button type="button" class="concludeButtons" id="share">Share to exposition</button>
             </div>
         </div>
         <div class="popup hidden" id="shareScreen">
             <div class="previewImage"></div>
             <div class="concludeOps">
-                <button type="button" id="shareBack">back</button>
+                <div class="backButton" id="shareBack">→</div>
                 <span>
-                    Title: <input type="text" class="input" id="titleInput">
+                    Title:<br><input type="text" class="input form" id="titleInput" maxlength="35">
                     <input type="checkbox" id="untitled" name="untitled">Untitled</input>
                 </span>
                 <span>
-                    Author: <input type="text" class="input" id="authorInput" value="{{ user.username }}">
+                    Author:<br><input type="text" class="input form" id="authorInput" value="{{ user.username }}" maxlength="35">
                     <input type="checkbox" id="anonymous" name="anonymous">Anonymous</input>
                 </span>
-                <button type="button" id="save">save</button>
+                <small>Do not share images that are low effort, promote violence or contain sexual content.</small>
+                <button type="button" class="concludeButtons" id="save">Share to exposition</button>
             </div>
         </div>
         <div class="overlay2 hidden" id="overlay2"></div>
         <div class="popupSmall hidden" id="popupSmall">
             <div id="popupMessage"></div>
-            <button type="button" id="ok">ok</button>
+            <button type="button" class="okButton" id="ok">OK</button>
         </div>
     </body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>

@@ -32,6 +32,7 @@ const fontNames =
 
 const maxSize = 1600;
 const minSize = 20;
+const maxScale = 20;
 
 let modifierLvl = 1;
 let modifierMove;
@@ -84,6 +85,7 @@ let scrollTimeout = null;
 let undoStack = [];
 let redoStack = [];
 
+let menuOpened = false;
 let imageShared = false;
 
 const canvas = document.getElementById('canvas');
@@ -272,6 +274,7 @@ backBtn.addEventListener('click', saveState);
 saveBtn.addEventListener('click', saveToBase);
 
 window.addEventListener('keydown', (event) => {
+    if (menuOpened) return;
     const key = event.key.toLowerCase();
 
     switch (key) {
@@ -296,9 +299,13 @@ window.addEventListener('keydown', (event) => {
         /* --- */
         case 'q': rotate(-modifierRotate); keysState(); break;
         case 'e': rotate(modifierRotate); keysState(); break;
+        case 'r': stretch(-modifierStretch); keysState(); break;
+        case 't': stretch(modifierStretch); keysState(); break;
+        case 'x': flip(-1, 1); keysState(); break;
+        case 'c': flip(1, -1); keysState(); break;
         /* --- */
         case 'control': changeModifier(null); break;
-        case 'ç': changeAlphabet(1); break;
+        case 'g': changeAlphabet(1); break;
         case 'f': changeFont(1); break;
         /* --- */
         case 'enter':
@@ -540,6 +547,7 @@ if (loadedState) {
     try {
         loadState(JSON.parse(loadedState));
         localStorage.clear();
+        localStorage.setItem('savedState', loadedState);
     }
     catch {
         console.warn("Erro ao recarregar");
@@ -547,8 +555,13 @@ if (loadedState) {
 }
 saveState();
 undoBtn.classList.add('inactiveBtn');
+redoBtn.classList.add('inactiveBtn');
 
 /* ---------------------- */
+
+let alphabetCount = 0
+let fontCount = 0;
+let colorCount = 0;
 
 function saveToBase() {
     const state = {
@@ -561,9 +574,6 @@ function saveToBase() {
     }
     const stateJSON = JSON.stringify(state);
 
-    const alphabetCount = getAlphabetCount();
-    const fontCount = getFontCount();
-
     let title, author;
     if (untitledInput.checked) title = "Untitled";
     else title = titleInput.value;
@@ -571,7 +581,7 @@ function saveToBase() {
     else author = authorInput.value;
 
     if (title.trim() === "" || author.trim() === "") {
-        openPopup("Give your board a title and an author name.");
+        openPopup("Give your image a title and an author name before sharing.");
         return;
     }
 
@@ -581,6 +591,7 @@ function saveToBase() {
     formData.append('qtdObjetos', objCount);
     formData.append('qtdAlfabetos', alphabetCount);
     formData.append('qtdFontes', fontCount);
+    formData.append('qtdCores', colorCount);
     formData.append('estado', stateJSON);
 
     fetch('/salvar/', {
@@ -593,11 +604,11 @@ function saveToBase() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            openPopup("Image saved.");
+            openPopup("Image shared. Your image will be displayed in the exposition when it is approved by the moderators.");
             imageShared = true;
         }
         else {
-            openPopup("Image save failed.");
+            openPopup("Image share failed.");
         }
     });
 }
@@ -628,7 +639,7 @@ function getAlphabetCount() {
             }
         });
     });
-    return currentAlphabets.size;
+    alphabetCount = currentAlphabets.size;
 }
 
 function getFontCount() {
@@ -636,7 +647,11 @@ function getFontCount() {
     elements.forEach(el => {
         currentFonts.add(el.style.fontFamily);
     });
-    return currentFonts.size;
+    fontCount = currentFonts.size;
+}
+
+function getColorCount () {
+    colorCount = currentColors.size;
 }
 
 function downloadImage() {
@@ -1864,18 +1879,18 @@ function changeSizeScroll(e) {
 }
 
 function changeSize(modifier) {
-    if (selectionList.length === 0) return;
-    if (selectionList.length === 1) {
-        selectionList.forEach(el => {
-            let newSize = parseFloat(el.dataset.fontSize) + modifier;
-            if (newSize < minSize) newSize = minSize;
-            else if (newSize > maxSize) newSize = maxSize;
-            el.dataset.fontSize = newSize;
+    if (selectionList.length === 0 || selectionList.length > 1) return;
+    // if (selectionList.length === 1) {
+    selectionList.forEach(el => {
+        let newSize = parseFloat(el.dataset.fontSize) + modifier;
+        if (newSize < minSize) newSize = minSize;
+        else if (newSize > maxSize) newSize = maxSize;
+        el.dataset.fontSize = newSize;
 
-            changeTransform(el);
-            updateMirror(el);
-        });
-    }
+        changeTransform(el);
+        updateMirror(el);
+    });
+    // }
     // else {
     //     getSelectionCenter();
     //     let limitReached = false;
@@ -1889,10 +1904,11 @@ function changeSize(modifier) {
 
     //             const dx = parseFloat(el.dataset.x) - selectionCenter.x;
     //             const dy = parseFloat(el.dataset.y) - selectionCenter.y;
-    //             const factor = newSize / parseFloat(el.dataset.fontSize);
 
-    //             el.dataset.x = selectionCenter.x + (dx * factor);
-    //             el.dataset.y = selectionCenter.y + (dy * factor);
+    //             let scale = newSize / 80;
+
+    //             el.dataset.x = selectionCenter.x + (dx * scale);
+    //             el.dataset.y = selectionCenter.y + (dy * scale);
 
     //             el.dataset.fontSize = newSize;
 
@@ -1911,7 +1927,7 @@ function stretch(modifier) {
         let multiplier = 1 * Math.sign(newStretch);
 
         newStretch = (Math.abs(newStretch) + modifier) * multiplier;
-        if (Math.abs(newStretch) >= 0.1 && newStretch * parseFloat(el.dataset.scaleX) > 0) {
+        if (Math.abs(newStretch) >= 0.1 && newStretch * parseFloat(el.dataset.scaleX) > 0 && Math.abs(newStretch) <= maxScale) {
             el.dataset.scaleX = newStretch;
 
             changeTransform(el);
@@ -2001,78 +2017,7 @@ function changeTransform(el) {
     el.style.transform = `translate(-50%, -50%) rotate(${rotation}deg) scale(${scaleX}, ${scaleY})`;
 }
 
-/* --- INFOBOX --- */
-
-const infoBox = document.createElement('span');
-infoBox.className = 'infobox';
-infoBox.style.zIndex = '9999';
-let visibleInfoBox = false;
-
-const buttonsInfo = [undoBtn, redoBtn, infoBtn, clearButton, delButton, copyButton, Lbutton, Rbutton, Ubutton, Dbutton,
-    sizeUpBtn, sizeDownBtn, stretchHBtn, stretchVBtn, rotateDownBtn, rotateUpBtn, flipVBtn, flipHBtn, mirrorButton, downloadBtn,
-    chosenColor, bgColor, replaceLetterBtn, fontOneBtn, fontAllBtn, alphabet, modSmallBtn, modMediumBtn, modBigBtn, fontUpBtn,
-    fontDownBtn, alphabetUpBtn, alphabetDownBtn, fullColorList, deselectBtn, hiddenTopBtn, backBtn, saveBtn
-];
-buttonsInfo.forEach(b => {
-    b.addEventListener('mouseover', displayInfobox);
-    b.addEventListener('mouseleave', removeInfobox);
-})
-
-function displayInfobox(e) {
-    if (!infoBtn.classList.contains('buttonSelected')) return;
-
-    infoBox.style.left = (e.clientX + 10) + 'px';
-    infoBox.style.top = e.clientY + 'px';
-    infoBox.textContent = e.currentTarget.dataset.message.replace(/\\n/g, "\n");
-
-    document.body.appendChild(infoBox);
-    visibleInfoBox = true;
-
-    document.addEventListener('mousemove', moveInfoBox);
-}
-
-function moveInfoBox(e) {
-    infoBox.style.left = (e.clientX + 10) + 'px';
-    infoBox.style.top = (e.clientY) + 'px';
-}
-
-function removeInfobox () {
-    if (!infoBtn.classList.contains('buttonSelected')) return;
-
-    if (visibleInfoBox === true) {
-        document.body.removeChild(infoBox);
-
-        document.removeEventListener('mousemove', moveInfoBox);
-    }
-    visibleInfoBox = false;
-}
-
-function displayInfoboxSelection() {
-    canvasRect = canvas.getBoundingClientRect();
-    //infoBox.textContent = 'Selecting mirrored objects with non mirrored ones will automatically break all mirrors.\nShift+click the objects again or press Enter to select them.';
-    infoBox.textContent = "you can't select mirrored objects with non-mirrored ones.";
-    infoBox.style.left = (canvasRect.left - infoBox.style.maxWidth) + 'px';
-    infoBox.style.top = canvasRect.top + 'px';
-
-    document.body.appendChild(infoBox);
-    visibleInfoBox = true;
-    canvas.addEventListener('click', () => {
-        if (!dragHappened) removeInfoboxSelection();
-    });
-}
-
-function removeInfoboxSelection() {
-    maybeSelect = [];
-    if (visibleInfoBox) {
-        document.body.removeChild(infoBox);
-        canvas.removeEventListener('click', () => {
-            if (!dragHappened) removeInfoboxSelection();
-        });
-        visibleInfoBox = false;
-    }
-}
-
-/* --- */
+/* --- CONCLUDE --- */
 
 const concludeBtn = document.getElementById('conclude');
 
@@ -2098,6 +2043,12 @@ const popupSmall = document.getElementById('popupSmall');
 const popupMessage = document.getElementById('popupMessage');
 const okButton = document.getElementById('ok');
 
+
+const objCountMessage = document.getElementById('objCount2');
+const alphabetCountMessage = document.getElementById('alphabetCount');
+const fontCountMessage = document.getElementById('fontCount');
+const colorCountMessage = document.getElementById('colorCount');
+
 concludeBtn.addEventListener('click', openConclude);
 
 concludeBack.addEventListener('click', closeConclude);
@@ -2114,22 +2065,29 @@ anonymousInput.checked = false;
 
 okButton.addEventListener('click', closePopup);
 
-// overlay.addEventListener('click', () => {
-//     overlay.classList.add('hidden');
-//     concludeScreen.classList.add('hidden');
-//     shareScreen.classList.add('hidden');
-// });
 
 function openConclude() {
     deselect();
     overlay.classList.remove('hidden');
     concludeScreen.classList.remove('hidden');
     makePreview(concludeScreen.querySelector('.previewImage'));
+
+    getAlphabetCount();
+    getFontCount();
+    getColorCount();
+    objCountMessage.textContent = objCount;
+    alphabetCountMessage.textContent = alphabetCount;
+    fontCountMessage.textContent = fontCount;
+    colorCountMessage.textContent = colorCount;
+
+    menuOpened = true;
 }
 
 function closeConclude() {
     overlay.classList.add('hidden');
     concludeScreen.classList.add('hidden');
+
+    menuOpened = false;
 }
 
 function openShare() {
@@ -2202,3 +2160,76 @@ function closePopup() {
         imageShared = false;
     }
 }
+
+/* --- INFOBOX --- */
+
+const infoBox = document.createElement('span');
+infoBox.className = 'infobox';
+infoBox.style.zIndex = '9999';
+let visibleInfoBox = false;
+
+const buttonsInfo = [undoBtn, redoBtn, infoBtn, clearButton, delButton, copyButton, Lbutton, Rbutton, Ubutton, Dbutton,
+    sizeUpBtn, sizeDownBtn, stretchHBtn, stretchVBtn, rotateDownBtn, rotateUpBtn, flipVBtn, flipHBtn, mirrorButton, downloadBtn,
+    chosenColor, bgColor, replaceLetterBtn, fontOneBtn, fontAllBtn, alphabet, modSmallBtn, modMediumBtn, modBigBtn, fontUpBtn,
+    fontDownBtn, alphabetUpBtn, alphabetDownBtn, fullColorList, deselectBtn, hiddenTopBtn, backBtn, concludeBtn
+];
+buttonsInfo.forEach(b => {
+    b.addEventListener('mouseover', displayInfobox);
+    b.addEventListener('mouseleave', removeInfobox);
+})
+
+function displayInfobox(e) {
+    if (!infoBtn.classList.contains('buttonSelected')) return;
+
+    infoBox.style.left = (e.clientX + 10) + 'px';
+    infoBox.style.top = e.clientY + 'px';
+    infoBox.textContent = e.currentTarget.dataset.message.replace(/\\n/g, "\n");
+
+    document.body.appendChild(infoBox);
+    visibleInfoBox = true;
+
+    document.addEventListener('mousemove', moveInfoBox);
+}
+
+function moveInfoBox(e) {
+    infoBox.style.left = (e.clientX + 10) + 'px';
+    infoBox.style.top = (e.clientY) + 'px';
+}
+
+function removeInfobox () {
+    if (!infoBtn.classList.contains('buttonSelected')) return;
+
+    if (visibleInfoBox === true) {
+        document.body.removeChild(infoBox);
+
+        document.removeEventListener('mousemove', moveInfoBox);
+    }
+    visibleInfoBox = false;
+}
+
+function displayInfoboxSelection() {
+    canvasRect = canvas.getBoundingClientRect();
+    //infoBox.textContent = 'Selecting mirrored objects with non mirrored ones will automatically break all mirrors.\nShift+click the objects again or press Enter to select them.';
+    infoBox.textContent = "you can't select mirrored objects with non-mirrored ones.";
+    infoBox.style.left = (canvasRect.left - infoBox.style.maxWidth) + 'px';
+    infoBox.style.top = canvasRect.top + 'px';
+
+    document.body.appendChild(infoBox);
+    visibleInfoBox = true;
+    canvas.addEventListener('click', () => {
+        if (!dragHappened) removeInfoboxSelection();
+    });
+}
+
+function removeInfoboxSelection() {
+    maybeSelect = [];
+    if (visibleInfoBox) {
+        document.body.removeChild(infoBox);
+        canvas.removeEventListener('click', () => {
+            if (!dragHappened) removeInfoboxSelection();
+        });
+        visibleInfoBox = false;
+    }
+}
+
+/* --- */

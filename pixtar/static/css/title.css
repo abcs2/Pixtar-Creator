@@ -40,12 +40,12 @@ a {
     box-sizing: border-box;
 }
 
-.btn {
-    width: 100%;
-}
-
 .linkButton:hover {
     filter: brightness(0.9);
+}
+
+.btn {
+    width: 100%;
 }
 
 .openingText {
