@@ -14,6 +14,9 @@
             Id: {{ user.id }}<br><br>
             <div class="userArea">
                 <a class="linkButton" href="{% url 'pixtar:imagens' %}">Your images</a>
+                {% if user.is_staff %}
+                <a class="linkButton" href="{% url 'pixtar:approve' %}">Approve images</a>
+                {% endif %}
                 <div class="logout"><a href="{% url 'pixtar:logout' %}">Logout</a></div>
             </div>
         </div>

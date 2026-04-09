@@ -31,7 +31,7 @@ const fontNames =
     ];
 
 const maxSize = 1600;
-const minSize = 20;
+const minSize = 15;
 const maxScale = 20;
 
 let modifierLvl = 1;
@@ -1883,7 +1883,9 @@ function changeSize(modifier) {
     // if (selectionList.length === 1) {
     selectionList.forEach(el => {
         let newSize = parseFloat(el.dataset.fontSize) + modifier;
-        if (newSize < minSize) newSize = minSize;
+        let scaleX = Math.abs(parseFloat(el.dataset.scaleX));
+        if ((newSize * scaleX) < minSize) newSize = minSize / scaleX;
+        if ((newSize * scaleX) > maxSize) newSize = maxSize / scaleX;
         else if (newSize > maxSize) newSize = maxSize;
         el.dataset.fontSize = newSize;
 
@@ -1925,13 +1927,18 @@ function stretch(modifier) {
     selectionList.forEach(el => {
         let newStretch = parseFloat(el.dataset.scaleX);
         let multiplier = 1 * Math.sign(newStretch);
+        let size = parseFloat(el.dataset.fontSize);
 
         newStretch = (Math.abs(newStretch) + modifier) * multiplier;
-        if (Math.abs(newStretch) >= 0.1 && newStretch * parseFloat(el.dataset.scaleX) > 0 && Math.abs(newStretch) <= maxScale) {
-            el.dataset.scaleX = newStretch;
+        if (Math.abs(newStretch) >= 0.1 && Math.sign(newStretch) === Math.sign(parseFloat(el.dataset.scaleX))) {
+            if (Math.abs(newStretch) * size < minSize) return;
+            if (Math.abs(newStretch) <= maxScale) {
+                if (Math.abs(newStretch) * size > maxSize) return;
+                el.dataset.scaleX = newStretch;
 
-            changeTransform(el);
-            updateMirror(el);
+                changeTransform(el);
+                updateMirror(el);
+            }
         }
     });
 }
@@ -2068,6 +2075,9 @@ okButton.addEventListener('click', closePopup);
 
 function openConclude() {
     deselect();
+    overlay.style.zIndex = zIndexCounter++;
+    concludeScreen.style.zIndex = zIndexCounter++;
+
     overlay.classList.remove('hidden');
     concludeScreen.classList.remove('hidden');
     makePreview(concludeScreen.querySelector('.previewImage'));
@@ -2095,6 +2105,8 @@ function openShare() {
         openPopup("You can't share an empty canvas.");
         return;
     }
+    shareScreen.style.zIndex = zIndexCounter++;
+
     shareScreen.classList.remove('hidden');
     concludeScreen.classList.add('hidden');
     makePreview(shareScreen.querySelector('.previewImage'));
@@ -2145,6 +2157,9 @@ function markAnonymous() {
 
 function openPopup(message) {
     popupMessage.textContent = message;
+
+    overlay2.style.zIndex = zIndexCounter++;
+    popupSmall.style.zIndex = zIndexCounter++;
 
     overlay2.classList.remove('hidden');
     popupSmall.classList.remove('hidden');

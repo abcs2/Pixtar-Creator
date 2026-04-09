@@ -273,7 +273,6 @@
     left: 0;
     height: 100vh;
     width: 100vw;
-    z-index: 1000;
 }
 
 .overlay2 {
@@ -283,7 +282,6 @@
     left: 0;
     height: 100vh;
     width: 100vw;
-    z-index: 1002;
 }
 
 .popup {
@@ -295,7 +293,6 @@
     height: 50%;
     width: 50%;
     transform: translate(-50%, -50%);
-    z-index: 1001;
     padding: 20px;
     align-items: center;
     display: flex;
@@ -313,7 +310,6 @@
     height: 35%;
     width: 25%;
     transform: translate(-50%, -50%);
-    z-index: 1003;
     display: flex;
     flex-direction: column;
     text-align: center;

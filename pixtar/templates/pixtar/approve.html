@@ -1,0 +1,21 @@
+{% extends 'pixtar/basegallery.html' %}
+
+{% block content %}
+    {% if imagens %}
+        <h2>Images to approve</h2>
+        <div class="imageList">
+            {% for imagem in imagens %}
+                <div class="block">
+                    <div class="previewImage">
+                        <script type="application/json" class="estadoJSON">
+                            {{ imagem.estado|safe }}
+                        </script>
+                    </div>
+                    {{ imagem.titulo }}<br>by {{ imagem.autor }}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <h2>Nenhuma imagem ainda</h2>
+    {% endif %}
+{% endblock %}

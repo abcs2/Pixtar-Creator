@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <title>Pixtar</title>
+            <link rel="stylesheet" href="{% static 'css/gallery.css' %}">
+    </head>
+    <body>
+        <a href="{% url 'pixtar:index' %}">Back to title</a><br>
+        {% block content %}
+        {% endblock %}
+
+        <div class="overlay hidden" id="overlay"></div>
+        <div class="popup hidden" id="infoScreen">
+            <div class="biggerImage"></div>
+            <div class="concludeOps">
+                <div class="backButton" id="concludeBack">→</div>
+                <div>
+                    Objects: <span id="objCount2"></span><br>
+                    Alphabets: <span id="alphabetCount"></span><br>
+                    Fonts: <span id="fontCount"></span><br>
+                    Colors: <span id="colorCount"></span><br>
+                </div>
+                <button type="button" class="concludeButtons" id="approve">Approve</button>
+                <button type="button" class="concludeButtons" id="remove">Remove</button>
+            </div>
+        </div>
+        <div class="overlay2 hidden" id="overlay2"></div>
+        <div class="popupSmall hidden" id="popupSmall">
+            <div id="popupMessage"></div>
+            <button type="button" class="okButton" id="ok">OK</button>
+        </div>
+
+        <script>
+            const overlay = document.getElementById('overlay');
+            const infoScreen = document.getElementById('infoScreen');
+            //document.addEventListener('mousedown', (e) => {e.preventDefault()});
+            document.querySelectorAll(".previewImage").forEach(div => {
+                const scale = 0.3;
+
+                const jsonScript = div.querySelector(".estadoJSON");
+                const estado = JSON.parse(jsonScript.textContent);
+
+                const container = document.createElement('div');
+                container.className = 'previewContent';
+                container.innerHTML = estado.html;
+
+                container.style.backgroundColor = estado.color;
+                container.style.width = (estado.width * scale) + 'px';
+                container.style.height = (estado.height * scale) + 'px';
+
+                div.appendChild(container);
+
+                container.querySelectorAll('.element').forEach(el => {
+                    const rotation = el.dataset.rotation || 0;
+                    const scaleX = el.dataset.scaleX || 1;
+                    const scaleY = el.dataset.scaleY || 1;
+
+                    el.style.left = (el.dataset.x * scale) + 'px';
+                    el.style.top = (el.dataset.y * scale) + 'px';
+                    el.style.fontSize = (el.dataset.fontSize * scale) + 'px';
+
+                    el.style.transform = `translate(-50%, -50%) rotate(${rotation}deg) scale(${scaleX}, ${scaleY})`;
+                });
+                console.log("aaaaaaaa");
+                container.addEventListener('click', (e) => {
+                    console.log("clicou");
+                    openInfo(e)
+                });
+
+                function openInfo(e) {
+                    console.log("oi");
+                    overlay.classList.remove('hidden');
+                    infoScreen.classList.remove('hidden');
+                    makePreview(e, infoScreen.querySelector('.biggerImage'));
+                }
+
+                function makePreview(e, previewImage) {
+                    const scale = 0.4;
+
+                    previewImage.innerHTML = e.currentTarget.innerHTML;
+                    previewImage.style.backgroundColor = e.currentTarget.style.backgroundColor;
+
+                    previewImage.style.width = (e.currentTarget.offsetWidth * scale) + 'px';
+                    previewImage.style.height = (e.currentTarget.offsetHeight * scale) + 'px';
+
+                    previewImage.querySelectorAll('.element').forEach(el => {
+                        const rotation = el.dataset.rotation || 0;
+                        const scaleX = el.dataset.scaleX || 1;
+                        const scaleY = el.dataset.scaleY || 1;
+
+                        el.style.left = (el.dataset.x * scale) + 'px';
+                        el.style.top = (el.dataset.y * scale) + 'px';
+                        el.style.fontSize = (el.dataset.fontSize * scale) + 'px';
+
+                        el.style.transform = `translate(-50%, -50%) rotate(${rotation}deg) scale(${scaleX}, ${scaleY})`;
+                    });
+                }
+            });
+        </script>
+    </body>
+</html>
