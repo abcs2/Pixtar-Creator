@@ -24,7 +24,7 @@ class sharedImage(Imagem):
     autor = models.CharField(max_length=35, null=False, default='Anonymous')
     data_envio = models.DateTimeField('Enviado em ', default=timezone.now)
 
-    paraAprovar = models.BooleanField(default=False)
+    paraAprovar = models.BooleanField(default=True)
     rejeitado = models.BooleanField(default=False)
     data_julgamento = models.DateTimeField(blank=True, null=True)
 

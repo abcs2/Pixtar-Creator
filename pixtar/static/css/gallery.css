@@ -6,9 +6,14 @@
     text-align: center;
 }
 
+.block {
+    cursor: pointer;
+}
+
 .previewImage {
     border: 3px solid black;
     width: fit-content;
+    overflow: hidden;
 }
 
 .previewContent {
@@ -16,6 +21,7 @@
     position: relative;
     overflow: hidden;
     cursor: pointer;
+    user-select: none;
 }
 
 .element {
@@ -30,6 +36,7 @@
     left: 0;
     height: 100vh;
     width: 100vw;
+    z-index: 100000;
 }
 
 .overlay2 {
@@ -39,6 +46,7 @@
     left: 0;
     height: 100vh;
     width: 100vw;
+    z-index: 100002;
 }
 
 .popup {
@@ -55,6 +63,7 @@
     display: flex;
     gap: 20px;
     position: fixed;
+    z-index: 100001;
 }
 
 .popupSmall {
@@ -72,6 +81,7 @@
     text-align: center;
     padding: 20px;
     font-size: 18px;
+    z-index: 100003;
 }
 
 .hidden {
@@ -82,21 +92,28 @@
     margin: 70px 30px 0 30px;
 }
 
+.biggerImage {
+    position: relative;
+    font-weight: bold;
+    overflow: hidden;
+    user-select: none;
+
+    pointer-events: none;
+    border: 3px solid black;
+    flex: 0 0 auto;
+}
+
+.titleAuthor {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+}
+
 .concludeOps {
     display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: 10px;
     flex: 1;
-}
-
-.previewImage {
-    position: relative;
-    font-weight: bold;
-    overflow: hidden;
-    pointer-events: none;
-    border: 3px solid black;
-    flex: 0 0 auto;
 }
 
 .concludeButtons {

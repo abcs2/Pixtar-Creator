@@ -6,6 +6,7 @@
             <link rel="stylesheet" href="{% static 'css/gallery.css' %}">
     </head>
     <body>
+        {% csrf_token %}
         <a href="{% url 'pixtar:index' %}">Back to title</a><br>
         {% block content %}
         {% endblock %}
@@ -14,15 +15,13 @@
         <div class="popup hidden" id="infoScreen">
             <div class="biggerImage"></div>
             <div class="concludeOps">
-                <div class="backButton" id="concludeBack">→</div>
-                <div>
-                    Objects: <span id="objCount2"></span><br>
-                    Alphabets: <span id="alphabetCount"></span><br>
-                    Fonts: <span id="fontCount"></span><br>
-                    Colors: <span id="colorCount"></span><br>
+                <div class="backButton" id="infoBack">→</div>
+                <div class="titleAuthor">
+                    <span id="title"></span><br>
+                    By <span id="author"></span><br>
                 </div>
-                <button type="button" class="concludeButtons" id="approve">Approve</button>
-                <button type="button" class="concludeButtons" id="remove">Remove</button>
+                {% block info %}
+                {% endblock %}
             </div>
         </div>
         <div class="overlay2 hidden" id="overlay2"></div>
@@ -32,8 +31,30 @@
         </div>
 
         <script>
+            let currentImageId = null;
+
+            const titleArea = document.getElementById('title');
+            const authorArea = document.getElementById('author');
+            
+            const objCount2 = document.getElementById('objCount2');
+            const alphabetCount = document.getElementById('alphabetCount');
+            const fontCount = document.getElementById('fontCount');
+            const colorCount = document.getElementById('colorCount');
+
             const overlay = document.getElementById('overlay');
             const infoScreen = document.getElementById('infoScreen');
+            const overlay2 = document.getElementById('overlay2');
+            const popupSmall = document.getElementById('popupSmall');
+            const okButton = document.getElementById('ok');
+
+            const infoBack = document.getElementById('infoBack');
+            const approveBtn = document.getElementById('approve');
+            const rejectBtn = document.getElementById('reject');
+
+            approveBtn.addEventListener('click', () => judge('approve'));
+            rejectBtn.addEventListener('click', () => judge('reject'));
+            infoBack.addEventListener('click', closeInfo);
+            okButton.addEventListener('click', closePopup);
             //document.addEventListener('mousedown', (e) => {e.preventDefault()});
             document.querySelectorAll(".previewImage").forEach(div => {
                 const scale = 0.3;
@@ -49,6 +70,9 @@
                 container.style.width = (estado.width * scale) + 'px';
                 container.style.height = (estado.height * scale) + 'px';
 
+                container.dataset.width = estado.width;
+                container.dataset.height = estado.height;
+
                 div.appendChild(container);
 
                 container.querySelectorAll('.element').forEach(el => {
@@ -62,41 +86,116 @@
 
                     el.style.transform = `translate(-50%, -50%) rotate(${rotation}deg) scale(${scaleX}, ${scaleY})`;
                 });
-                console.log("aaaaaaaa");
-                container.addEventListener('click', (e) => {
-                    console.log("clicou");
-                    openInfo(e)
-                });
-
-                function openInfo(e) {
-                    console.log("oi");
-                    overlay.classList.remove('hidden');
-                    infoScreen.classList.remove('hidden');
-                    makePreview(e, infoScreen.querySelector('.biggerImage'));
-                }
-
-                function makePreview(e, previewImage) {
-                    const scale = 0.4;
-
-                    previewImage.innerHTML = e.currentTarget.innerHTML;
-                    previewImage.style.backgroundColor = e.currentTarget.style.backgroundColor;
-
-                    previewImage.style.width = (e.currentTarget.offsetWidth * scale) + 'px';
-                    previewImage.style.height = (e.currentTarget.offsetHeight * scale) + 'px';
-
-                    previewImage.querySelectorAll('.element').forEach(el => {
-                        const rotation = el.dataset.rotation || 0;
-                        const scaleX = el.dataset.scaleX || 1;
-                        const scaleY = el.dataset.scaleY || 1;
-
-                        el.style.left = (el.dataset.x * scale) + 'px';
-                        el.style.top = (el.dataset.y * scale) + 'px';
-                        el.style.fontSize = (el.dataset.fontSize * scale) + 'px';
-
-                        el.style.transform = `translate(-50%, -50%) rotate(${rotation}deg) scale(${scaleX}, ${scaleY})`;
-                    });
-                }
             });
+            console.log("aaaaaaaa");
+            document.querySelectorAll('.block').forEach(block => {
+                block.addEventListener('click', openInfo)
+            })
+
+            function openInfo(e) {
+                const block = e.currentTarget;
+                const image = block.querySelector('.previewContent');
+                overlay.classList.remove('hidden');
+                infoScreen.classList.remove('hidden');
+                makePreview(e, image, infoScreen.querySelector('.biggerImage'));
+                currentImageId = block.dataset.id;
+
+                titleArea.textContent = block.dataset.title;
+                authorArea.textContent = block.dataset.author;
+
+                objCount2.textContent = block.dataset.objCount;
+                alphabetCount.textContent = block.dataset.alphabetCount;
+                fontCount.textContent = block.dataset.fontCount;
+                colorCount.textContent = block.dataset.colorCount;
+            }
+
+            function makePreview(e, image, previewImage) {
+                const scale = 0.4;
+
+                previewImage.innerHTML = image.innerHTML;
+                previewImage.style.backgroundColor = image.style.backgroundColor;
+
+                previewImage.style.width = (image.dataset.width * scale) + 'px';
+                previewImage.style.height = (image.dataset.height * scale) + 'px';
+
+                previewImage.querySelectorAll('.element').forEach(el => {
+                    const rotation = el.dataset.rotation || 0;
+                    const scaleX = el.dataset.scaleX || 1;
+                    const scaleY = el.dataset.scaleY || 1;
+
+                    el.style.left = (el.dataset.x * scale) + 'px';
+                    el.style.top = (el.dataset.y * scale) + 'px';
+                    el.style.fontSize = (el.dataset.fontSize * scale) + 'px';
+
+                    el.style.transform = `translate(-50%, -50%) rotate(${rotation}deg) scale(${scaleX}, ${scaleY})`;
+                });
+            }
+
+            function closeInfo() {
+                overlay.classList.add('hidden');
+                infoScreen.classList.add('hidden');
+            }
+
+            function judge(action) {
+                const formData = new FormData();
+                formData.append('id', currentImageId);
+                formData.append('action', action);
+
+                fetch('/judge/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getTokenFromCookies('csrftoken')
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        if (action === 'approve') {
+                            openPopup("Image approved. It will now be displayed in the exposition.");
+                        }
+                        else if (action === 'reject') {
+                            openPopup("Image rejected. It will appear in the Rejected tab and be deleted in 2 days.");
+                        }
+
+                        document.querySelector(`[data-id="${currentImageId}"]`).remove();
+                    }
+                    else {
+                        openPopup("Image judgement failed.");
+                    }
+                });
+            }
+
+            function getTokenFromCookies(name) {
+                let tokenValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+
+                    for (let cookie of cookies) {
+                        cookie = cookie.trim();
+                        if (cookie.startsWith(name + '=')) {
+                            tokenValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break
+                        }
+                    }
+                }
+                return tokenValue;
+            }
+
+            function openPopup(message) {
+                popupMessage.textContent = message;
+
+                overlay2.classList.remove('hidden');
+                popupSmall.classList.remove('hidden');
+            }
+
+            function closePopup() {
+                overlay2.classList.add('hidden');
+                popupSmall.classList.add('hidden');
+            
+                overlay.classList.add('hidden');
+                infoScreen.classList.add('hidden');
+            }
         </script>
     </body>
 </html>

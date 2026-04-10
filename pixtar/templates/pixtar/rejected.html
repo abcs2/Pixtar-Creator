@@ -6,9 +6,6 @@
         <div class="imageList">
             {% for imagem in imagens %}
                 <div class="block"
-                data-id="{{ imagem.id }}"
-                data-title="{{ imagem.titulo }}"
-                data-author="{{ imagem.autor }}"
                 data-obj-count="{{ imagem.qtdObjetos }}"
                 data-alphabet-count="{{ imagem.qtdAlfabetos }}"
                 data-font-count="{{ imagem.qtdFontes }}"
@@ -23,18 +20,6 @@
             {% endfor %}
         </div>
     {% else %}
-        <h2>No images to be approved.</h2>
+        <h2>No rejected images.</h2>
     {% endif %}
-{% endblock %}
-
-
-{% block info %}
-<div>
-    Objects: <span id="objCount2"></span><br>
-    Alphabets: <span id="alphabetCount"></span><br>
-    Fonts: <span id="fontCount"></span><br>
-    Colors: <span id="colorCount"></span><br>
-</div>
-<button type="button" class="concludeButtons" id="approve">Approve</button>
-<button type="button" class="concludeButtons" id="reject">Reject</button>
 {% endblock %}

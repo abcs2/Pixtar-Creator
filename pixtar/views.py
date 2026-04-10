@@ -24,7 +24,7 @@ class EditorView(View):
     
 class ApproveView(View):
     def get(self, request):
-        ultimas_imagens = sharedImage.objects.order_by('-data_envio')
+        ultimas_imagens = sharedImage.objects.filter(paraAprovar=True).order_by('-data_envio')
         contexto = {'imagens': ultimas_imagens}
         return render(request, 'pixtar/approve.html', contexto)
     
@@ -88,6 +88,7 @@ def salvar(request):
         qtdObjetos = int(request.POST.get('qtdObjetos', 0))
         qtdAlfabetos = int(request.POST.get('qtdAlfabetos', 0))
         qtdFontes = int(request.POST.get('qtdFontes', 0))
+        qtdCores = int(request.POST.get('qtdCores', 0))
         estado = request.POST.get('estado', '')
 
         imagem = sharedImage.objects.create(
@@ -96,7 +97,33 @@ def salvar(request):
             qtdObjetos = qtdObjetos,
             qtdAlfabetos = qtdAlfabetos,
             qtdFontes = qtdFontes,
-            estado = estado
+            qtdCores = qtdCores,
+            estado = estado,
+            paraAprovar = True
         )
         return JsonResponse({'success': True, 'id': imagem.id})
+    return JsonResponse({'success': False})
+
+def judge(request):
+    if request.method == 'POST':
+        imageId = request.POST.get('id')
+        action = request.POST.get('action')
+
+        image = sharedImage.objects.get(id=imageId)
+
+        if (image):
+            if action == 'approve':
+                image.paraAprovar = False
+                image.exposto = True
+                image.rejeitado = False
+            elif action == 'reject':
+                image.paraAprovar = False
+                image.exposto = False
+                image.rejeitado = True
+            image.data_julgamento = timezone.now()
+
+            image.save()
+
+            return JsonResponse({'success': True})
+        return JsonResponse({'success': False})
     return JsonResponse({'success': False})
