@@ -1,25 +1,42 @@
 {% extends 'pixtar/basegallery.html' %}
 
 {% block content %}
-    {% if imagens %}
-        <h2>Images to approve</h2>
-        <div class="imageList">
-            {% for imagem in imagens %}
-                <div class="block"
-                data-obj-count="{{ imagem.qtdObjetos }}"
-                data-alphabet-count="{{ imagem.qtdAlfabetos }}"
-                data-font-count="{{ imagem.qtdFontes }}"
-                data-color-count="{{ imagem.qtdCores }}">
-                    <div class="previewImage">
-                        <script type="application/json" class="estadoJSON">
-                            {{ imagem.estado|safe }}
-                        </script>
-                    </div>
-                    {{ imagem.titulo }}<br>by {{ imagem.autor }}
+<a href="{% url 'pixtar:approve' %}">Judge images</a><br>
+{% if imagens %}
+    <h2>Rejected images</h2>
+    <div class="imageList">
+        {% for imagem in imagens %}
+            <div class="block"
+            data-id="{{ imagem.id }}"
+            data-title="{{ imagem.titulo }}"
+            data-author="{{ imagem.autor }}"
+            data-obj-count="{{ imagem.qtdObjetos }}"
+            data-alphabet-count="{{ imagem.qtdAlfabetos }}"
+            data-font-count="{{ imagem.qtdFontes }}"
+            data-color-count="{{ imagem.qtdCores }}"
+            data-user-judge= "{{ imagem.julgado_por }}">
+                <div class="previewImage">
+                    <script type="application/json" class="estadoJSON">
+                        {{ imagem.estado|safe }}
+                    </script>
                 </div>
-            {% endfor %}
-        </div>
-    {% else %}
-        <h2>No rejected images.</h2>
-    {% endif %}
+                {{ imagem.titulo }}<br>by {{ imagem.autor }}
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <h2>No rejected images.</h2>
+{% endif %}
+{% endblock %}
+
+
+{% block info %}
+<div>
+    Objects: <span id="objCount2"></span><br>
+    Alphabets: <span id="alphabetCount"></span><br>
+    Fonts: <span id="fontCount"></span><br>
+    Colors: <span id="colorCount"></span><br>
+</div>
+<div>Rejected by: <span id="userJudge"></span></div>
+<button type="button" class="concludeButtons" id="approve">Approve</button>
 {% endblock %}

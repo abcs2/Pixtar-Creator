@@ -40,6 +40,7 @@
             const alphabetCount = document.getElementById('alphabetCount');
             const fontCount = document.getElementById('fontCount');
             const colorCount = document.getElementById('colorCount');
+            const userJudge = document.getElementById('userJudge');
 
             const overlay = document.getElementById('overlay');
             const infoScreen = document.getElementById('infoScreen');
@@ -51,8 +52,9 @@
             const approveBtn = document.getElementById('approve');
             const rejectBtn = document.getElementById('reject');
 
-            approveBtn.addEventListener('click', () => judge('approve'));
-            rejectBtn.addEventListener('click', () => judge('reject'));
+            if (approveBtn) approveBtn.addEventListener('click', () => judge('approve'));
+            if (rejectBtn) rejectBtn.addEventListener('click', () => judge('reject'));
+
             infoBack.addEventListener('click', closeInfo);
             okButton.addEventListener('click', closePopup);
             //document.addEventListener('mousedown', (e) => {e.preventDefault()});
@@ -107,6 +109,8 @@
                 alphabetCount.textContent = block.dataset.alphabetCount;
                 fontCount.textContent = block.dataset.fontCount;
                 colorCount.textContent = block.dataset.colorCount;
+
+                if (userJudge) userJudge.textContent = block.dataset.userJudge;
             }
 
             function makePreview(e, image, previewImage) {
@@ -155,7 +159,7 @@
                             openPopup("Image approved. It will now be displayed in the exposition.");
                         }
                         else if (action === 'reject') {
-                            openPopup("Image rejected. It will appear in the Rejected tab and be deleted in 2 days.");
+                            openPopup("Image removed. It will appear in the Rejected tab and be deleted in 2 days.");
                         }
 
                         document.querySelector(`[data-id="${currentImageId}"]`).remove();
@@ -175,7 +179,7 @@
                         cookie = cookie.trim();
                         if (cookie.startsWith(name + '=')) {
                             tokenValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break
+                            break;
                         }
                     }
                 }

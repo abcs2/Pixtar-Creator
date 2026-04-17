@@ -4,6 +4,8 @@ from django.http import HttpResponse, Http404, JsonResponse
 
 from .models import Imagem, sharedImage
 
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
@@ -21,18 +23,36 @@ class MainView(View):
 class EditorView(View):
     def get(self, request):
         return render(request, 'pixtar/editor.html')
+
+class ApproveView(UserPassesTestMixin, View):
+    def test_func(self):
+        return self.request.user.is_staff
     
-class ApproveView(View):
+    def handle_no_permission(self):
+        return redirect('pixtar:index')
+    
     def get(self, request):
         ultimas_imagens = sharedImage.objects.filter(paraAprovar=True).order_by('-data_envio')
         contexto = {'imagens': ultimas_imagens}
         return render(request, 'pixtar/approve.html', contexto)
     
-class ImagensView(View):
+class RejectedView(UserPassesTestMixin, View):
+    def test_func(self):
+        return self.request.user.is_staff
+    
+    def handle_no_permission(self):
+        return redirect('pixtar:index')
+    
     def get(self, request):
-        ultimas_imagens = sharedImage.objects.order_by('-data_envio')
+        ultimas_imagens = sharedImage.objects.filter(rejeitado=True).order_by('-data_julgamento')
         contexto = {'imagens': ultimas_imagens}
-        return render(request, 'pixtar/imagens.html', contexto)
+        return render(request, 'pixtar/rejected.html', contexto)
+    
+class ExpositionView(View):
+    def get(self, request):
+        ultimas_imagens = sharedImage.objects.filter(exposto=True).order_by('-data_julgamento')
+        contexto = {'imagens': ultimas_imagens}
+        return render(request, 'pixtar/exposition.html', contexto)
     
 class RegisterView(View):
     def get(self, request):
@@ -104,6 +124,10 @@ def salvar(request):
         return JsonResponse({'success': True, 'id': imagem.id})
     return JsonResponse({'success': False})
 
+def staffEnter(user):
+    return user.is_staff
+
+@user_passes_test(staffEnter)
 def judge(request):
     if request.method == 'POST':
         imageId = request.POST.get('id')
@@ -120,6 +144,7 @@ def judge(request):
                 image.paraAprovar = False
                 image.exposto = False
                 image.rejeitado = True
+            image.julgado_por = request.user.username
             image.data_julgamento = timezone.now()
 
             image.save()

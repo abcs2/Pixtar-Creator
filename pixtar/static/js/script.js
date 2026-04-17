@@ -622,7 +622,7 @@ function getTokenFromCookies(name) {
             cookie = cookie.trim();
             if (cookie.startsWith(name + '=')) {
                 tokenValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break
+                break;
             }
         }
     }

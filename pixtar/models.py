@@ -26,9 +26,11 @@ class sharedImage(Imagem):
 
     paraAprovar = models.BooleanField(default=True)
     rejeitado = models.BooleanField(default=False)
-    data_julgamento = models.DateTimeField(blank=True, null=True)
-
     exposto = models.BooleanField(default=False)
+
+    data_julgamento = models.DateTimeField(blank=True, null=True)
+    julgado_por = models.CharField(blank=True, null=True, max_length=35)
+
     qtdLikes = models.IntegerField(default=0)
 
     def __str__(self):
