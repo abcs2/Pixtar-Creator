@@ -4,7 +4,7 @@ from django.http import HttpResponse, Http404, JsonResponse
 
 from .models import Imagem, sharedImage
 
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -18,7 +18,12 @@ from django.urls import reverse
 
 class MainView(View):
     def get(self, request):
-        return render(request, 'pixtar/index.html')
+        approveCount = 0
+        if request.user.is_staff:
+            approveCount = sharedImage.objects.filter(paraAprovar=True).count()
+            if approveCount > 100:
+                approveCount = '100+'
+        return render(request, 'pixtar/index.html', {'approveCount': approveCount})
 
 class EditorView(View):
     def get(self, request):
@@ -51,6 +56,13 @@ class RejectedView(UserPassesTestMixin, View):
 class ExpositionView(View):
     def get(self, request):
         ultimas_imagens = sharedImage.objects.filter(exposto=True).order_by('-data_julgamento')
+
+        for imagem in ultimas_imagens:
+            if request.user.is_authenticated:
+                imagem.liked = imagem.likes.filter(id=request.user.id).exists()
+            else:
+                imagem.liked = False
+
         contexto = {'imagens': ultimas_imagens}
         return render(request, 'pixtar/exposition.html', contexto)
     
@@ -150,5 +162,30 @@ def judge(request):
             image.save()
 
             return JsonResponse({'success': True})
+        return JsonResponse({'success': False})
+    return JsonResponse({'success': False})
+
+@login_required
+def like(request):
+    if request.method == 'POST':
+        imageId = request.POST.get('id')
+
+        image = sharedImage.objects.get(id=imageId)
+
+        if (image):
+            user = request.user
+
+            if user in image.likes.all():
+                image.qtdLikes -= 1
+                image.likes.remove(user)
+                liked = False
+            else:
+                image.qtdLikes += 1
+                image.likes.add(user)
+                liked = True
+
+            image.save()
+
+            return JsonResponse({'success': True, 'liked': liked, 'likeCount': image.qtdLikes})
         return JsonResponse({'success': False})
     return JsonResponse({'success': False})

@@ -8,6 +8,7 @@ urlpatterns = [
     path('exposition/', views.ExpositionView.as_view(), name='exposition'),
     path('salvar/', views.salvar, name='salvar'),
     path('judge/', views.judge, name='judge'),
+    path('like/', views.like, name='like'),
     path('approve/', views.ApproveView.as_view(), name='approve'),
     path('rejected/', views.RejectedView.as_view(), name='rejected'),
     path('register/', views.RegisterView.as_view(), name='register'),

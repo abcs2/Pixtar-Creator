@@ -88,7 +88,7 @@
     display: none;
 }
 
-#popupMessage {
+.popupMessage {
     margin: 70px 30px 0 30px;
 }
 
@@ -139,6 +139,31 @@
     filter: brightness(0.9);
 }
 
+.confirmButtons {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.confirmButton {
+    background-color: white;
+    color: black;
+    text-decoration: none;
+    border: 2px solid black;
+    padding: 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    user-select: none;
+    width: 100%;
+}
+
+.confirmButton:hover {
+    cursor: pointer;
+    filter: brightness(0.9);
+}
+
 .okButton {
     background-color: white;
     color: black;
@@ -179,4 +204,19 @@
 .backButton:hover {
     cursor: pointer;
     filter: brightness(0.9);
+}
+
+.heart {
+    font-size: 30px;
+    color: gray;
+    cursor: pointer;
+    user-select: none;
+}
+
+.heart:hover {
+    filter: brightness(0.8);
+}
+
+.liked {
+    color: red;
 }

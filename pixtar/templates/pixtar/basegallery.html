@@ -25,13 +25,21 @@
             </div>
         </div>
         <div class="overlay2 hidden" id="overlay2"></div>
+        <div class="popupSmall hidden" id="confirmPopup">
+            <div class="popupMessage" id="popupMessage1"></div>
+            <div class="confirmButtons">
+                <button type="button" class="confirmButton" id="confirmBtn">Yes</button>
+                <button type="button" class="confirmButton" id="cancelBtn">No</button>
+            </div>
+        </div>
         <div class="popupSmall hidden" id="popupSmall">
-            <div id="popupMessage"></div>
+            <div class="popupMessage" id="popupMessage2"></div>
             <button type="button" class="okButton" id="ok">OK</button>
         </div>
 
         <script>
             let currentImageId = null;
+            let judgeAction = '';
 
             const titleArea = document.getElementById('title');
             const authorArea = document.getElementById('author');
@@ -48,16 +56,31 @@
             const popupSmall = document.getElementById('popupSmall');
             const okButton = document.getElementById('ok');
 
+            const popupMessage1 = document.getElementById('popupMessage1');
+            const popupMessage2 = document.getElementById('popupMessage2');
+
+            const confirmPopup  = document.getElementById('confirmPopup');
+            const confirmBtn = document.getElementById('confirmBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+
             const infoBack = document.getElementById('infoBack');
             const approveBtn = document.getElementById('approve');
             const rejectBtn = document.getElementById('reject');
 
-            if (approveBtn) approveBtn.addEventListener('click', () => judge('approve'));
-            if (rejectBtn) rejectBtn.addEventListener('click', () => judge('reject'));
+            const likeCounter = document.getElementById('likeCount');
+            const likeBtn = document.getElementById('likeBtn');
 
+            if (likeBtn)
+                likeBtn.addEventListener('click', likeImage);
+
+            if (approveBtn) approveBtn.addEventListener('click', () => confirmJudge('approve'));
+            if (rejectBtn) rejectBtn.addEventListener('click', () => confirmJudge('reject'));
+            confirmBtn.addEventListener('click', () => judge(judgeAction));
+
+            cancelBtn.addEventListener('click', closeConfirmPopup);
             infoBack.addEventListener('click', closeInfo);
             okButton.addEventListener('click', closePopup);
-            //document.addEventListener('mousedown', (e) => {e.preventDefault()});
+
             document.querySelectorAll(".previewImage").forEach(div => {
                 const scale = 0.3;
 
@@ -89,7 +112,6 @@
                     el.style.transform = `translate(-50%, -50%) rotate(${rotation}deg) scale(${scaleX}, ${scaleY})`;
                 });
             });
-            console.log("aaaaaaaa");
             document.querySelectorAll('.block').forEach(block => {
                 block.addEventListener('click', openInfo)
             })
@@ -110,7 +132,14 @@
                 fontCount.textContent = block.dataset.fontCount;
                 colorCount.textContent = block.dataset.colorCount;
 
-                if (userJudge) userJudge.textContent = block.dataset.userJudge;
+                if (userJudge)
+                    userJudge.textContent = block.dataset.userJudge;
+
+                if (likeCounter) {
+                    likeCounter.textContent = block.dataset.likeCount;
+                    if (block.dataset.liked === 'True') likeBtn.classList.add('liked');
+                    else likeBtn.classList.remove('liked');
+                }
             }
 
             function makePreview(e, image, previewImage) {
@@ -139,8 +168,21 @@
                 overlay.classList.add('hidden');
                 infoScreen.classList.add('hidden');
             }
+            
+            function confirmJudge(action) {
+                let message;
+                if (action === 'approve')
+                    message = 'Are you sure you want to approve this image?';
+                else if (action === 'reject')
+                    message = 'Are you sure you want to reject this image?';
+
+                judgeAction = action;
+
+                openConfirmPopup(message);
+            }
 
             function judge(action) {
+                closeConfirmPopup();
                 const formData = new FormData();
                 formData.append('id', currentImageId);
                 formData.append('action', action);
@@ -170,6 +212,38 @@
                 });
             }
 
+            function likeImage() {
+                const formData = new FormData();
+                formData.append('id', currentImageId);
+
+                fetch('/like/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getTokenFromCookies('csrftoken')
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const block = document.querySelector(`[data-id="${currentImageId}"]`);
+                        block.dataset.likeCount = data.likeCount;
+                        likeCounter.textContent = data.likeCount;
+                        if (data.liked) {
+                            likeBtn.classList.add('liked');
+                            block.dataset.liked = 'True';
+                        }
+                        else {
+                            likeBtn.classList.remove('liked');
+                            block.dataset.liked = 'False';
+                        }
+                    }
+                    else {
+                        openPopup("Failed to like image.");
+                    }
+                });
+            }
+
             function getTokenFromCookies(name) {
                 let tokenValue = null;
                 if (document.cookie && document.cookie !== '') {
@@ -186,8 +260,20 @@
                 return tokenValue;
             }
 
+            function openConfirmPopup(message) {
+                popupMessage1.textContent = message;
+
+                overlay2.classList.remove('hidden');
+                confirmPopup.classList.remove('hidden');
+            }
+
+            function closeConfirmPopup() {
+                overlay2.classList.add('hidden');
+                confirmPopup.classList.add('hidden');
+            }
+
             function openPopup(message) {
-                popupMessage.textContent = message;
+                popupMessage2.textContent = message;
 
                 overlay2.classList.remove('hidden');
                 popupSmall.classList.remove('hidden');

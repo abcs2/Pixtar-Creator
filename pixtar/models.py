@@ -1,6 +1,7 @@
 from django.db import models
 import datetime
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -32,6 +33,7 @@ class sharedImage(Imagem):
     julgado_por = models.CharField(blank=True, null=True, max_length=35)
 
     qtdLikes = models.IntegerField(default=0)
+    likes = models.ManyToManyField(User, related_name='likedImages', blank=True)
 
     def __str__(self):
         return '[' + str(self.id) + '] ' + self.titulo + ' by ' + self.autor
