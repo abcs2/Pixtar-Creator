@@ -23,6 +23,7 @@
                 {% block info %}
                 {% endblock %}
             </div>
+            <div class="hugeImage hidden"></div>
         </div>
         <div class="overlay2 hidden" id="overlay2"></div>
         <div class="popupSmall hidden" id="confirmPopup">
@@ -69,6 +70,9 @@
 
             const likeCounter = document.getElementById('likeCount');
             const likeBtn = document.getElementById('likeBtn');
+            const errorMsg = document.getElementById('errorMsg');
+
+            const timeLeft = document.getElementById('timeLeft');
 
             if (likeBtn)
                 likeBtn.addEventListener('click', likeImage);
@@ -121,8 +125,19 @@
                 const image = block.querySelector('.previewContent');
                 overlay.classList.remove('hidden');
                 infoScreen.classList.remove('hidden');
-                makePreview(e, image, infoScreen.querySelector('.biggerImage'));
+                const biggerImage = infoScreen.querySelector('.biggerImage')
+                makePreview(e, image, biggerImage, 0.4);
                 currentImageId = block.dataset.id;
+
+                biggerImage.addEventListener('click', () => {
+                    const hugeImage = infoScreen.querySelector('.hugeImage')
+                    makePreview(e, image, hugeImage, 1);
+                    hugeImage.classList.remove('hidden');
+                    
+                    overlay.addEventListener('click', () => {
+                        hugeImage.classList.add('hidden');
+                    }, {once : true});
+                });
 
                 titleArea.textContent = block.dataset.title;
                 authorArea.textContent = block.dataset.author;
@@ -135,16 +150,32 @@
                 if (userJudge)
                     userJudge.textContent = block.dataset.userJudge;
 
+                if (timeLeft)
+                    timeLeft.textContent = block.dataset.timeLeft;
+
                 if (likeCounter) {
                     likeCounter.textContent = block.dataset.likeCount;
-                    if (block.dataset.liked === 'True') likeBtn.classList.add('liked');
-                    else likeBtn.classList.remove('liked');
+
+                    if (block.dataset.login == 'False') {
+                        likeBtn.classList.remove('liked');
+                        likeBtn.classList.add('inactive');
+                        errorMsg.textContent = "You need to be logged in to like images."
+                    }
+                    else if (block.dataset.sameUser === 'True') {
+                        likeBtn.classList.add('liked');
+                        likeBtn.classList.add('inactive');
+                        errorMsg.textContent = "Image shared by you."
+                    }
+                    else {
+                        likeBtn.classList.remove('inactive');
+                        errorMsg.textContent = '';
+                        if (block.dataset.liked === 'True') likeBtn.classList.add('liked');
+                        else likeBtn.classList.remove('liked');
+                    }
                 }
             }
 
-            function makePreview(e, image, previewImage) {
-                const scale = 0.4;
-
+            function makePreview(e, image, previewImage, scale) {
                 previewImage.innerHTML = image.innerHTML;
                 previewImage.style.backgroundColor = image.style.backgroundColor;
 
@@ -237,9 +268,6 @@
                             likeBtn.classList.remove('liked');
                             block.dataset.liked = 'False';
                         }
-                    }
-                    else {
-                        openPopup("Failed to like image.");
                     }
                 });
             }

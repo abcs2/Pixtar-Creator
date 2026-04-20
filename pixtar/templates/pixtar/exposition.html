@@ -15,7 +15,9 @@
             data-color-count="{{ imagem.qtdCores }}"
             data-user-judge= "{{ imagem.julgado_por }}"
             data-liked= "{{ imagem.liked }}"
-            data-like-count= "{{ imagem.qtdLikes }}">
+            data-like-count= "{{ imagem.qtdLikes }}"
+            data-same-user= "{{ imagem.sameUser }}"
+            data-login= "{{ imagem.login }}">
                 <div class="previewImage">
                     <script type="application/json" class="estadoJSON">
                         {{ imagem.estado|safe }}
@@ -40,9 +42,7 @@
 </div>
 <div>
     <span class="heart" id="likeBtn">❤</span> <span id="likeCount"></span>
-    {% if user.is_authenticated == False %}
-        <br><small>You need to be logged in to like an image.</small>
-    {% endif %}
+    <small><div id="errorMsg"></div></small>
 </div>
 {% if user.is_staff %}
     <div>Approved by: <span id="userJudge"></span></div>

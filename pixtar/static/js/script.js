@@ -100,6 +100,12 @@ let maskDirty = false;
 
 const colorToId = new Map();
 
+const downloadCanvas = document.createElement('canvas');
+const downloadCtx = downloadCanvas.getContext('2d');
+downloadCanvas.width = canvas.clientWidth;
+downloadCanvas.height = canvas.clientHeight;
+updateDownloadCanvas();
+
 const objCounter = document.getElementById('objCount');
 const mirrorMessage = document.getElementById('mirrorMode');
 const alphabetMessage = document.getElementById('alphabetMessage');
@@ -656,20 +662,67 @@ function getColorCount () {
 
 function downloadImage() {
     removeSelectColor();
+    updateDownloadCanvas();
 
-    html2canvas(canvas, {
-        backgroundColor: canvas.style.backgroundColor
-    }).then(canvasImage => {
-        const link = document.createElement('a');
-        link.download = 'canvas.png';
-        link.href = canvasImage.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.download = 'canvas.png';
+    link.href = downloadCanvas.toDataURL('image/png');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+    returnSelectColor();
+}
 
-        returnSelectColor();
+function updateDownloadCanvas() {
+    downloadCtx.clearRect(0, 0, downloadCanvas.width, downloadCanvas.height);
+
+    downloadCtx.fillStyle = canvas.style.backgroundColor || '#ffffff';
+    downloadCtx.fillRect(0, 0, downloadCanvas.width, downloadCanvas.height);
+
+    elements.sort((a, b) => {
+        return parseInt(a.style.zIndex) - parseInt(b.style.zIndex);
     });
+
+    elements.forEach((el, index) => {
+        el.style.zIndex = index;
+
+        const elStyle = window.getComputedStyle(el);
+
+        downloadCtx.save();
+        downloadCtx.translate(el.dataset.x, el.dataset.y);
+
+        const rotation = parseFloat(el.dataset.rotation) * Math.PI / 180;
+        downloadCtx.rotate(rotation);
+
+        const scaleX = parseFloat(el.dataset.scaleX);
+        const scaleY = parseFloat(el.dataset.scaleY);
+        downloadCtx.scale(scaleX, scaleY);
+
+        let offsetY = parseFloat(el.dataset.fontSize) * 0.036;
+        offsetY = fontOffsets(el, elStyle, offsetY);
+
+        downloadCtx.font = `bold ${parseFloat(el.dataset.fontSize)}px ${elStyle.fontFamily}`;
+        downloadCtx.textAlign = 'center';
+        downloadCtx.textBaseline = 'middle';
+        downloadCtx.fillStyle = elStyle.color;
+
+        downloadCtx.fillText(el.textContent, 0, 0 + offsetY);
+
+        downloadCtx.restore();
+
+
+    });
+    // console.log(downloadCanvas.width, downloadCanvas.height);
+    //     document.body.appendChild(downloadCanvas);
+    //     downloadCanvas.style.position = "absolute";
+    //     downloadCanvas.style.left = canvas.offsetLeft + "px";
+    //     downloadCanvas.style.top = canvas.offsetTop + "px";
+    //     downloadCanvas.style.opacity = "0.4";
+    //     downloadCanvas.style.pointerEvents = "none";
+    //     downloadCanvas.style.border = "1px solid red";
+    //     downloadCanvas.style.zIndex = 1000000;
+    zIndexCounter = elements.length + 1;
 }
 
 /* --- UNDO / REDO ACTIONS --- */

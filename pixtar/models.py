@@ -19,7 +19,7 @@ class userImage(Imagem):
 
         
 class sharedImage(Imagem):
-    userId = models.IntegerField(blank=True, null=True)
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     titulo = models.CharField(max_length=35, null=False, default='Untitled')
     autor = models.CharField(max_length=35, null=False, default='Anonymous')
@@ -33,7 +33,7 @@ class sharedImage(Imagem):
     julgado_por = models.CharField(blank=True, null=True, max_length=35)
 
     qtdLikes = models.IntegerField(default=0)
-    likes = models.ManyToManyField(User, related_name='likedImages', blank=True)
+    likes = models.ManyToManyField(User, related_name='likedImages', blank=True, null=True)
 
     def __str__(self):
         return '[' + str(self.id) + '] ' + self.titulo + ' by ' + self.autor
@@ -43,11 +43,5 @@ class sharedImage(Imagem):
             tempoLimite = self.data_julgamento + datetime.timedelta(days=5)
             return tempoLimite - timezone.now()
         
-        
-class Usuario(models.Model):
-    nome = models.CharField(max_length=50, null=False)
-    #listaImagens = models.ManyToManyField(Imagem, blank=True)
-
-    #listaLikes = models.ManyToManyField(Imagem, blank=True)
-
-    moderador = models.BooleanField(default=False)
+class Eraser(models.Model):
+    lastErase = models.DateTimeField(null=True, blank=True)

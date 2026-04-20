@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 
 from django.http import HttpResponse, Http404, JsonResponse
 
-from .models import Imagem, sharedImage
+from .models import Imagem, sharedImage, Eraser
 
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -12,12 +12,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.views import View
 
 from django.utils import timezone
+from datetime import timedelta
 from django.urls import reverse
 
 # Create your views here.
 
 class MainView(View):
     def get(self, request):
+        eraseRejected()
         approveCount = 0
         if request.user.is_staff:
             approveCount = sharedImage.objects.filter(paraAprovar=True).count()
@@ -37,6 +39,7 @@ class ApproveView(UserPassesTestMixin, View):
         return redirect('pixtar:index')
     
     def get(self, request):
+        eraseRejected()
         ultimas_imagens = sharedImage.objects.filter(paraAprovar=True).order_by('-data_envio')
         contexto = {'imagens': ultimas_imagens}
         return render(request, 'pixtar/approve.html', contexto)
@@ -49,7 +52,16 @@ class RejectedView(UserPassesTestMixin, View):
         return redirect('pixtar:index')
     
     def get(self, request):
+        eraseRejected()
         ultimas_imagens = sharedImage.objects.filter(rejeitado=True).order_by('-data_julgamento')
+        for imagem in ultimas_imagens:
+            timeLeft = imagem.data_julgamento + timedelta(days=2) - timezone.now()
+
+            if timeLeft.days >= 1:
+                imagem.timeLeft = f"{timeLeft.days} day(s)"
+            else:
+                hours = timeLeft.seconds // 3600
+                imagem.timeLeft = f"{hours} hours(s)"
         contexto = {'imagens': ultimas_imagens}
         return render(request, 'pixtar/rejected.html', contexto)
     
@@ -60,8 +72,9 @@ class ExpositionView(View):
         for imagem in ultimas_imagens:
             if request.user.is_authenticated:
                 imagem.liked = imagem.likes.filter(id=request.user.id).exists()
+                imagem.sameUser = (request.user == imagem.user)
             else:
-                imagem.liked = False
+                imagem.login = False
 
         contexto = {'imagens': ultimas_imagens}
         return render(request, 'pixtar/exposition.html', contexto)
@@ -131,7 +144,8 @@ def salvar(request):
             qtdFontes = qtdFontes,
             qtdCores = qtdCores,
             estado = estado,
-            paraAprovar = True
+            paraAprovar = True,
+            user = request.user
         )
         return JsonResponse({'success': True, 'id': imagem.id})
     return JsonResponse({'success': False})
@@ -172,7 +186,7 @@ def like(request):
 
         image = sharedImage.objects.get(id=imageId)
 
-        if (image):
+        if (image and image.user != request.user):
             user = request.user
 
             if user in image.likes.all():
@@ -189,3 +203,15 @@ def like(request):
             return JsonResponse({'success': True, 'liked': liked, 'likeCount': image.qtdLikes})
         return JsonResponse({'success': False})
     return JsonResponse({'success': False})
+
+def eraseRejected():
+    eraser, _ = Eraser.objects.get_or_create(id=1)
+
+    if eraser.lastErase and (timezone.now() - eraser.lastErase) < timedelta(hours=1):
+        return
+    
+    eraser.lastErase = timezone.now()
+    eraser.save()
+
+    limitDate = timezone.now() - timedelta(days=2)
+    sharedImage.objects.filter(rejeitado=True, data_julgamento__lt=limitDate).delete()

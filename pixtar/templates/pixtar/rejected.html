@@ -14,7 +14,8 @@
             data-alphabet-count="{{ imagem.qtdAlfabetos }}"
             data-font-count="{{ imagem.qtdFontes }}"
             data-color-count="{{ imagem.qtdCores }}"
-            data-user-judge= "{{ imagem.julgado_por }}">
+            data-user-judge= "{{ imagem.julgado_por }}"
+            data-time-left= "{{ imagem.timeLeft }}">
                 <div class="previewImage">
                     <script type="application/json" class="estadoJSON">
                         {{ imagem.estado|safe }}
@@ -37,6 +38,7 @@
     Fonts: <span id="fontCount"></span><br>
     Colors: <span id="colorCount"></span><br>
 </div>
+<div><span class="clock">⏱</span> <span id="timeLeft"></span></div>
 <div>Rejected by: <span id="userJudge"></span></div>
 <button type="button" class="concludeButtons" id="approve">Approve</button>
 {% endblock %}
