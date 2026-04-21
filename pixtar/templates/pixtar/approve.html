@@ -1,9 +1,12 @@
 {% extends 'pixtar/basegallery.html' %}
 
+{% block header %}
+<div class="pageTitle">Approve images</div>
+<a href="{% url 'pixtar:rejected' %}"><button type="button" class="linkButton">Rejected images</button></a>
+{% endblock %}
+
 {% block content %}
-<a href="{% url 'pixtar:rejected' %}">Rejected images</a><br>
 {% if imagens %}
-    <h2>Images to approve</h2>
     <div class="imageList">
         {% for imagem in imagens %}
             <div class="block"
@@ -20,7 +23,9 @@
                         {{ imagem.estado|safe }}
                     </script>
                 </div>
-                {{ imagem.titulo }}<br>by {{ imagem.autor }}
+                <div class="imgDescription">
+                    <span class="title">{{ imagem.titulo }}</span><br>by {{ imagem.autor }}
+                </div>
             </div>
         {% endfor %}
     </div>

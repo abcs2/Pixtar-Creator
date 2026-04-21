@@ -7,9 +7,19 @@
     </head>
     <body>
         {% csrf_token %}
-        <a href="{% url 'pixtar:index' %}">Back to title</a><br>
-        {% block content %}
-        {% endblock %}
+        <div class="all">
+            <div class="headerFlex">
+                <a href="{% url 'pixtar:index' %}"><button type="button" class="backMenuButton">←</button></a>
+                <div class="headerButtons">
+                    {% block header %}
+                    {% endblock %}
+                </div>
+            </div>
+            <div class="imageListContainer">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
 
         <div class="overlay hidden" id="overlay"></div>
         <div class="popup hidden" id="infoScreen">
@@ -18,7 +28,7 @@
                 <div class="backButton" id="infoBack">→</div>
                 <div class="titleAuthor">
                     <span id="title"></span><br>
-                    By <span id="author"></span><br>
+                    <small>By <span id="author"></span></small><br>
                 </div>
                 {% block info %}
                 {% endblock %}
@@ -72,6 +82,11 @@
             const likeBtn = document.getElementById('likeBtn');
             const errorMsg = document.getElementById('errorMsg');
 
+            const sortDate = document.getElementById('sortDate');
+            const sortLikes = document.getElementById('sortLikes');
+            const sortUserImages = document.getElementById('sortUserImages');
+            const sortUserLikes = document.getElementById('sortUserLikes');
+
             const timeLeft = document.getElementById('timeLeft');
 
             if (likeBtn)
@@ -84,6 +99,15 @@
             cancelBtn.addEventListener('click', closeConfirmPopup);
             infoBack.addEventListener('click', closeInfo);
             okButton.addEventListener('click', closePopup);
+
+            if (sortDate) {
+                sortDate.addEventListener('click', sortByDate);
+                sortLikes.addEventListener('click', sortByLikes);
+            }
+            if (sortUserImages) {
+                sortUserImages.addEventListener('click', sortByUserImages);
+                sortUserLikes.addEventListener('click', sortByUserLikes);
+            }
 
             document.querySelectorAll(".previewImage").forEach(div => {
                 const scale = 0.3;
@@ -133,9 +157,11 @@
                     const hugeImage = infoScreen.querySelector('.hugeImage')
                     makePreview(e, image, hugeImage, 1);
                     hugeImage.classList.remove('hidden');
+                    overlay.style.cursor = 'pointer';
                     
                     overlay.addEventListener('click', () => {
                         hugeImage.classList.add('hidden');
+                        overlay.style.cursor = 'default';
                     }, {once : true});
                 });
 
@@ -313,6 +339,126 @@
             
                 overlay.classList.add('hidden');
                 infoScreen.classList.add('hidden');
+            }
+
+            function sortByDate() {
+                if (!sortDate.classList.contains('selected')) {
+                    sortDate.classList.add('selected');
+                    sortLikes.classList.remove('selected');
+
+                    if (sortDate.textContent.includes('▼'))
+                        dateSort('newest');
+                    else if (sortDate.textContent.includes('▲'))
+                        dateSort('oldest');
+                }
+                else if (sortDate.textContent.includes('▼')) {
+                    sortDate.textContent = sortDate.textContent.replace('▼', '▲');
+                    dateSort('oldest');
+                }
+                else if (sortDate.textContent.includes('▲')) {
+                    sortDate.textContent = sortDate.textContent.replace('▲', '▼');
+                    dateSort('newest');
+                }
+            }
+
+            function dateSort(op) {
+                const blockList = document.querySelector('.imageList');
+                const blocks = [...document.querySelectorAll('.block')];
+
+                blocks.sort((a, b) => {
+                    const dateA = new Date(a.dataset.date);
+                    const dateB = new Date(b.dataset.date);
+
+                    if (op === 'newest') return dateB - dateA;
+                    if (op === 'oldest') return dateA - dateB;
+                });
+
+                blockList.innerHTML = '';
+                blocks.forEach(block => blockList.appendChild(block));
+            }
+
+            function sortByLikes() {
+                if (!sortLikes.classList.contains('selected')) {
+                    sortDate.classList.remove('selected');
+                    sortLikes.classList.add('selected');
+
+                    if (sortLikes.textContent.includes('▼'))
+                        likeSort('most');
+                    else if (sortLikes.textContent.includes('▲'))
+                        likeSort('least');
+                }
+                else if (sortLikes.textContent.includes('▼')) {
+                    sortLikes.textContent = sortLikes.textContent.replace('▼', '▲');
+                    likeSort('least');
+                }
+                else if (sortLikes.textContent.includes('▲')) {
+                    sortLikes.textContent = sortLikes.textContent.replace('▲', '▼');
+                    likeSort('most');
+                }
+            }
+
+            function likeSort(op) {
+                const blockList = document.querySelector('.imageList');
+                const blocks = [...document.querySelectorAll('.block')];
+
+                blocks.sort((a, b) => {
+                    const likesA = parseInt(a.dataset.likeCount);
+                    const likesB = parseInt(b.dataset.likeCount);
+
+                    if (op === 'most') return likesB - likesA;
+                    if (op === 'least') return likesA - likesB;
+                });
+
+                blockList.innerHTML = '';
+                blocks.forEach(block => blockList.appendChild(block));
+            }
+
+            function sortByUserImages() {
+                if (!sortUserImages.classList.contains('selected')) {
+                    sortUserImages.classList.add('selected');
+                    sortUserLikes.classList.remove('selected');
+                    galleryFilter('all');
+                    galleryFilter('user');
+                }
+                else {
+                    sortUserImages.classList.remove('selected');
+                    galleryFilter('all');
+                }
+            }
+
+            function sortByUserLikes() {
+                if (!sortUserLikes.classList.contains('selected')) {
+                    sortUserImages.classList.remove('selected');
+                    sortUserLikes.classList.add('selected');
+                    galleryFilter('all');
+                    galleryFilter('liked');
+                }
+                else {
+                    sortUserLikes.classList.remove('selected');
+                    galleryFilter('all');
+                }
+            }
+
+            function galleryFilter(op) {
+                const blocks = [...document.querySelectorAll('.block')];
+
+                if (op === 'user') {
+                    blocks.forEach(block => {
+                        if (block.dataset.sameUser === 'False')
+                            block.classList.add('hidden');
+                    });
+                }
+                else if (op === 'liked') {
+                    blocks.forEach(block => {
+                        if (block.dataset.liked === 'False')
+                            block.classList.add('hidden');
+                    });
+                }
+                else if (op === 'all') {
+                    blocks.forEach(block => {
+                        block.classList.remove('hidden');
+                    });
+                }
             }
         </script>
     </body>

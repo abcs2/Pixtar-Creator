@@ -11,7 +11,7 @@
         <div class="all">
             <div id="ops">
                 <div class="upperOps">
-                    <a href="{% url 'pixtar:index'%}"><button type="button" class="backMenuButton" id="back" data-message="Go back to the main menu.">←</button></a>
+                    <a href="{% url 'pixtar:index' %}"><button type="button" class="backMenuButton" id="back" data-message="Go back to the main menu.">←</button></a>
                     <div>
                         <button type="button" id="undo" data-message="Undo the last modification made.\nKeyboard: Z">↩</button>
                         <button type="button" id="redo" data-message="Redo the last undone action.\nKeyboard: Y">↪</button>
@@ -38,8 +38,8 @@
                     <button type="button" id="stretchV" data-message="Make the selected object thinner.\nNot available with multiple objects.\nKeyboard: R">>|<</button>
                     <button type="button" id="stretchH" data-message="Make the selected object thicker.\nNot available with multiple objects.\nKeyboard: T"><|></button>
                     <br>
-                    <button type="button" id="rotateDown" data-message="Rotate the selected object counter-clockwise.\nKeyboard: Q">↺</button>
-                    <button type="button" id="rotateUp" data-message="Rotate the selected object clockwise.\nKeyboard: E">↻</button>
+                    <button type="button" id="rotateDown" data-message="Rotate the selected object counter-clockwise.\nKeyboard: Q">⟲</button>
+                    <button type="button" id="rotateUp" data-message="Rotate the selected object clockwise.\nKeyboard: E">⟳</button>
                     <button type="button" id="flipH" data-message="Flip the selected object horizontally.\nKeyboard: X">flip | </button>
                     <button type="button" id="flipV" data-message="Flip the selected object vertically.\nKeyboard: C">flip --</button>
                 </p>
@@ -133,11 +133,11 @@
             <div class="concludeOps">
                 <div class="backButton" id="shareBack">→</div>
                 <span>
-                    Title:<br><input type="text" class="input form" id="titleInput" maxlength="35">
+                    Title:<br><input type="text" class="input form" id="titleInput" maxlength="15">
                     <input type="checkbox" id="untitled" name="untitled">Untitled</input>
                 </span>
                 <span>
-                    Author:<br><input type="text" class="input form" id="authorInput" value="{{ user.username }}" maxlength="35">
+                    Author:<br><input type="text" class="input form" id="authorInput" value="{{ user.username }}" maxlength="20">
                     <input type="checkbox" id="anonymous" name="anonymous">Anonymous</input>
                 </span>
                 <small>Do not share images that are low effort, promote violence or contain sexual content.</small>

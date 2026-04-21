@@ -1,8 +1,17 @@
 {% extends 'pixtar/basegallery.html' %}
 
+{% block header %}
+<div class="pageTitle">Gallery</div>
+<button type="button" class="linkButton selected" id="sortDate">Sort by date ▼</button>
+<button type="button" class="linkButton" id="sortLikes">Sort by likes ▼</button>
+{% if user.is_authenticated %}
+    <button type="button" class="linkButton" id="sortUserImages">◼ Your images</button>
+    <button type="button" class="linkButton" id="sortUserLikes">❤ Your likes</button>
+{% endif %}
+{% endblock %}
+
 {% block content %}
 {% if imagens %}
-    <h2>Exposition</h2>
     <div class="imageList">
         {% for imagem in imagens %}
             <div class="block"
@@ -17,13 +26,16 @@
             data-liked= "{{ imagem.liked }}"
             data-like-count= "{{ imagem.qtdLikes }}"
             data-same-user= "{{ imagem.sameUser }}"
-            data-login= "{{ imagem.login }}">
+            data-login= "{{ imagem.login }}"
+            data-date= "{{ imagem.data_julgamento|date:'c' }}">
                 <div class="previewImage">
                     <script type="application/json" class="estadoJSON">
                         {{ imagem.estado|safe }}
                     </script>
                 </div>
-                {{ imagem.titulo }}<br>by {{ imagem.autor }}
+                <div class="imgDescription">
+                    <span class="title">{{ imagem.titulo }}</span><br>by {{ imagem.autor }}
+                </div>
             </div>
         {% endfor %}
     </div>

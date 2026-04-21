@@ -21,8 +21,8 @@ class userImage(Imagem):
 class sharedImage(Imagem):
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
-    titulo = models.CharField(max_length=35, null=False, default='Untitled')
-    autor = models.CharField(max_length=35, null=False, default='Anonymous')
+    titulo = models.CharField(max_length=15, null=False, default='Untitled')
+    autor = models.CharField(max_length=20, null=False, default='Anonymous')
     data_envio = models.DateTimeField('Enviado em ', default=timezone.now)
 
     paraAprovar = models.BooleanField(default=True)
@@ -30,7 +30,7 @@ class sharedImage(Imagem):
     exposto = models.BooleanField(default=False)
 
     data_julgamento = models.DateTimeField(blank=True, null=True)
-    julgado_por = models.CharField(blank=True, null=True, max_length=35)
+    julgado_por = models.CharField(blank=True, null=True, max_length=22)
 
     qtdLikes = models.IntegerField(default=0)
     likes = models.ManyToManyField(User, related_name='likedImages', blank=True, null=True)
