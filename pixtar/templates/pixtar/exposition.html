@@ -40,7 +40,7 @@
         {% endfor %}
     </div>
 {% else %}
-    <h2>No images on the exposition.</h2>
+    <h2>No images on the gallery.</h2>
 {% endif %}
 {% endblock %}
 
@@ -58,6 +58,6 @@
 </div>
 {% if user.is_staff %}
     <div>Approved by: <span id="userJudge"></span></div>
-    <button type="button" class="concludeButtons" id="reject">Remove from exposition</button>
+    <button type="button" class="concludeButtons" id="reject">Remove from gallery</button>
 {% endif %}
 {% endblock %}

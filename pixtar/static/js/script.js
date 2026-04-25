@@ -10,7 +10,7 @@ const alphabetList =
 const alphabetNames = 
     ['Latin', 'Cyrillic', 'Greek', 'Arabic', 'Hiragana', 'Katakana'];
 
-const charList = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.', '-', '!', '#', '$', '&', '(', ')', '*', ',', ';', ':', '?', '@', '[', ']', '^', '_', '~', '{', '}', '|', '+', '=', '<', '>', '/', '\\', '%', '£', '¢', '§', '€', '₽', '¥'];
+const charList = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.', ',', '-', '!', '#', '$', '&', '(', ')', '*', ';', ':', '?', '@', '[', ']', '^', '_', '~', '{', '}', '|', '+', '=', '<', '>', '/', '\\', '%', '£', '¢', '§', '€', '₽', '¥'];
 
 const fontList =
     ["Arial, Helvetica, sans-serif",
@@ -107,7 +107,7 @@ downloadCanvas.height = canvas.clientHeight;
 updateDownloadCanvas();
 
 const objCounter = document.getElementById('objCount');
-const mirrorMessage = document.getElementById('mirrorMode');
+//const mirrorMessage = document.getElementById('mirrorMode');
 const alphabetMessage = document.getElementById('alphabetMessage');
 const fontMessage = document.getElementById('fontMessage');
 
@@ -141,9 +141,12 @@ const copyButton = document.getElementById('copy');
 const undoBtn = document.getElementById('undo');
 const redoBtn = document.getElementById('redo');
 
-const deselectBtn = document.getElementById('deselect');
+//const deselectBtn = document.getElementById('deselect');
 const mirrorButton = document.getElementById('mirror');
 const downloadBtn = document.getElementById('download');
+
+const mirrorOff = document.getElementById('mirrorOff');
+const mirrorOn = document.getElementById('mirrorOn');
 
 const chosenColor = document.getElementById('currentColor');
 const bgColor = document.getElementById('bgColor');
@@ -185,13 +188,16 @@ document.addEventListener('mousedown', function (e) {
             bgColor.classList.remove('buttonSelected');
         }
     }
-    if (replaceLetterBtn.classList.contains('buttonSelected') && e.target !== replaceLetterBtn) {
-        canvasRect = canvas.getBoundingClientRect();
-        if (e.clientX >= canvasRect.left && e.clientX <= canvasRect.right && e.clientY >= canvasRect.top && e.clientY <= canvasRect.bottom) {
-            const colorEl = getColorFromMask(e);
-            if (!colorEl) replaceLetterBtn.classList.remove('buttonSelected');
+    if (replaceLetterBtn.classList.contains('buttonSelected2')) {
+        if (e.currentTarget != replaceLetterBtn) {
+            canvasRect = canvas.getBoundingClientRect();
+            if (e.clientX >= canvasRect.left && e.clientX <= canvasRect.right && e.clientY >= canvasRect.top && e.clientY <= canvasRect.bottom) {
+                const colorEl = getColorFromMask(e);
+                if (!colorEl) selectButton(e, replaceLetterBtn);
+            }
+            else if (!e.target.classList.contains('preview')) selectButton(e, replaceLetterBtn);
         }
-        else if (!e.target.classList.contains('preview')) replaceLetterBtn.classList.remove('buttonSelected');
+        else selectButton(e, replaceLetterBtn);
     }
 });
 
@@ -233,16 +239,40 @@ rotateDownBtn.addEventListener('click', () => {rotate(-modifierRotate); maskDirt
 flipHBtn.addEventListener('click', () => {flip(-1, 1); maskDirty = true; saveState();});
 flipVBtn.addEventListener('click', () => {flip(1, -1); maskDirty = true; saveState();});
 
-deselectBtn.addEventListener('click', deselect);
+//deselectBtn.addEventListener('click', deselect);
 mirrorButton.addEventListener('click', changeMirrorMode);
 downloadBtn.addEventListener('click', downloadImage);
 
-alphabetUpBtn.addEventListener('click', () => changeAlphabet(1));
-alphabetDownBtn.addEventListener('click', () => changeAlphabet(-1));
-replaceLetterBtn.addEventListener('click', function(e) {selectButton(e, replaceLetterBtn)});
+alphabetUpBtn.addEventListener('mousedown', () => {
+    alphabetUpBtn.style.transform = 'scale(0.8)';
+    document.addEventListener('mouseup', () => {
+        changeAlphabet(1);
+        alphabetUpBtn.style.transform = 'scale(1)';
+    }, {once : true});
+});
+alphabetDownBtn.addEventListener('mousedown', () => {
+    alphabetDownBtn.style.transform = 'scale(0.8)';
+    document.addEventListener('mouseup', () => {
+        changeAlphabet(-1);
+        alphabetDownBtn.style.transform = 'scale(1)';
+    }, {once : true});
+});
+replaceLetterBtn.addEventListener('mousedown', function(e) {selectButton(e, replaceLetterBtn)});
 
-fontUpBtn.addEventListener('click', () => changeFont(1));
-fontDownBtn.addEventListener('click', () => changeFont(-1));
+fontUpBtn.addEventListener('mousedown', () => {
+    fontUpBtn.style.transform = 'scale(0.8)';
+    document.addEventListener('mouseup', () => {
+        changeFont(1);
+        fontUpBtn.style.transform = 'scale(1)';
+    }, {once : true});
+});
+fontDownBtn.addEventListener('mousedown', () => {
+    fontDownBtn.style.transform = 'scale(0.8)';
+    document.addEventListener('mouseup', () => {
+        changeFont(-1);
+        fontDownBtn.style.transform = 'scale(1)';
+    }, {once : true});
+});
 fontOneBtn.addEventListener('click', changeElFont);
 fontAllBtn.addEventListener('click', changeCanvasFont);
 
@@ -268,8 +298,20 @@ bgColor.addEventListener('contextmenu', function(e) {
     }
 });
 
-colorUpBtn.addEventListener('click', () => showColorPage(-1));
-colorDownBtn.addEventListener('click', () => showColorPage(1));
+colorUpBtn.addEventListener('mousedown', () => {
+    colorUpBtn.style.transform = 'scale(0.8)';
+    document.addEventListener('mouseup', () => {
+        showColorPage(-1);
+        colorUpBtn.style.transform = 'scale(1)';
+    }, {once : true});
+});
+colorDownBtn.addEventListener('mousedown', () => {
+    colorDownBtn.style.transform = 'scale(0.8)';
+    document.addEventListener('mouseup', () => {
+        showColorPage(1);
+        colorDownBtn.style.transform = 'scale(1)';
+    }, {once : true});
+});
 fullColorList.addEventListener('wheel', e => {
     e.preventDefault();
     if (e.deltaY > 0) showColorPage(1);
@@ -610,7 +652,7 @@ function saveToBase() {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            openPopup("Image shared. Your image will be displayed in the exposition when it is approved by the moderators.");
+            openPopup("Image shared. Your image will be displayed in the gallery when it is approved by the moderators.");
             imageShared = true;
         }
         else {
@@ -781,7 +823,7 @@ function loadState(state) {
     elements = [...canvas.querySelectorAll('.element')];
 
     mirrorMode = globalMirrorMode;
-    mirrorMessage.textContent = mirrorMode;
+    displayMirrorMode();
 
     objCount = elements.length;
     objCounter.textContent = objCount;
@@ -821,14 +863,20 @@ function changeAlphabet (num) {
     
     alphabetList[alphabetLvl].forEach(letter => addLetter(letter));
 
-    alphabet.appendChild(document.createElement('p'));
+    const divCount = 17*5 - (alphabetList[alphabetLvl].length);
+
+    for (let i=0; i<divCount; i++) {
+        const space = document.createElement('div');
+        alphabet.appendChild(space);
+        space.style.cursor = 'default';
+    }
 
     charList.forEach(ch => addLetter(ch));
 }
 
 function addLetter(letter) {
-    const newLetter = document.createElement('button');
-    newLetter.type = 'button';
+    const newLetter = document.createElement('div');
+    //newLetter.type = 'button';
     newLetter.className = 'preview';
     newLetter.style.fontFamily = fontList[fontLvl];
     newLetter.textContent = letter;
@@ -862,7 +910,7 @@ function changeElFont() {
 }
 
 function changeLetter(preview) {
-    if (selectionList.length === 0 || !replaceLetterBtn.classList.contains('buttonSelected')) return;
+    if (selectionList.length === 0 || !replaceLetterBtn.classList.contains('buttonSelected2')) return;
 
     selectionList.forEach(el => {
         el.textContent = preview.textContent;
@@ -1027,10 +1075,14 @@ function selectButton(e, button) {
 
         if (button === bgColor) deselect();
         else if (button === infoBtn) displayInfobox(e);
+        else if (button === replaceLetterBtn) {
+            button.classList.add('buttonSelected2');
+        }
     }
     else {
         if (button === infoBtn) removeInfobox();
         button.classList.remove('buttonSelected');
+        button.classList.remove('buttonSelected2');
     }
 }
 
@@ -1045,6 +1097,17 @@ function changeBgColor(color) {
 
 
 /* --- MIRROR OPERATIONS --- */
+
+function displayMirrorMode() {
+    if (mirrorMode === 'ON') {
+        mirrorOn.classList.remove('hidden');
+        mirrorOff.classList.add('hidden');
+    }
+    else if (mirrorMode === 'OFF') {
+        mirrorOn.classList.add('hidden');
+        mirrorOff.classList.remove('hidden');
+    }
+}
 
 function changeMirrorMode() {
     if (mirrorMode == 'ON') {
@@ -1075,7 +1138,7 @@ function changeMirrorMode() {
         mirrorMode = 'ON';
     }
     
-    mirrorMessage.textContent = mirrorMode;
+    displayMirrorMode();
 }
 
 function findMirror(el) {
@@ -1394,7 +1457,7 @@ function select(el) {
     el.style.zIndex = zIndexCounter++;
     maskDirty = true;
 
-    mirrorMessage.textContent = mirrorMode;
+    displayMirrorMode();
 
     sizeUpBtn.classList.remove('inactiveBtn');
     sizeDownBtn.classList.remove('inactiveBtn');
@@ -1418,7 +1481,7 @@ function deselectShift(el) {
     if (selectionList.length === 0) {
         mirrorSelectList = false;
         mirrorMode = globalMirrorMode;
-        mirrorMessage.textContent = mirrorMode;
+        displayMirrorMode();
     }
     newSelectionCenter = true;
 
@@ -1467,7 +1530,7 @@ function selectMultiple(el) {
             displayInfoboxSelection();
         }
     }
-    mirrorMessage.textContent = mirrorMode;
+    displayMirrorMode();
     newSelectionCenter = true;
 
     if (selectionList.length > 1) {
@@ -1531,7 +1594,7 @@ function deselect() {
     maybeSelect = [];
     mirrorSelectList = false;
     mirrorMode = globalMirrorMode;
-    mirrorMessage.textContent = mirrorMode;
+    displayMirrorMode();
 
     sizeUpBtn.classList.remove('inactiveBtn');
     sizeDownBtn.classList.remove('inactiveBtn');
@@ -1564,7 +1627,7 @@ function deleteElement() {
     selectionList = [];
     mirrorSelectList = false;
     mirrorMode = globalMirrorMode;
-    mirrorMessage.textContent = mirrorMode;
+    displayMirrorMode();
     updateColorList();
     maskDirty = true; 
 
@@ -1646,7 +1709,7 @@ function dragSelection(e) {
     e.preventDefault();
     let x = e.clientX - canvasRect.left;
     if (x < 1) x = 1;
-    else if (x > canvasRect.width - 2) x = canvasRect.width - 2;
+    else if (x > canvasRect.width - 1) x = canvasRect.width - 1;
     let y = e.clientY - canvasRect.top;
     if (y < 2) y = 2;
     else if (y > canvasRect.height - 2) y = canvasRect.height - 2;
@@ -1763,7 +1826,7 @@ function endDragPreview(e) {
     if (e.clientX >= buttonRect.left && e.clientX <= buttonRect.right && e.clientY >= buttonRect.top && e.clientY <= buttonRect.bottom) {
         changeLetter(previewElement);
 
-        if (replaceLetterBtn.classList.contains('buttonSelected')) e.stopPropagation();
+        if (replaceLetterBtn.classList.contains('buttonSelected2')) e.stopPropagation();
         else {
             newElement(previewElement, 80, 0, 1, 1, canvasRect.width / 2, canvasRect.height / 2, chosenColor.style.backgroundColor);
             saveState();
@@ -2171,7 +2234,7 @@ function closeShare() {
 }
 
 function makePreview(previewImage) {
-    const scale = 0.4;
+    const scale = 0.5;
 
     previewImage.innerHTML = canvas.innerHTML;
     previewImage.style.backgroundColor = canvas.style.backgroundColor;
@@ -2239,7 +2302,7 @@ let visibleInfoBox = false;
 const buttonsInfo = [undoBtn, redoBtn, infoBtn, clearButton, delButton, copyButton, Lbutton, Rbutton, Ubutton, Dbutton,
     sizeUpBtn, sizeDownBtn, stretchHBtn, stretchVBtn, rotateDownBtn, rotateUpBtn, flipVBtn, flipHBtn, mirrorButton, downloadBtn,
     chosenColor, bgColor, replaceLetterBtn, fontOneBtn, fontAllBtn, alphabet, modSmallBtn, modMediumBtn, modBigBtn, fontUpBtn,
-    fontDownBtn, alphabetUpBtn, alphabetDownBtn, fullColorList, deselectBtn, hiddenTopBtn, backBtn, concludeBtn
+    fontDownBtn, alphabetUpBtn, alphabetDownBtn, fullColorList, hiddenTopBtn, backBtn, concludeBtn
 ];
 buttonsInfo.forEach(b => {
     b.addEventListener('mouseover', displayInfobox);
@@ -2278,14 +2341,15 @@ function removeInfobox () {
 function displayInfoboxSelection() {
     canvasRect = canvas.getBoundingClientRect();
     //infoBox.textContent = 'Selecting mirrored objects with non mirrored ones will automatically break all mirrors.\nShift+click the objects again or press Enter to select them.';
-    infoBox.textContent = "you can't select mirrored objects with non-mirrored ones.";
+    infoBox.textContent = "You can't select mirrored objects with non-mirrored ones.";
+    infoBox.style.fontSize = '16px'
     infoBox.style.left = (canvasRect.left - infoBox.style.maxWidth) + 'px';
     infoBox.style.top = canvasRect.top + 'px';
 
     document.body.appendChild(infoBox);
     visibleInfoBox = true;
-    canvas.addEventListener('click', () => {
-        if (!dragHappened) removeInfoboxSelection();
+    document.addEventListener('mousedown', () => {
+        removeInfoboxSelection();
     });
 }
 
@@ -2293,8 +2357,8 @@ function removeInfoboxSelection() {
     maybeSelect = [];
     if (visibleInfoBox) {
         document.body.removeChild(infoBox);
-        canvas.removeEventListener('click', () => {
-            if (!dragHappened) removeInfoboxSelection();
+        canvas.removeEventListener('mousedown', () => {
+            removeInfoboxSelection();
         });
         visibleInfoBox = false;
     }

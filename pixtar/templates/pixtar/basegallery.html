@@ -52,6 +52,8 @@
             let currentImageId = null;
             let judgeAction = '';
 
+            let listSize = 0;
+
             const titleArea = document.getElementById('title');
             const authorArea = document.getElementById('author');
             
@@ -110,6 +112,7 @@
             }
 
             document.querySelectorAll(".previewImage").forEach(div => {
+                listSize++;
                 const scale = 0.3;
 
                 const jsonScript = div.querySelector(".estadoJSON");
@@ -150,7 +153,7 @@
                 overlay.classList.remove('hidden');
                 infoScreen.classList.remove('hidden');
                 const biggerImage = infoScreen.querySelector('.biggerImage')
-                makePreview(e, image, biggerImage, 0.4);
+                makePreview(e, image, biggerImage, 0.5);
                 currentImageId = block.dataset.id;
 
                 biggerImage.addEventListener('click', () => {
@@ -262,6 +265,18 @@
                         }
 
                         document.querySelector(`[data-id="${currentImageId}"]`).remove();
+                        listSize--;
+                        if (listSize === 0) {
+                            const el = document.createElement('h2');
+                            if (!timeLeft && !likeCounter)
+                                el.textContent = 'No images to be approved.';
+                            else if (timeLeft)
+                                el.textContent = 'No rejected images.';
+                            else if (likeCounter)
+                                el.textContent = 'No images on the gallery.';
+
+                            document.querySelector('.imageListContainer').appendChild(el);
+                        }
                     }
                     else {
                         openPopup("Image judgement failed.");

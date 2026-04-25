@@ -45,6 +45,10 @@ a {
     filter: brightness(0.9);
 }
 
+.linkButton:active {
+    filter: brightness(0.7);
+}
+
 .btn {
     width: 100%;
 }
@@ -91,6 +95,10 @@ a {
     cursor: pointer;
 }
 
+.loginButton:active {
+    filter: brightness(0.7);
+}
+
 .form {
     margin: 5px 0 5px 0;
     padding: 10px;
@@ -115,4 +123,8 @@ a {
 
 .backButton:hover {
     filter: brightness(0.9);
+}
+
+.backButton:active {
+    filter: brightness(0.7);
 }

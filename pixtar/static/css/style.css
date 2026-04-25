@@ -5,6 +5,30 @@
     background-color: black;
     height: calc(100vh - 16px);
     width: calc(100vw - 16px);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+button {
+    border: 1px solid black;
+    background-color: white;
+    border-radius: 3px;
+    padding: 5px;
+    height: 35px;
+    min-width: 35px;
+
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: none;
+    align-self: baseline;
+}
+
+button:hover {
+    cursor: pointer;
+    filter: brightness(0.9);
+}
+
+button:active {
+    filter: brightness(0.7);
 }
 
 #canvas {
@@ -18,18 +42,18 @@
 }
 
 #ops {
-    background-color: gainsboro;
-    padding: 10px;
+    background-color: #DDDDDD;
+    padding: 12px;
     grid-row: 1 / span 2;
     grid-column: 1 / span 1;
     margin: 3px;
 }
 
 #charContainer {
-    background-color: aliceblue;
+    background-color: #EEEEEE;
     grid-row: 3 / span 1;
     grid-column: 1 / span 1;
-    padding: 8px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
     margin: 3px;
@@ -43,13 +67,195 @@
 
 .upperOps {
     display: flex;
-    gap: 10px;
+    justify-content: space-between;
+}
+
+.upperRight {
+    display: flex;
+    gap: 20px;
+}
+
+.undoRedo {
+    transform: scale(1, -1);
+}
+
+.opsFlex {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.modifierCage {
+    border: 1px solid black;
+    background-color: #BBBBBB;
+    padding: 5px;
+    padding-left: 7px;
+    padding-right: 7px;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.modifierText {
+    font-size: 18px;
+    color: #444444;
+    font-weight: bold;
+}
+
+.modifierOptions {
+    display: flex;
+    gap: 4px;
+}
+
+.transformOpsFlex {
+    display: flex;
+    gap: 15px;
+}
+
+.stretchFlex {
+    display: flex;
+    gap: 5px;
+}
+
+.flipFlex {
+    display: flex;
+    gap: 5px;
+}
+
+#flipV {
+    transform: translate(0, -5px);
+}
+
+#flipH {
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.flipVGrid {
+    display: grid;
+    grid-template-rows: 14px 1px 15px;
+    align-items: center;
+    transform: translate(0, -2px);
+}
+
+.flipHGrid {
+    display: grid;
+    grid-template-columns: 9px 5px 15px;
+    transform: translate(1px, 0);
+}
+
+.mirrorLine {
+    transform: translate(1px, 0) rotate(90deg) scale(1, 1.1);
+}
+
+.mirrorLineB {
+    transform: translate(0px, -1px) scale(1, 1.1);
+}
+
+.ogA {
+    transform: scale(1, 0.9);
+}
+
+.mirroredA {
+    transform: scale(1, -0.9);
+}
+
+.mirroredB {
+    transform: scale(-1, 1);
+}
+
+.sizeMove {
+    display: flex;
+    gap: 30px;
+}
+
+.sizeFlex {
+    display: flex;
+    flex-direction: column;
+}
+
+.moveOps {
+    display: flex;
+    flex-direction: column;
+}
+
+.moveOps1 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.moveOps2 {
+    display: flex;
+}
+
+.moveBtn {
+    height: 40px;
+    width: 40px;
+}
+
+.rotateBtn {
+    max-width: 35px;
+    margin-bottom: auto;
+    font-size: 18px;
+    padding-top: 3px;
+}
+
+#mirror {
+    display: flex;
+    height: fit-content;
+    gap: 5px;
+    align-items: center;
+}
+
+.mirrorOuter {
+    border: 1px solid black;
+    padding: 3px;
+    background-color: #BBBBBB;
+}
+
+.mirrorFlex {
+    background-color: #777777;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 70px;
+}
+
+.mirrorFlex div {
+    border: 1px solid black;
+    height: 20px;
+    width: 35px;
+}
+
+.mirrorOff {
+    background-color: red;
+    grid-column: 1;
+}
+
+.mirrorOn {
+    background-color: green;
+    grid-column: 2;
+}
+
+.objCount {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.concludeBtn {
+    width: 100%;
 }
 
 .colorContainer {
     margin-left: auto;
     display: flex;
     flex-direction: column;
+    background-color: white;
+    border: 1px solid black;
+    padding: 5px;
 }
 
 .colorPicker {
@@ -83,13 +289,14 @@
 #colorList {
     display: grid;
     grid-template-columns: auto auto;
-    height: 46px;
+    height: 47px;
     width: auto;
     background-color: white;
     border: 1px solid black;
     gap: 0;
     padding: 0;
     margin: 3px;
+    margin-top: 5px;
 }
 
 .selectColors {
@@ -97,6 +304,15 @@
     margin-left: 3px;
     display: flex;
     justify-content: space-between;
+    height: 18px;
+}
+
+.bgArea {
+    display: grid;
+    grid-template-columns: auto 19px;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
 }
 
 .colorArrows {
@@ -111,7 +327,7 @@
 .up {
     width: 0;
     height: 0;
-    border-bottom: 12px solid black;
+    border-bottom: 10px solid black;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
 }
@@ -119,20 +335,20 @@
 .down {
     width: 0;
     height: 0;
-    border-top: 12px solid black;
+    border-top: 10px solid black;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent; 
 }
 
 .inactiveUp {
-    border-bottom: 12px solid white;
+    border-bottom: 10px solid white;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
     pointer-events: none;
 }
 
 .inactiveDown {
-    border-top: 12px solid white;
+    border-top: 10px solid white;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
     pointer-events: none;
@@ -166,19 +382,40 @@
 
 #bgColor {
     background-color: white;
-    position: relative;
 }
 
 #bgColor:active {
-    transform: scale(1);
+    transform: none;
 }
 
 .buttonSelected {
     border: 2px solid red;
 }
 
+.buttonSelected2 {
+    border: 2px solid red;
+    margin-top: -1px;
+    margin-left: 0px;
+    margin-bottom: 1px;
+}
+
 .inactiveBtn {
     filter: brightness(0.7);
+}
+
+.inactiveBtn:hover {
+    filter: brightness(0.7);
+}
+
+.inactiveBtn:active {
+    filter: brightness(0.7);
+}
+
+.letterOptionsGrid {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    align-items: center;
 }
 
 .letterMessage {
@@ -187,15 +424,17 @@
     padding-left: 2px;
     padding-right: 2px;
     display: inline-block;
-    min-width: 105px;
+    min-width: 130px;
     text-align: center;
     pointer-events: none;
     user-select: none;
+    font-size: 15px;
 }
 
 .alphabetAndFont {
     display: flex;
     margin: 3px;
+    justify-content: space-between;
 }
 
 .letterOptions {
@@ -203,28 +442,86 @@
     margin: 3px;
 }
 
+.triang {
+    margin: 3px;
+}
+
 .back {
     width: 0;
     height: 0;
-    border-right: 12px solid black;
+    border-right: 10px solid black;
     border-top: 6px solid transparent;
     border-bottom: 6px solid transparent;
+
 }
 
 .forward {
     width: 0;
     height: 0;
-    border-left: 12px solid black;
+    border-left: 10px solid black;
     border-top: 6px solid transparent;
     border-bottom: 6px solid transparent;
+
 }
 
-.triang {
-    margin: 3px;
+.replaceOps {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
 }
 
-.triang:active {
-    transform: scale(0.8);
+.letterButton {
+    padding-top: 12px;
+    padding-bottom: 11px;
+    width: 52px;
+    height: fit-content;
+}
+
+.v2 {
+    padding-bottom: 2px;
+    width: 52px;
+}
+
+.g2 {
+    margin: 0px 0px 0px 5px;
+}
+
+.fontAllGrid {
+    display: grid;
+    grid-template-columns: 10px 15px 15px;
+    transform: rotate(30deg);
+    pointer-events: none;
+}
+
+.buttonPart1 {
+    display: flex;
+    transform: rotate(-60deg);
+    gap: 0px;
+    
+}
+
+.buttonPart1 div {
+    transform: rotate(30deg);
+}
+
+.arrowButton {
+    transform: scale(1, -1) rotate(30deg);
+}
+
+.b2 {
+    margin: 10px 0px 0px -10px;
+}
+
+.letter1 {
+    margin: 2px 0px 0px -6px;
+}
+
+.difFont {
+    font-size: 18px;
+    font-family:'Courier New', Courier, monospace;
+    margin: 0px -10px 0px -7px;
 }
 
 #alphabet {
@@ -232,6 +529,20 @@
     padding: 5px;
     border: 1px solid black;
     margin-top: auto;
+    display: grid;
+    grid-template-columns: repeat(17, 20px);
+    grid-template-rows: repeat(8, 25px);
+    gap: 2px;
+    text-align: center;
+}
+
+#alphabet div {
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.preview {
+    user-select: none;
 }
 
 .preview2, .element {
@@ -259,8 +570,9 @@
     background-color: white;
     border: 1px solid black;
     padding: 3px;
-    max-width: 200px;
-    font-size: 12px;
+    max-width: 250px;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
     position: fixed;
     pointer-events: none;
     white-space: pre-line;
@@ -290,8 +602,8 @@
     border-radius: 10px;
     top: 50%;
     left: 50%;
-    height: 50%;
-    width: 50%;
+    height: 60%;
+    width: 60%;
     transform: translate(-50%, -50%);
     padding: 20px;
     align-items: center;
@@ -352,6 +664,7 @@
     border-radius: 5px;
     width: 100%;
     box-sizing: border-box;
+    text-align: center;
 }
 
 .smaller {
@@ -362,6 +675,10 @@
 .concludeButtons:hover {
     cursor: pointer;
     filter: brightness(0.9);
+}
+
+.concludeButtons:active {
+    filter: brightness(0.7);
 }
 
 .okButton {
@@ -382,6 +699,10 @@
 .okButton:hover {
     cursor: pointer;
     filter: brightness(0.9);
+}
+
+.okButton:active {
+    filter: brightness(0.7);
 }
 
 .backButton {
@@ -405,6 +726,10 @@
     filter: brightness(0.9);
 }
 
+.backButton:active {
+    filter: brightness(0.7);
+}
+
 .backMenuButton {
     border: 2px solid black;
     background-color: white;
@@ -421,6 +746,10 @@
 .backMenuButton:hover {
     cursor: pointer;
     filter: brightness(0.9);
+}
+
+.backMenuButton:active {
+    filter: brightness(0.7);
 }
 
 .form {
