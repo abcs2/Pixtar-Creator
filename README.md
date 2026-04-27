@@ -39,3 +39,14 @@ O editor será implementado em JavaScript, e as funcionalidades do site em Pytho
 ![backlog jira](zbacklogjira2.png)
 
 ![issue](zbug2.png)
+
+### Entrega 3
+
+[Link do Jira](https://pixar-creator.atlassian.net/jira/software/projects/SCRUM/boards/1) |
+[Vídeo histórias 2 e 3 implementadas](https://www.youtube.com/watch?v=H0S5Usmd4M8)
+
+![quadro jira](zquadrojira3.png)
+
+![backlog jira](zbacklogjira3.png)
+
+![issue](zbug3.png)

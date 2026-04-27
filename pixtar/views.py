@@ -65,7 +65,7 @@ class RejectedView(UserPassesTestMixin, View):
         contexto = {'imagens': ultimas_imagens}
         return render(request, 'pixtar/rejected.html', contexto)
     
-class ExpositionView(View):
+class GalleryView(View):
     def get(self, request):
         ultimas_imagens = sharedImage.objects.filter(exposto=True).order_by('-data_julgamento')
 
@@ -77,7 +77,7 @@ class ExpositionView(View):
                 imagem.login = False
 
         contexto = {'imagens': ultimas_imagens}
-        return render(request, 'pixtar/exposition.html', contexto)
+        return render(request, 'pixtar/gallery.html', contexto)
     
 class RegisterView(View):
     def get(self, request):
@@ -136,6 +136,11 @@ def salvar(request):
         qtdCores = int(request.POST.get('qtdCores', 0))
         estado = request.POST.get('estado', '')
 
+        if request.user.is_authenticated:
+            usuario = request.user
+        else:
+            usuario = None
+
         imagem = sharedImage.objects.create(
             titulo = titulo,
             autor = autor,
@@ -145,7 +150,7 @@ def salvar(request):
             qtdCores = qtdCores,
             estado = estado,
             paraAprovar = True,
-            user = request.user
+            user = usuario
         )
         return JsonResponse({'success': True, 'id': imagem.id})
     return JsonResponse({'success': False})

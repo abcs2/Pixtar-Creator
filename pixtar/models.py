@@ -19,7 +19,7 @@ class userImage(Imagem):
 
         
 class sharedImage(Imagem):
-    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
 
     titulo = models.CharField(max_length=15, null=False, default='Untitled')
     autor = models.CharField(max_length=20, null=False, default='Anonymous')

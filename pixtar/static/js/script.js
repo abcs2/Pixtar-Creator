@@ -1240,7 +1240,7 @@ function addElEvents(el) {
     el.addEventListener('mousedown', function(e) {
         if (!e.shiftKey) {
             const colorEl = getColorFromMask(e);
-            if (colorEl && selectionList.includes(colorEl)) {
+            if (colorEl) {
                 startDrag(e);
             }
         }
@@ -1708,8 +1708,8 @@ function startDragSelection(e) {
 function dragSelection(e) {
     e.preventDefault();
     let x = e.clientX - canvasRect.left;
-    if (x < 1) x = 1;
-    else if (x > canvasRect.width - 1) x = canvasRect.width - 1;
+    if (x < 2) x = 2;
+    else if (x > canvasRect.width - 1.5) x = canvasRect.width - 1.5;
     let y = e.clientY - canvasRect.top;
     if (y < 2) y = 2;
     else if (y > canvasRect.height - 2) y = canvasRect.height - 2;
@@ -1772,7 +1772,6 @@ function endDragSelection() {
 
     deselect();
     foundEls.forEach(el => {
-        console.log(el.textContent);
         const rect = el.getBoundingClientRect();
 
         if (rect.right >= (left + canvasRect.left) && rect.left <= (left + width + canvasRect.left) && rect.bottom >= (top + canvasRect.top) && rect.top <= (top + height + canvasRect.top)) {
@@ -1854,7 +1853,7 @@ function startDrag(e) {
     maybeSelect = [];
     removeInfoboxSelection();
 
-    if (e.currentTarget.dataset.mirrorId) {
+    if (e.currentTarget.dataset.mirrorId && !selectionList.includes(e.currentTarget)) {
         const pair = findMirror(e.currentTarget);
         if (pair && selectionList.includes(pair)) {
             const pairList = [];

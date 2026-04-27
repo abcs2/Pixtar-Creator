@@ -5,7 +5,7 @@
 <div class="menuButtons">
     <div class="topButtons">
         <a class="linkButton editorButton" href="{% url 'pixtar:editor' %}">Create image</a>
-        <a class="linkButton" href="{% url 'pixtar:exposition' %}">View gallery</a>
+        <a class="linkButton" href="{% url 'pixtar:gallery' %}">View gallery</a>
     </div>
     {% if user.is_authenticated %}
         <div>
@@ -13,7 +13,7 @@
             User: {{ user.username }}<br>
             Id: {{ user.id }}<br><br>
             <div class="userArea">
-                <a class="linkButton" href="{% url 'pixtar:exposition' %}">Your images</a>
+                <a class="linkButton" href="{% url 'pixtar:gallery' %}">Your images</a>
                 {% if user.is_staff %}
                     <a class="linkButton" href="{% url 'pixtar:approve' %}">Approve images ({{ approveCount }})</a>
                 {% endif %}

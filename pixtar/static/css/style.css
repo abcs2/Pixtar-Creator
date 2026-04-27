@@ -60,9 +60,9 @@ button:active {
 }
 
 .bottomOps {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto auto;
     justify-content: space-between;
-    align-items: flex-end;
 }
 
 .upperOps {
@@ -84,7 +84,6 @@ button:active {
     margin-bottom: 15px;
     display: flex;
     justify-content: space-between;
-
 }
 
 .modifierCage {
@@ -108,6 +107,13 @@ button:active {
 .modifierOptions {
     display: flex;
     gap: 4px;
+}
+
+.leftSide {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }
 
 .transformOpsFlex {
@@ -169,7 +175,7 @@ button:active {
 
 .sizeMove {
     display: flex;
-    gap: 30px;
+    gap: 28px;
 }
 
 .sizeFlex {
@@ -240,8 +246,6 @@ button:active {
 }
 
 .objCount {
-    margin-top: 15px;
-    margin-bottom: 10px;
     font-family: Arial, Helvetica, sans-serif;
 }
 

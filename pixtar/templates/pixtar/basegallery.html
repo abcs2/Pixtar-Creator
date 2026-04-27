@@ -53,6 +53,7 @@
             let judgeAction = '';
 
             let listSize = 0;
+            let sectionEmpty = false;
 
             const titleArea = document.getElementById('title');
             const authorArea = document.getElementById('author');
@@ -143,6 +144,14 @@
                     el.style.transform = `translate(-50%, -50%) rotate(${rotation}deg) scale(${scaleX}, ${scaleY})`;
                 });
             });
+            if (likeCounter && listSize === 0) {
+                const emptyMessage = document.querySelector('.sectionEmpty');
+                emptyMessage.classList.remove('hidden');
+                emptyMessage.textContent = 'No images on the gallery.';
+
+                sectionEmpty = true;
+            }
+
             document.querySelectorAll('.block').forEach(block => {
                 block.addEventListener('click', openInfo)
             })
@@ -258,7 +267,7 @@
                 .then(data => {
                     if (data.success) {
                         if (action === 'approve') {
-                            openPopup("Image approved. It will now be displayed in the exposition.");
+                            openPopup("Image approved. It will now be displayed in the gallery.");
                         }
                         else if (action === 'reject') {
                             openPopup("Image removed. It will appear in the Rejected tab and be deleted in 2 days.");
@@ -266,16 +275,17 @@
 
                         document.querySelector(`[data-id="${currentImageId}"]`).remove();
                         listSize--;
+                        if (likeCounter) updateLikesSort();
                         if (listSize === 0) {
-                            const el = document.createElement('h2');
-                            if (!timeLeft && !likeCounter)
-                                el.textContent = 'No images to be approved.';
-                            else if (timeLeft)
-                                el.textContent = 'No rejected images.';
-                            else if (likeCounter)
-                                el.textContent = 'No images on the gallery.';
+                            if (!likeCounter) {
+                                const el = document.createElement('h2');
+                                if (!timeLeft && !likeCounter)
+                                    el.textContent = 'No images to be approved.';
+                                else if (timeLeft)
+                                    el.textContent = 'No rejected images.';
 
-                            document.querySelector('.imageListContainer').appendChild(el);
+                                document.querySelector('.imageListContainer').appendChild(el);
+                            }
                         }
                     }
                     else {
@@ -304,10 +314,18 @@
                         if (data.liked) {
                             likeBtn.classList.add('liked');
                             block.dataset.liked = 'True';
+                            if (sortUserLikes && sortUserLikes.classList.contains('selected')) {
+                                block.classList.remove('hidden');
+                                updateLikesSort();
+                            }
                         }
                         else {
                             likeBtn.classList.remove('liked');
                             block.dataset.liked = 'False';
+                            if (sortUserLikes && sortUserLikes.classList.contains('selected')) {
+                                block.classList.add('hidden');
+                                updateLikesSort();
+                            }
                         }
                     }
                 });
@@ -439,6 +457,7 @@
                     sortUserImages.classList.remove('selected');
                     galleryFilter('all');
                 }
+                updateLikesSort();
             }
 
             function sortByUserLikes() {
@@ -452,6 +471,7 @@
                     sortUserLikes.classList.remove('selected');
                     galleryFilter('all');
                 }
+                updateLikesSort();
             }
 
             function galleryFilter(op) {
@@ -473,6 +493,29 @@
                     blocks.forEach(block => {
                         block.classList.remove('hidden');
                     });
+                }
+            }
+
+            function updateLikesSort() {
+                const hiddenSize = [...document.querySelectorAll('.block.hidden')].length;
+                const emptyMessage = document.querySelector('.sectionEmpty');
+
+                if (hiddenSize === listSize) {
+                    emptyMessage.classList.remove('hidden');
+
+                    if (sortUserImages && sortUserImages.classList.contains('selected'))
+                        emptyMessage.textContent = 'No images shared by you.';
+                    else if (sortUserLikes &&sortUserLikes.classList.contains('selected'))
+                        emptyMessage.textContent = 'No liked images.';
+                    else
+                        emptyMessage.textContent = 'No images on the gallery.';
+
+                    document.querySelector('.imageListContainer').appendChild(emptyMessage);
+                    sectionEmpty = true;
+                }
+                else if (sectionEmpty) {
+                    emptyMessage.classList.add('hidden');
+                    sectionEmpty = false;
                 }
             }
         </script>

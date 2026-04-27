@@ -315,6 +315,8 @@
 
 .selected {
     border: 3px solid black;
+    margin: -1px;
+    margin-right: 0px;
 }
 
 .pageTitle {
