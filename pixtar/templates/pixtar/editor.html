@@ -12,13 +12,18 @@
         <div id="status" class="hidden"
             data-login = "{{ status.login }}"
             data-img-id = "{{ status.imgId }}"
-            data-created = "{{ status.created }}">
+            data-created = "{{ status.created }}"
+            data-state = "{{ status.state }}">
         </div>
 
         <div class="all">
             <div id="ops">
                 <div class="upperOps">
-                    <a href="{% url 'pixtar:index' %}"><button type="button" id="back" data-message="Go back to the main menu.">←</button></a>
+                    {% if status.created %}
+                        <a href="{% url 'pixtar:userImages' %}"><button type="button" id="back" data-message="Go back your images.">←</button></a>
+                    {% else %}
+                        <a href="{% url 'pixtar:index' %}"><button type="button" id="back" data-message="Go back to the main menu.">←</button></a>
+                    {% endif %}
                     <div class="upperRight">
                         <div>
                             <button type="button" id="clear" data-message="Clear the canvas.">clear</button>
@@ -64,14 +69,14 @@
                     <div class="leftSide">
                         <div class="transformOpsFlex">
                             <div class="flipFlex">
-                                <button type="button" id="flipV" data-message="Flip the selected object vertically.\nKeyboard: C">
+                                <button type="button" id="flipV" data-message="Flip the selected object vertically.">
                                     <div class="flipVGrid">
                                         <div class="ogA">A</div>
                                         <div class="mirrorLine">|</div>
                                         <div class="mirroredA">A</div>
                                     </div>
                                 </button>
-                                <button type="button" id="flipH" data-message="Flip the selected object horizontally.\nKeyboard: X">
+                                <button type="button" id="flipH" data-message="Flip the selected object horizontally.">
                                     <div class="flipHGrid">
                                         <div>B</div>
                                         <div class="mirrorLineB">|</div>

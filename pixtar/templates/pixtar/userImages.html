@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block content %}
-<h2 class="sectionEmpty hidden"></h2>
 {% if imagens %}
     <div class="imageList">
         {% for imagem in imagens %}
@@ -23,6 +22,8 @@
             </div>
         {% endfor %}
     </div>
+{% else %}
+    <h2>No images created.</h2>
 {% endif %}
 {% endblock %}
 

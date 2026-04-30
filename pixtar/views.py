@@ -29,16 +29,31 @@ class MainView(View):
 
 class EditorView(View):
     def get(self, request):
-        status = {'login': False, 'imgId': 0, 'created': False}
-        if request.user.is_authenticated:
-            status['login'] = True
-            status['imgId'] = 0          #Check if request comes from main page or from edit button
-            status['created'] = False    #Check if request comes from main page or from edit button
-        else:
-            status['login'] = False
-            status['imgId'] = 0
-            status['created'] = False
+        imgId = request.GET.get('imgId')
+        status = {}
 
+        # Acesso por editar imagem do usuário
+        if imgId:
+            try:
+                imgId = int(imgId)
+            except (ValueError, TypeError):
+                return redirect('pixtar:approve')
+            
+            if request.user.is_authenticated == False:
+                return redirect('pixtar:reject')
+
+            if userImage.objects.filter(user=request.user, id=imgId).exists():
+                image = userImage.objects.get(user=request.user, id=imgId)
+                status = {'login': True, 'imgId': imgId, 'created': True, 'state': image.estado}
+                return render(request, 'pixtar/editor.html', {'status': status})
+            
+            return redirect('pixtar:gallery')
+            
+        # Acesso pela página de início
+        if request.user.is_authenticated:
+            status = {'login': True, 'imgId': 0, 'created': False, 'state': ''}
+        else:
+            status = {'login': False, 'imgId': 0, 'created': False, 'state': ''}
         return render(request, 'pixtar/editor.html', {'status': status})
 
 class ApproveView(UserPassesTestMixin, View):
@@ -263,6 +278,20 @@ def saveToUser(request):
                 date_saved = timezone.now()
             )
         return JsonResponse({'success': True, 'id': image.id})
+    return JsonResponse({'success': False})
+
+@login_required
+def delete(request):
+    if request.method == 'POST':
+        imageId = request.POST.get('id')
+
+        image = userImage.objects.get(user=request.user, id=imageId)
+
+        if image:
+            image.delete()
+            return JsonResponse({'success': True})
+        
+        return JsonResponse({'success': False})
     return JsonResponse({'success': False})
 
 def eraseRejected():

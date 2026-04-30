@@ -353,8 +353,8 @@ window.addEventListener('keydown', (event) => {
         case 'e': rotate(modifierRotate); keysState(); break;
         case 'r': stretch(-modifierStretch); keysState(); break;
         case 't': stretch(modifierStretch); keysState(); break;
-        case 'x': flip(-1, 1); keysState(); break;
-        case 'c': flip(1, -1); keysState(); break;
+        // case 'x': flip(-1, 1); keysState(); break;
+        // case 'c': flip(1, -1); keysState(); break;
         /* --- */
         case 'control': changeModifier(null); break;
         case 'g': changeAlphabet(1); break;
@@ -581,6 +581,10 @@ function updatePickersRGBtoHSV() {
 
 /* --- INITIALIZATION --- */
 
+let alphabetCount = 0
+let fontCount = 0;
+let colorCount = 0;
+
 updateSVRectangle(0);
 
 alphabetLvl--;
@@ -608,7 +612,7 @@ if (imgStatus.dataset.login === 'False') {
     }
 }
 else if (imgStatus.dataset.created === 'True') {
-    // ...
+    loadState(JSON.parse(imgStatus.dataset.state));
 }
 
 saveState();
@@ -616,10 +620,6 @@ undoBtn.classList.add('inactiveBtn');
 redoBtn.classList.add('inactiveBtn');
 
 /* ---------------------- */
-
-let alphabetCount = 0
-let fontCount = 0;
-let colorCount = 0;
 
 function saveToBase() {
     const state = {
@@ -866,6 +866,10 @@ function saveUserImage(state) {
 
         state.width = canvas.offsetWidth;
         state.height = canvas.offsetHeight;
+
+        getAlphabetCount();
+        getFontCount();
+        getColorCount();
         
         const stateJSON = JSON.stringify(state);
 

@@ -88,11 +88,15 @@
 
             const timeLeft = document.getElementById('timeLeft');
 
+            const editBtn = document.getElementById('edit');
+            const deleteBtn = document.getElementById('delete');
+
             if (likeBtn)
                 likeBtn.addEventListener('click', likeImage);
 
             if (approveBtn) approveBtn.addEventListener('click', () => confirmJudge('approve'));
             if (rejectBtn) rejectBtn.addEventListener('click', () => confirmJudge('reject'));
+            if (deleteBtn) deleteBtn.addEventListener('click', () => confirmJudge('delete'));
             confirmBtn.addEventListener('click', () => judge(judgeAction));
 
             cancelBtn.addEventListener('click', closeConfirmPopup);
@@ -106,6 +110,13 @@
             if (sortUserImages) {
                 sortUserImages.addEventListener('click', sortByUserImages);
                 sortUserLikes.addEventListener('click', sortByUserLikes);
+            }
+
+            if (editBtn) {
+                editBtn.addEventListener('click', () => {
+                    if (currentImageId)
+                        window.location.href = `/editor/?imgId=${currentImageId}`;
+                });
             }
 
             document.querySelectorAll(".previewImage").forEach(div => {
@@ -234,14 +245,21 @@
             function closeInfo() {
                 overlay.classList.add('hidden');
                 infoScreen.classList.add('hidden');
+                currentImageId = null;
             }
             
             function confirmJudge(action) {
                 let message;
-                if (action === 'approve')
-                    message = 'Are you sure you want to approve this image?';
-                else if (action === 'reject')
-                    message = 'Are you sure you want to reject this image?';
+                switch(action) {
+                    case 'approve':
+                        message = 'Are you sure you want to approve this image?';
+                        break;
+                    case 'reject':
+                        message = 'Are you sure you want to reject this image?';
+                        break;
+                    case 'delete':
+                        message = 'Are you sure you want to delete this image?';
+                }
 
                 judgeAction = action;
 
@@ -249,7 +267,10 @@
             }
 
             function judge(action) {
-                closeConfirmPopup();
+                if (action === 'delete') {
+                    deleteImage();
+                    return;
+                }
                 const formData = new FormData();
                 formData.append('id', currentImageId);
                 formData.append('action', action);
@@ -263,6 +284,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
+                    closeConfirmPopup();
                     if (data.success) {
                         if (action === 'approve') {
                             openPopup("Image approved. It will now be displayed in the gallery.");
@@ -325,6 +347,38 @@
                                 updateLikesSort();
                             }
                         }
+                    }
+                });
+            }
+
+            function deleteImage() {
+                const formData = new FormData();
+                formData.append('id', currentImageId);
+
+                fetch('/delete/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getTokenFromCookies('csrftoken')
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    closeConfirmPopup();
+                    if (data.success) {
+                        openPopup("Image deleted.");
+                        const block = document.querySelector(`[data-id="${currentImageId}"]`);
+                        block.remove();
+                        listSize--;
+                        if (listSize === 0) {
+                            const el = document.createElement('h2');
+                            el.textContent = 'No images created.';
+
+                            document.querySelector('.imageListContainer').appendChild(el);
+                        }
+                    }
+                    else {
+                        openPopup("Failed to delete image.");
                     }
                 });
             }

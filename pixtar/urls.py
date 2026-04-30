@@ -8,6 +8,7 @@ urlpatterns = [
     path('saveToUser/', views.saveToUser, name='saveToUser'),
     path('salvar/', views.salvar, name='salvar'),
     path('images/', views.UserImagesView.as_view(), name='userImages'),
+    path('delete/', views.delete, name='delete'),
     path('gallery/', views.GalleryView.as_view(), name='gallery'),
     path('like/', views.like, name='like'),
     path('approve/', views.ApproveView.as_view(), name='approve'),

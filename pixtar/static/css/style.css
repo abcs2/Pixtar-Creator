@@ -400,7 +400,11 @@ button:active {
     border: 2px solid red;
     margin-top: -1px;
     margin-left: 0px;
-    margin-bottom: 1px;
+    margin-bottom: 0px;
+}
+
+.buttonSelected2 > div {
+    margin-left: 4.5px;
 }
 
 .inactiveBtn {
@@ -497,13 +501,14 @@ button:active {
     grid-template-columns: 10px 15px 15px;
     transform: rotate(30deg);
     pointer-events: none;
+    height: fit-content;
+    width: fit-content;
 }
 
 .buttonPart1 {
     display: flex;
     transform: rotate(-60deg);
     gap: 0px;
-    
 }
 
 .buttonPart1 div {
