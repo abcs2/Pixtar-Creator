@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 
 from django.http import HttpResponse, Http404, JsonResponse
 
-from .models import Imagem, sharedImage, Eraser
+from .models import Imagem, userImage, sharedImage, Eraser
 
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -29,7 +29,17 @@ class MainView(View):
 
 class EditorView(View):
     def get(self, request):
-        return render(request, 'pixtar/editor.html')
+        status = {'login': False, 'imgId': 0, 'created': False}
+        if request.user.is_authenticated:
+            status['login'] = True
+            status['imgId'] = 0          #Check if request comes from main page or from edit button
+            status['created'] = False    #Check if request comes from main page or from edit button
+        else:
+            status['login'] = False
+            status['imgId'] = 0
+            status['created'] = False
+
+        return render(request, 'pixtar/editor.html', {'status': status})
 
 class ApproveView(UserPassesTestMixin, View):
     def test_func(self):
@@ -78,6 +88,19 @@ class GalleryView(View):
 
         contexto = {'imagens': ultimas_imagens}
         return render(request, 'pixtar/gallery.html', contexto)
+    
+class UserImagesView(UserPassesTestMixin, View):
+    def test_func(self):
+        return self.request.user.is_authenticated
+    
+    def handle_no_permission(self):
+        return redirect('pixtar:index')
+    
+    def get(self, request):
+        ultimas_imagens = userImage.objects.filter(user=request.user).order_by('-date_saved')
+        contexto = {'imagens': ultimas_imagens}
+        return render(request, 'pixtar/userImages.html', contexto)
+    
     
 class RegisterView(View):
     def get(self, request):
@@ -207,6 +230,39 @@ def like(request):
 
             return JsonResponse({'success': True, 'liked': liked, 'likeCount': image.qtdLikes})
         return JsonResponse({'success': False})
+    return JsonResponse({'success': False})
+
+@login_required
+def saveToUser(request):
+    if request.method == 'POST':
+        qtdObjetos = int(request.POST.get('qtdObjetos', 0))
+        qtdAlfabetos = int(request.POST.get('qtdAlfabetos', 0))
+        qtdFontes = int(request.POST.get('qtdFontes', 0))
+        qtdCores = int(request.POST.get('qtdCores', 0))
+        estado = request.POST.get('estado', '')
+
+        alreadyCreated = request.POST.get('alreadyCreated') == 'True'
+        imgId = int(request.POST.get('imgId', 0))
+
+        if alreadyCreated:
+            image = userImage.objects.get(user=request.user, id=imgId)
+            image.qtdObjetos = qtdObjetos
+            image.qtdAlfabetos = qtdAlfabetos
+            image.qtdFontes = qtdFontes
+            image.qtdCores = qtdCores
+            image.estado = estado
+            image.save()
+        else:
+            image = userImage.objects.create(
+                qtdObjetos = qtdObjetos,
+                qtdAlfabetos = qtdAlfabetos,
+                qtdFontes = qtdFontes,
+                qtdCores = qtdCores,
+                estado = estado,
+                user = request.user,
+                date_saved = timezone.now()
+            )
+        return JsonResponse({'success': True, 'id': image.id})
     return JsonResponse({'success': False})
 
 def eraseRejected():

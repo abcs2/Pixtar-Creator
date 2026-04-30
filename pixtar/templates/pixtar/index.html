@@ -13,7 +13,7 @@
             User: {{ user.username }}<br>
             Id: {{ user.id }}<br><br>
             <div class="userArea">
-                <a class="linkButton" href="{% url 'pixtar:gallery' %}">Your images</a>
+                <a class="linkButton" href="{% url 'pixtar:userImages' %}">Your images</a>
                 {% if user.is_staff %}
                     <a class="linkButton" href="{% url 'pixtar:approve' %}">Approve images ({{ approveCount }})</a>
                 {% endif %}

@@ -1,53 +1,41 @@
 {% extends 'pixtar/basegallery.html' %}
 
 {% block header %}
-<div class="pageTitle">Rejected images</div>
-<a href="{% url 'pixtar:approve' %}"><button type="button" class="linkButton selected">Approve images</button></a>
+<div class="pageTitle">Your Images</div>
 {% endblock %}
 
 {% block content %}
+<h2 class="sectionEmpty hidden"></h2>
 {% if imagens %}
     <div class="imageList">
         {% for imagem in imagens %}
             <div class="block"
             data-id="{{ imagem.id }}"
-            data-title="{{ imagem.titulo }}"
-            data-author="{{ imagem.autor }}"
             data-obj-count="{{ imagem.qtdObjetos }}"
             data-alphabet-count="{{ imagem.qtdAlfabetos }}"
             data-font-count="{{ imagem.qtdFontes }}"
-            data-color-count="{{ imagem.qtdCores }}"
-            data-user-judge= "{{ imagem.julgado_por }}"
-            data-time-left= "{{ imagem.timeLeft }}">
+            data-color-count="{{ imagem.qtdCores }}">
                 <div class="previewImage">
                     <script type="application/json" class="estadoJSON">
                         {{ imagem.estado|safe }}
                     </script>
                 </div>
-                <div class="imgDescription">
-                    <span class="title">{{ imagem.titulo }}</span><br>by {{ imagem.autor }}
-                </div>
             </div>
         {% endfor %}
     </div>
-{% else %}
-    <h2>No rejected images.</h2>
 {% endif %}
 {% endblock %}
 
 
 {% block info %}
-<div class="titleAuthor">
-    <span id="title"></span><br>
-    <small>By <span id="author"></span></small><br>
-</div>
 <div>
     Objects: <span id="objCount2"></span><br>
     Alphabets: <span id="alphabetCount"></span><br>
     Fonts: <span id="fontCount"></span><br>
     Colors: <span id="colorCount"></span><br>
 </div>
-<div><span class="clock">⏱</span> <span id="timeLeft"></span></div>
-<div>Rejected by: <span id="userJudge"></span></div>
-<button type="button" class="concludeButtons" id="approve">Approve</button>
+<div class="bottomButtonsFlex">
+    <button type="button" class="concludeButtons" id="delete">Delete</button>
+    <button type="button" class="concludeButtons" id="edit">Edit</button>
+</div>
 {% endblock %}

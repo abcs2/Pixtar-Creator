@@ -15,7 +15,9 @@ class Imagem(models.Model):
 
 
 class userImage(Imagem):
-    userId = models.IntegerField(null=False)
+    user = models.ForeignKey(User, default=None, on_delete=models.CASCADE)
+
+    date_saved = models.DateTimeField(default=timezone.now)
 
         
 class sharedImage(Imagem):
@@ -33,7 +35,7 @@ class sharedImage(Imagem):
     julgado_por = models.CharField(blank=True, null=True, max_length=22)
 
     qtdLikes = models.IntegerField(default=0)
-    likes = models.ManyToManyField(User, related_name='likedImages', blank=True, null=True)
+    likes = models.ManyToManyField(User, related_name='likedImages', blank=True, null=True, default=None)
 
     def __str__(self):
         return '[' + str(self.id) + '] ' + self.titulo + ' by ' + self.autor

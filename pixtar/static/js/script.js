@@ -172,6 +172,10 @@ const infoBtn = document.getElementById('info');
 const backBtn = document.getElementById('back');
 const saveBtn = document.getElementById('save');
 
+
+const imgStatus = document.getElementById('status');
+
+
 window.addEventListener('beforeunload', saveState);
 
 document.addEventListener('wheel', e => {
@@ -590,17 +594,23 @@ canvas.style.backgroundColor = 'rgb(255, 255, 255)';
 bgColor.style.backgroundColor = 'rgb(255, 255, 255)';
 updateColorList();
 
-const loadedState = localStorage.getItem('savedState');
-if (loadedState) {
-    try {
-        loadState(JSON.parse(loadedState));
-        localStorage.clear();
-        localStorage.setItem('savedState', loadedState);
-    }
-    catch {
-        console.warn("Erro ao recarregar");
+if (imgStatus.dataset.login === 'False') {
+    const loadedState = localStorage.getItem('savedState');
+    if (loadedState) {
+        try {
+            loadState(JSON.parse(loadedState));
+            localStorage.clear();
+            localStorage.setItem('savedState', loadedState);
+        }
+        catch {
+            console.warn("Erro ao recarregar");
+        }
     }
 }
+else if (imgStatus.dataset.created === 'True') {
+    // ...
+}
+
 saveState();
 undoBtn.classList.add('inactiveBtn');
 redoBtn.classList.add('inactiveBtn');
@@ -755,29 +765,23 @@ function updateDownloadCanvas() {
 
 
     });
-    // console.log(downloadCanvas.width, downloadCanvas.height);
-    //     document.body.appendChild(downloadCanvas);
-    //     downloadCanvas.style.position = "absolute";
-    //     downloadCanvas.style.left = canvas.offsetLeft + "px";
-    //     downloadCanvas.style.top = canvas.offsetTop + "px";
-    //     downloadCanvas.style.opacity = "0.4";
-    //     downloadCanvas.style.pointerEvents = "none";
-    //     downloadCanvas.style.border = "1px solid red";
-    //     downloadCanvas.style.zIndex = 1000000;
+
     zIndexCounter = elements.length + 1;
 }
 
 /* --- UNDO / REDO ACTIONS --- */
 
 function saveState() {
+    removeSelectColor();
     const state = {
         html: canvas.innerHTML,
         color: canvas.style.backgroundColor,
         zIndex: zIndexCounter,
         mirrorId: mirrorIdCounter,
     }
+    returnSelectColor();
 
-    if (undoStack.length === 0) undoStack.push(JSON.parse(JSON.stringify(state)));
+    if (undoStack.length === 0) undoStack.push(state);
     else if (undoStack[undoStack.length - 1].html !== state.html || undoStack[undoStack.length - 1].color !== state.color) {
         undoStack.push(state);
         redoStack = [];
@@ -785,7 +789,7 @@ function saveState() {
         undoBtn.classList.remove('inactiveBtn');
         redoBtn.classList.add('inactiveBtn');
 
-        localStorage.setItem('savedState', JSON.stringify(state));
+        saveUserImage(state);
     }
 }
 
@@ -835,6 +839,8 @@ function loadState(state) {
     });
     updateColorList();
     maskDirty = true; 
+
+    saveUserImage(state);
 }
 
 function keysState() {
@@ -848,6 +854,49 @@ function keysState() {
         saveState();
         document.removeEventListener('keyup', keySave);
     });
+}
+
+
+function saveUserImage(state) {
+    if (imgStatus.dataset.login === 'False')
+        localStorage.setItem('savedState', JSON.stringify(state));
+
+    else if (imgStatus.dataset.login === 'True') {
+        if (state.html === '') return;
+
+        state.width = canvas.offsetWidth;
+        state.height = canvas.offsetHeight;
+        
+        const stateJSON = JSON.stringify(state);
+
+        const formData = new FormData();
+        formData.append('alreadyCreated', imgStatus.dataset.created);
+        formData.append('imgId', imgStatus.dataset.imgId);
+        formData.append('qtdObjetos', objCount);
+        formData.append('qtdAlfabetos', alphabetCount);
+        formData.append('qtdFontes', fontCount);
+        formData.append('qtdCores', colorCount);
+        formData.append('estado', stateJSON);
+
+        fetch('/saveToUser/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getTokenFromCookies('csrftoken')
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log("Success");
+                imgStatus.dataset.created = 'True';
+                imgStatus.dataset.imgId = data.id;
+            }
+            else {
+                console.log("Error");
+            }
+        });
+    }
 }
 
 /* --------------------------- */

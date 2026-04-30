@@ -369,3 +369,8 @@
 .clock {
     font-size: 30px;
 }
+
+.bottomButtonsFlex {
+    display: flex;
+    gap: 10px;
+}

@@ -26,10 +26,6 @@
             <div class="biggerImage"></div>
             <div class="concludeOps">
                 <div class="backButton" id="infoBack">→</div>
-                <div class="titleAuthor">
-                    <span id="title"></span><br>
-                    <small>By <span id="author"></span></small><br>
-                </div>
                 {% block info %}
                 {% endblock %}
             </div>
@@ -177,8 +173,10 @@
                     }, {once : true});
                 });
 
-                titleArea.textContent = block.dataset.title;
-                authorArea.textContent = block.dataset.author;
+                if (titleArea) {
+                    titleArea.textContent = block.dataset.title;
+                    authorArea.textContent = block.dataset.author;
+                }
 
                 objCount2.textContent = block.dataset.objCount;
                 alphabetCount.textContent = block.dataset.alphabetCount;

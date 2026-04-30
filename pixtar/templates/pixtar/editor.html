@@ -8,6 +8,13 @@
     </head>
     <body>
         {% csrf_token %}
+
+        <div id="status" class="hidden"
+            data-login = "{{ status.login }}"
+            data-img-id = "{{ status.imgId }}"
+            data-created = "{{ status.created }}">
+        </div>
+
         <div class="all">
             <div id="ops">
                 <div class="upperOps">
