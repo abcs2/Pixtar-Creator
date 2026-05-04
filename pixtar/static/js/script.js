@@ -862,7 +862,7 @@ function saveUserImage(state) {
         localStorage.setItem('savedState', JSON.stringify(state));
 
     else if (imgStatus.dataset.login === 'True') {
-        if (state.html === '') return;
+        if (canvas.innerHTML === '') return;
 
         state.width = canvas.offsetWidth;
         state.height = canvas.offsetHeight;
@@ -1163,16 +1163,21 @@ function displayMirrorMode() {
 }
 
 function changeMirrorMode() {
-    if (mirrorMode == 'ON') {
+    if (mirrorMode === 'ON') {
         if (selectionList.length !== 0 && mirrorSelectList) {
             selectionList.forEach(el => {
                 const pair = findMirror(el);
+                console.log(pair);
+                console.log(selectionList.includes(pair));
+                console.log("same: ", pair === el);
 
-                pair.classList.remove('selected');
-                delete el.dataset.mirrorId;
-                delete el.dataset.mirrorRole;
-                delete pair.dataset.mirrorId;
-                delete pair.dataset.mirrorRole;
+                if (pair) {
+                    pair.classList.remove('selected');
+                    delete el.dataset.mirrorId;
+                    delete el.dataset.mirrorRole;
+                    delete pair.dataset.mirrorId;
+                    delete pair.dataset.mirrorRole;
+                }
             });
             saveState();
         }
@@ -1195,7 +1200,12 @@ function changeMirrorMode() {
 }
 
 function findMirror(el) {
-    return [...canvas.querySelectorAll('.element')].find(p => p.dataset.mirrorId === el.dataset.mirrorId && p !== el);
+    for (const p of elements) {
+        if (p.dataset.mirrorId) {
+            if (p.dataset.mirrorId === el.dataset.mirrorId && p !== el)
+                return p;
+        }
+    }
 }
 
 function createMirrorPair(originalEl) {

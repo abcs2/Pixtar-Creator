@@ -178,6 +178,11 @@
     user-select: none;
 }
 
+.deleteButton {
+    width: 100px;
+    color: red;
+}
+
 .smaller {
     font-size: 15px;
     padding: 10px;

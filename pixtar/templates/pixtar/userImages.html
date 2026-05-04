@@ -2,6 +2,7 @@
 
 {% block header %}
 <div class="pageTitle">Your Images</div>
+<button type="button" class="linkButton selected" id="sortDate">Sort by date ▼</button>
 {% endblock %}
 
 {% block content %}
@@ -13,7 +14,8 @@
             data-obj-count="{{ imagem.qtdObjetos }}"
             data-alphabet-count="{{ imagem.qtdAlfabetos }}"
             data-font-count="{{ imagem.qtdFontes }}"
-            data-color-count="{{ imagem.qtdCores }}">
+            data-color-count="{{ imagem.qtdCores }}"
+            data-date="{{ imagem.date_saved|date:'c' }}">
                 <div class="previewImage">
                     <script type="application/json" class="estadoJSON">
                         {{ imagem.estado|safe }}
@@ -36,7 +38,7 @@
     Colors: <span id="colorCount"></span><br>
 </div>
 <div class="bottomButtonsFlex">
-    <button type="button" class="concludeButtons" id="delete">Delete</button>
+    <button type="button" class="concludeButtons deleteButton" id="delete">Delete</button>
     <button type="button" class="concludeButtons" id="edit">Edit</button>
 </div>
 {% endblock %}
