@@ -1,0 +1,17 @@
+{% extends "pixtar/baseModList.html" %}
+
+{% block header %}
+<div class="pageTitle">List of Moderators</div>
+<button type="button" class="linkButton selected" id="addMod">+ Add Moderator</button>
+{% endblock %}
+
+{% block content %}
+{% for mod in mods %}
+    <div>
+        {{ mod.username }} | id:{{ mod.id }}
+        {% if not mod.is_superuser %}
+        x
+        {% endif %}
+    </div>
+{% endfor %}
+{% endblock %}

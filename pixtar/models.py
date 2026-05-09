@@ -35,7 +35,7 @@ class sharedImage(Imagem):
     julgado_por = models.CharField(blank=True, null=True, max_length=22)
 
     qtdLikes = models.IntegerField(default=0)
-    likes = models.ManyToManyField(User, related_name='likedImages', blank=True, null=True, default=None)
+    likes = models.ManyToManyField(User, related_name='likedImages', blank=True, default=None)
 
     def __str__(self):
         return '[' + str(self.id) + '] ' + self.titulo + ' by ' + self.autor
@@ -44,6 +44,14 @@ class sharedImage(Imagem):
         if self.rejeitado:
             tempoLimite = self.data_julgamento + datetime.timedelta(days=5)
             return tempoLimite - timezone.now()
+
+class ModPerms(models.Model):
+    class Meta:
+        managed = False
+        default_permissions = ()
+        permissions = [
+            ('can_moderate', 'Can moderate'),
+        ]
         
 class Eraser(models.Model):
     lastErase = models.DateTimeField(null=True, blank=True)

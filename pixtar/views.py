@@ -6,7 +6,7 @@ from .models import Imagem, userImage, sharedImage, Eraser
 
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Permission
 from django.contrib.auth import authenticate, login, logout
 
 from django.views import View
@@ -21,7 +21,7 @@ class MainView(View):
     def get(self, request):
         eraseRejected()
         approveCount = 0
-        if request.user.is_staff:
+        if request.user.has_perm('pixtar.can_moderate'):
             approveCount = sharedImage.objects.filter(paraAprovar=True).count()
             if approveCount > 100:
                 approveCount = '100+'
@@ -58,7 +58,7 @@ class EditorView(View):
 
 class ApproveView(UserPassesTestMixin, View):
     def test_func(self):
-        return self.request.user.is_staff
+        return self.request.user.has_perm('pixtar.can_moderate')
     
     def handle_no_permission(self):
         return redirect('pixtar:index')
@@ -71,7 +71,7 @@ class ApproveView(UserPassesTestMixin, View):
     
 class RejectedView(UserPassesTestMixin, View):
     def test_func(self):
-        return self.request.user.is_staff
+        return self.request.user.has_perm('pixtar.can_moderate')
     
     def handle_no_permission(self):
         return redirect('pixtar:index')
@@ -115,6 +115,17 @@ class UserImagesView(UserPassesTestMixin, View):
         ultimas_imagens = userImage.objects.filter(user=request.user).order_by('-date_saved')
         contexto = {'imagens': ultimas_imagens}
         return render(request, 'pixtar/userImages.html', contexto)
+    
+class ModListView(UserPassesTestMixin, View):
+    def test_func(self):
+        return self.request.user.has_perm('pixtar.can_moderate')
+    
+    def handle_no_permission(self):
+        return redirect('pixtar:index')
+    
+    def get(self, request):
+        mods = User.objects.filter(user_permissions__codename='can_moderate')
+        return render(request, 'pixtar/modList.html', {'mods': mods})
     
     
 class RegisterView(View):
@@ -194,7 +205,7 @@ def salvar(request):
     return JsonResponse({'success': False})
 
 def staffEnter(user):
-    return user.is_staff
+    return user.has_perm('pixtar.can_moderate')
 
 @user_passes_test(staffEnter)
 def judge(request):
@@ -292,6 +303,52 @@ def delete(request):
             return JsonResponse({'success': True})
         
         return JsonResponse({'success': False})
+    return JsonResponse({'success': False})
+
+def searchUser(request):
+    if request.method == 'POST':
+        userId = request.POST.get('userId')
+
+        if userId == '':
+            return JsonResponse({'success': False, 'type': 'empty'})
+        
+        try:
+            userId = int(userId)
+        except (ValueError, TypeError):
+            return JsonResponse({'success': False, 'type': 'notFound'})
+        
+        if User.objects.filter(id=userId).exists() is False:
+            return JsonResponse({'success': False, 'type': 'notFound'})
+        
+        user = User.objects.get(id=userId)
+
+        if user.has_perm('pixtar.can_moderate'):
+            return JsonResponse({'success': False, 'type': 'alreadyMod', 'user': user.username})
+
+        return JsonResponse({'success': True, 'user': user.username})
+    return JsonResponse({'success': False, 'type': 'notFound'})
+
+def addMod(request):
+    if request.method == 'POST':
+        userId = request.POST.get('userId')
+
+        try:
+            userId = int(userId)
+        except (ValueError, TypeError):
+            return JsonResponse({'success': False})
+        
+        if User.objects.filter(id=userId).exists() is False:
+            return JsonResponse({'success': False})
+        
+        user = User.objects.get(id=userId)
+
+        if user.has_perm('pixtar.can_moderate'):
+            return JsonResponse({'success': False})
+        
+        perm = Permission.objects.get(codename='can_moderate')
+        user.user_permissions.add(perm)
+
+        return JsonResponse({'success': True, 'user': user.username})
     return JsonResponse({'success': False})
 
 def eraseRejected():

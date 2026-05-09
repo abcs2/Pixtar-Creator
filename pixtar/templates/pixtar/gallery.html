@@ -59,7 +59,7 @@
     <span class="heart" id="likeBtn">❤</span> <span id="likeCount"></span>
     <small><div id="errorMsg"></div></small>
 </div>
-{% if user.is_staff %}
+{% if perms.pixtar.can_moderate %}
     <div>Approved by: <span id="userJudge"></span></div>
     <button type="button" class="concludeButtons" id="reject">Remove from gallery</button>
 {% endif %}

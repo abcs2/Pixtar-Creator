@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <title>Pixtar</title>
+            <link rel="stylesheet" href="{% static 'css/gallery.css' %}">
+    </head>
+    <body>
+        {% csrf_token %}
+        <div class="all">
+            <div class="headerFlex">
+                <a href="{% url 'pixtar:index' %}"><button type="button" class="backMenuButton">←</button></a>
+                <div class="headerButtons">
+                    {% block header %}
+                    {% endblock %}
+                </div>
+            </div>
+            <div class="imageListContainer">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+
+        <div class="overlay hidden" id="overlay"></div>
+        <div class="popupSmall hidden" id="popupSearch">
+            <div class="backButton" id="back">→</div>
+            <div class="addModText">Add Moderator</div>
+            <input type="text" class="form" name="userId" placeholder="User Id" id='idForm'>
+            <button type="button" class="okButton" id="addOk">Add</button>
+        </div>
+        <div class="popupSmall hidden" id="confirmPopup">
+            <div class='popupMessage2'>
+                <div class="nameMessage" id="nameMessage"></div><br>
+                <div id="popupMessage1"></div>
+            </div>
+            <div class="confirmButtons">
+                <button type="button" class="confirmButton" id="confirmBtn">Yes</button>
+                <button type="button" class="confirmButton" id="cancelBtn">No</button>
+            </div>
+        </div>
+        <div class="overlay2 hidden" id="overlay2"></div>
+        <div class="popupSmall hidden" id="popupSmall">
+            <div class="popupMessage" id="popupMessage"></div>
+            <button type="button" class="okButton" id="ok">OK</button>
+        </div>
+
+        <script>
+            let actionHappened = false;
+            let currentAction = '';
+            let currentUser = '';
+
+            const overlay = document.getElementById('overlay');
+            const popupSearch = document.getElementById('popupSearch');
+            const addModBtn = document.getElementById('addMod');
+            const addBtn = document.getElementById('addOk'); 
+            const backButton = document.getElementById('back');
+            const idForm = document.getElementById('idForm');
+            const overlay2 = document.getElementById('overlay2');
+            const popupSmall = document.getElementById('popupSmall');
+            const popupMessage = document.getElementById('popupMessage');
+            const okBtn = document.getElementById('ok');
+            const confirmPopup = document.getElementById('confirmPopup');
+            const nameMessage = document.getElementById('nameMessage');
+            const popupMessage1 = document.getElementById('popupMessage1');
+            const confirmBtn = document.getElementById('confirmBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+
+            addModBtn.addEventListener('click', openAddPopup);
+            backButton.addEventListener('click', closeAddPopup);
+            addBtn.addEventListener('click', searchId);
+            okBtn.addEventListener('click', closePopup);
+            cancelBtn.addEventListener('click', closeConfirmPopup);
+            confirmBtn.addEventListener('click', () => {
+                switch (currentAction) {
+                    case 'addMod':
+                        addModerator();
+                        break;
+                    case 'removeMod':
+                        break;
+                }
+            });
+
+            function searchId() {
+                const formData = new FormData();
+                const userId = idForm.value;
+                formData.append('userId', userId);
+
+                fetch('/searchUser/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getTokenFromCookies('csrftoken')
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        currentAction = 'addMod';
+                        currentUser = userId;
+                        openConfirmPopup(data.user);
+                    }
+                    else {
+                        let message = '';
+                        switch (data.type) {
+                            case 'empty':
+                                message = 'Enter a user ID.';
+                                break;
+                            case 'notFound':
+                                message = 'An user with this ID was not found.';
+                                break;
+                            case 'alreadyMod':
+                                message = `${data.user} is already a moderator.`;
+                                break;
+                        }
+                        openPopup(message);
+                    }
+                });
+            }
+
+            function addModerator() {
+                const formData = new FormData();
+                formData.append('userId', currentUser);
+
+                fetch('/addMod/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getTokenFromCookies('csrftoken')
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        actionHappened = true;
+                        let message = `${data.user} was added as a moderator.`;
+                        openPopup(message);
+                    }
+                    else {
+                        let message = `Could not add moderator.`;
+                        openPopup(message);
+                    }
+                });
+            }
+
+            function getTokenFromCookies(name) {
+                let tokenValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+
+                    for (let cookie of cookies) {
+                        cookie = cookie.trim();
+                        if (cookie.startsWith(name + '=')) {
+                            tokenValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return tokenValue;
+            }
+
+            function openAddPopup() {
+                overlay.classList.remove('hidden');
+                popupSearch.classList.remove('hidden');
+            }
+
+            function closeAddPopup() {
+                overlay.classList.add('hidden');
+                popupSearch.classList.add('hidden');
+            }
+
+            function openConfirmPopup(username) {
+                nameMessage.textContent = username;
+                popupMessage1.textContent = `Are you sure you want to add ${username} as a moderator?`;
+                confirmPopup.classList.remove('hidden');
+            }
+
+            function closeConfirmPopup() {
+                confirmPopup.classList.add('hidden');
+            }
+
+            function openPopup(message) {
+                popupMessage.textContent = message;
+                popupSmall.classList.remove('hidden');
+            }
+
+            function closePopup() {
+                popupSmall.classList.add('hidden');
+
+                if (actionHappened) {
+                    closeConfirmPopup();
+                    closeAddPopup();
+                    actionHappened = false;
+                }
+            }
+        </script>
+    </body>
+</html>

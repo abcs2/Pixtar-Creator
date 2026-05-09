@@ -862,7 +862,7 @@ function saveUserImage(state) {
         localStorage.setItem('savedState', JSON.stringify(state));
 
     else if (imgStatus.dataset.login === 'True') {
-        if (canvas.innerHTML === '') return;
+        if (canvas.innerHTML === '' && imgStatus.dataset.created === 'False') return;
 
         state.width = canvas.offsetWidth;
         state.height = canvas.offsetHeight;

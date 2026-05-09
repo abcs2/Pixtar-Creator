@@ -130,6 +130,10 @@
     margin: 70px 30px 0 30px;
 }
 
+.popupMessage2 {
+    margin: 30px 30px 0 30px;
+}
+
 .biggerImage {
     position: relative;
     font-weight: bold;
@@ -378,4 +382,23 @@
 .bottomButtonsFlex {
     display: flex;
     gap: 10px;
+}
+
+.addModText {
+    text-align: left;
+    font-size: 40px;
+}
+
+.form {
+    margin: 5px 0 5px 0;
+    margin-top: 25px;
+    padding: 10px;
+    font-size: 20px;
+    border: 2px solid black;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.nameMessage {
+    font-size: 30px;
 }

@@ -14,12 +14,12 @@
             Id: {{ user.id }}<br><br>
             <div class="userArea">
                 <a class="linkButton" href="{% url 'pixtar:userImages' %}">Your images</a>
-                {% if user.is_staff %}
+                {% if perms.pixtar.can_moderate %}
                     <a class="linkButton" href="{% url 'pixtar:approve' %}">Approve images ({{ approveCount }})</a>
                 {% endif %}
                 <span>
-                    {% if user.is_staff %}
-                        <span class="logout"><a href="{% url 'pixtar:approve' %}">Mod list</a></span> | 
+                    {% if perms.pixtar.can_moderate %}
+                        <span class="logout"><a href="{% url 'pixtar:modList' %}">Mod list</a></span> | 
                     {% endif %}
                     <span class="logout"><a href="{% url 'pixtar:logout' %}">Logout</a></span>
                 </span>
