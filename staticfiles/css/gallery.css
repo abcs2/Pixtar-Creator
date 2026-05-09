@@ -1,0 +1,381 @@
+.all {
+    height: calc(100vh - 52px);
+    width: calc(100vw - 52px);
+    border: 3px solid black;
+    padding: 15px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: #EEEEEE;
+}
+
+.imageListContainer {
+    border: 3px solid black;
+    background-color: white;
+    margin: 0px 107px 0px 107px;
+    margin-top: auto;
+    margin-bottom: auto;
+    height: 100%;
+    overflow-y: scroll;
+    padding: 15px 40px 15px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.imageList {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    column-gap: 30px;
+    text-align: center;
+}
+
+.block {
+    cursor: pointer;
+    border: 3px solid black;
+    border-radius: 5px;
+    padding: 15px 20px 15px 20px;
+    background-color: #EEEEEE;
+}
+
+.imgDescription {
+    margin-top: 3px;
+}
+
+.title {
+    font-size: 24px;
+}
+
+.previewImage {
+    width: fit-content;
+    overflow: hidden;
+}
+
+.previewContent {
+    font-weight: bold;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    user-select: none;
+}
+
+.element {
+    position: absolute;
+    pointer-events: none;
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 100000;
+}
+
+.overlay2 {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 100002;
+}
+
+.popup {
+    background-color: #EEEEEE;
+    border: 5px solid black;
+    border-radius: 10px;
+    top: 50%;
+    left: 50%;
+    height: 60%;
+    width: 60%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    align-items: center;
+    display: flex;
+    gap: 20px;
+    position: fixed;
+    z-index: 100001;
+}
+
+.popupSmall {
+    background-color: white;
+    border: 5px solid black;
+    border-radius: 10px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    height: 35%;
+    width: 25%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+    font-size: 18px;
+    z-index: 100003;
+}
+
+.hidden {
+    display: none;
+}
+
+.popupMessage {
+    margin: 70px 30px 0 30px;
+}
+
+.biggerImage {
+    position: relative;
+    font-weight: bold;
+    overflow: hidden;
+    user-select: none;
+
+    cursor: pointer;
+    border: 3px solid black;
+    flex: 0 0 auto;
+}
+
+.hugeImage {
+    font-weight: bold;
+    overflow: hidden;
+    user-select: none;
+    border: 3px solid black;
+    position: fixed;
+    z-index: 100010;
+    transform: translate(-50%, 0);
+    left: 50%;
+}
+
+.titleAuthor {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+}
+
+.concludeOps {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    flex: 1;
+}
+
+.concludeButtons {
+    background-color: white;
+    color: black;
+    text-decoration: none;
+    border: 2px solid black;
+    padding: 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+.deleteButton {
+    width: 100px;
+    color: red;
+}
+
+.smaller {
+    font-size: 15px;
+    padding: 10px;
+}
+
+.concludeButtons:hover {
+    cursor: pointer;
+    filter: brightness(0.9);
+}
+
+.concludeButtons:active {
+    filter: brightness(0.7);
+}
+
+.confirmButtons {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.confirmButton {
+    background-color: white;
+    color: black;
+    text-decoration: none;
+    border: 2px solid black;
+    padding: 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    user-select: none;
+    width: 100%;
+}
+
+.confirmButton:hover {
+    cursor: pointer;
+    filter: brightness(0.9);
+}
+
+.confirmButton:active {
+    filter: brightness(0.7);
+}
+
+.okButton {
+    background-color: white;
+    color: black;
+    text-decoration: none;
+    border: 2px solid black;
+    padding: 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    position: absolute;
+    transform: translate(-50%);
+    left: 50%;
+    bottom: 20px;
+    width: 100px;
+    user-select: none;
+}
+
+.okButton:hover {
+    cursor: pointer;
+    filter: brightness(0.9);
+}
+
+.okButton:active {
+    filter: brightness(0.7);
+}
+
+.backButton {
+    border: 2px solid black;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    height: 20px;
+    width: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    user-select: none;
+}
+
+.backButton:hover {
+    cursor: pointer;
+    filter: brightness(0.9);
+}
+
+.backButton:active {
+    filter: brightness(0.7);
+}
+
+.backMenuButton {
+    border: 2px solid black;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    height: 55px;
+    width: 55px;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.backMenuButton:hover {
+    cursor: pointer;
+    filter: brightness(0.9);
+}
+
+.backMenuButton:active {
+    filter: brightness(0.7);
+}
+
+.linkButton {
+    background-color: white;
+    color: black;
+    text-decoration: none;
+    border: 2px solid black;
+    padding: 15px;
+    font-size: 18px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    user-select: none;
+    cursor: pointer;
+}
+
+.linkButton:hover {
+    filter: brightness(0.9);
+}
+
+.linkButton:active {
+    filter: brightness(0.7);
+}
+
+.selected {
+    border: 3px solid black;
+    margin: -1px;
+    margin-right: 0px;
+}
+
+.pageTitle {
+    font-size: 51px;
+    font-weight: bold;
+}
+
+.headerFlex {
+    display: flex;
+    gap: 52px;
+}
+
+.headerButtons {
+    display: flex;
+    gap: 30px;
+}
+
+.heart {
+    font-size: 30px;
+    color: gray;
+    cursor: pointer;
+    user-select: none;
+}
+
+.heart:hover {
+    filter: brightness(0.8);
+}
+
+.heart:active {
+    filter: brightness(0.6);
+}
+
+.liked {
+    color: red;
+}
+
+.inactive {
+    pointer-events: none;
+    cursor: default;
+}
+
+.inactive:hover {
+    filter: none;
+}
+
+.inactive:active {
+    filter: none;
+}
+
+.clock {
+    font-size: 30px;
+}
+
+.bottomButtonsFlex {
+    display: flex;
+    gap: 10px;
+}
