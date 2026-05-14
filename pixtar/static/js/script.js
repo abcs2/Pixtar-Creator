@@ -81,6 +81,7 @@ let currentPreviewButton = null;
 
 let pressingKey = false;
 let scrollTimeout = null;
+let dontSave = false;
 
 let undoStack = [];
 let redoStack = [];
@@ -849,9 +850,12 @@ function keysState() {
     pressingKey = true;
 
     document.addEventListener('keyup', function keySave () {
-        pressingKey = false;
-        maskDirty = true; 
-        saveState();
+        if (!dontSave) {
+            pressingKey = false;
+            maskDirty = true; 
+            saveState();
+        }
+        else dontSave = false
         document.removeEventListener('keyup', keySave);
     });
 }
@@ -2057,7 +2061,11 @@ function changeSizeScroll(e) {
 }
 
 function changeSize(modifier) {
-    if (selectionList.length === 0 || selectionList.length > 1) return;
+    if (selectionList.length === 0) return;
+    if (selectionList.length > 1) {
+        dontSave = true;
+        return;
+    }
     // if (selectionList.length === 1) {
     selectionList.forEach(el => {
         let newSize = parseFloat(el.dataset.fontSize) + modifier;
@@ -2100,7 +2108,11 @@ function changeSize(modifier) {
 }
 
 function stretch(modifier) {
-    if (selectionList.length === 0 || selectionList.length > 1) return;
+    if (selectionList.length === 0) return;
+    if (selectionList.length > 1) {
+        dontSave = true;
+        return;
+    }
 
     selectionList.forEach(el => {
         let newStretch = parseFloat(el.dataset.scaleX);

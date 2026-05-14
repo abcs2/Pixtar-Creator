@@ -125,6 +125,8 @@ class ModListView(UserPassesTestMixin, View):
     
     def get(self, request):
         mods = User.objects.filter(user_permissions__codename='can_moderate')
+        for mod in mods:
+            mod.sameUser = (mod == request.user)
         return render(request, 'pixtar/modList.html', {'mods': mods})
     
     
@@ -305,6 +307,7 @@ def delete(request):
         return JsonResponse({'success': False})
     return JsonResponse({'success': False})
 
+@user_passes_test(staffEnter)
 def searchUser(request):
     if request.method == 'POST':
         userId = request.POST.get('userId')
@@ -328,6 +331,7 @@ def searchUser(request):
         return JsonResponse({'success': True, 'user': user.username})
     return JsonResponse({'success': False, 'type': 'notFound'})
 
+@user_passes_test(staffEnter)
 def addMod(request):
     if request.method == 'POST':
         userId = request.POST.get('userId')
@@ -347,6 +351,30 @@ def addMod(request):
         
         perm = Permission.objects.get(codename='can_moderate')
         user.user_permissions.add(perm)
+
+        return JsonResponse({'success': True, 'user': user.username})
+    return JsonResponse({'success': False})
+
+@user_passes_test(staffEnter)
+def removeMod(request):
+    if request.method == 'POST':
+        userId = request.POST.get('userId')
+
+        try:
+            userId = int(userId)
+        except (ValueError, TypeError):
+            return JsonResponse({'success': False})
+        
+        if User.objects.filter(id=userId).exists() is False:
+            return JsonResponse({'success': False})
+        
+        user = User.objects.get(id=userId)
+
+        if user.has_perm('pixtar.can_moderate') is False:
+            return JsonResponse({'success': False})
+        
+        perm = Permission.objects.get(codename='can_moderate')
+        user.user_permissions.remove(perm)
 
         return JsonResponse({'success': True, 'user': user.username})
     return JsonResponse({'success': False})

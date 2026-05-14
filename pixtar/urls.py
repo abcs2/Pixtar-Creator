@@ -17,6 +17,7 @@ urlpatterns = [
     path('modList/', views.ModListView.as_view(), name='modList'),
     path('searchUser/', views.searchUser, name='searchUser'),
     path('addMod/', views.addMod, name='addMod'),
+    path('removeMod/', views.removeMod, name='removeMod'),
     path('register/', views.RegisterView.as_view(), name='register'),
     path('login/', views.LoginView.as_view(), name='login'),
     path('logout/', views.userLogout, name='logout')

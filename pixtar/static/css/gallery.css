@@ -1,6 +1,6 @@
 .all {
-    height: calc(100vh - 52px);
-    width: calc(100vw - 52px);
+    height: 679px;
+    width: 1484px;
     border: 3px solid black;
     padding: 15px;
     overflow: hidden;
@@ -33,12 +33,34 @@
     text-align: center;
 }
 
+.modList {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    column-gap: 30px;
+}
+
 .block {
     cursor: pointer;
     border: 3px solid black;
     border-radius: 5px;
     padding: 15px 20px 15px 20px;
     background-color: #EEEEEE;
+}
+
+.modBlock {
+    border: 3px solid black;
+    height: 60px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #EEEEEE;
+    font-size: 20px;
+    width: 600px;
+    display: grid;
+    grid-template-columns: 250px 50px 250px auto;
+    align-items: center;
 }
 
 .imgDescription {
@@ -93,8 +115,8 @@
     border-radius: 10px;
     top: 50%;
     left: 50%;
-    height: 60%;
-    width: 60%;
+    height: 439px;
+    width: 922px;
     transform: translate(-50%, -50%);
     padding: 20px;
     align-items: center;
@@ -111,8 +133,8 @@
     position: fixed;
     top: 50%;
     left: 50%;
-    height: 35%;
-    width: 25%;
+    height: 256px;
+    width: 384px;
     transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
@@ -401,4 +423,27 @@
 
 .nameMessage {
     font-size: 30px;
+}
+
+.removeModButton {
+    height: 100%;
+    aspect-ratio: 1;
+    color: red;
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: white;
+    user-select: none;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.removeModButton:hover {
+    filter: brightness(0.9);
+}
+
+.removeModButton:active {
+    filter: brightness(0.7);
 }

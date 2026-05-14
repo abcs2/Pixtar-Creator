@@ -64,6 +64,7 @@
             const popupMessage1 = document.getElementById('popupMessage1');
             const confirmBtn = document.getElementById('confirmBtn');
             const cancelBtn = document.getElementById('cancelBtn');
+            const modList = document.getElementById('modList');
 
             addModBtn.addEventListener('click', openAddPopup);
             backButton.addEventListener('click', closeAddPopup);
@@ -76,8 +77,16 @@
                         addModerator();
                         break;
                     case 'removeMod':
+                        removeModerator();
                         break;
                 }
+            });
+            [...document.querySelectorAll('.removeModButton')].forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    currentUser = e.currentTarget.dataset.id;
+                    currentAction = 'removeMod';
+                    openConfirmPopup(e.currentTarget.dataset.name);
+                });
             });
 
             function searchId() {
@@ -132,11 +141,38 @@
                 .then(data => {
                     if (data.success) {
                         actionHappened = true;
+                        createModBlock(currentUser, data.user);
                         let message = `${data.user} was added as a moderator.`;
                         openPopup(message);
                     }
                     else {
                         let message = `Could not add moderator.`;
+                        openPopup(message);
+                    }
+                });
+            }
+
+            function removeModerator() {
+                const formData = new FormData();
+                formData.append('userId', currentUser);
+
+                fetch('/removeMod/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getTokenFromCookies('csrftoken')
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        actionHappened = true;
+                        document.querySelector(`[data-block-id="${currentUser}"]`).remove();
+                        let message = `${data.user} was removed as a moderator.`;
+                        openPopup(message);
+                    }
+                    else {
+                        let message = `Could not remove moderator.`;
                         openPopup(message);
                     }
                 });
@@ -158,6 +194,31 @@
                 return tokenValue;
             }
 
+            function createModBlock(id, username) {
+                const newBlock = document.createElement('div');
+                newBlock.classList.add('modBlock');
+                newBlock.dataset.blockId = id;
+                const nameArea = document.createElement('div');
+                nameArea.textContent = username;
+                const dashArea = document.createElement('div');
+                dashArea.textContent = '|';
+                const idArea = document.createElement('div');
+                idArea.textContent = `ID: ${id}`;
+                const buttonContainer = document.createElement('div');
+                const xButton = document.createElement('div');
+                xButton.classList.add('removeModButton');
+                xButton.dataset.id = id;
+                xButton.dataset.name = username;
+                xButton.textContent = 'X';
+
+                buttonContainer.appendChild(xButton);
+                newBlock.appendChild(nameArea);
+                newBlock.appendChild(dashArea);
+                newBlock.appendChild(idArea);
+                newBlock.appendChild(buttonContainer);
+                modList.appendChild(newBlock);
+            }
+
             function openAddPopup() {
                 overlay.classList.remove('hidden');
                 popupSearch.classList.remove('hidden');
@@ -170,11 +231,21 @@
 
             function openConfirmPopup(username) {
                 nameMessage.textContent = username;
-                popupMessage1.textContent = `Are you sure you want to add ${username} as a moderator?`;
+                switch (currentAction) {
+                    case 'addMod':
+                        popupMessage1.textContent = `Are you sure you want to add ${username} as a moderator?`;
+                        break;
+                    case 'removeMod':
+                        overlay.classList.remove('hidden');
+                        popupMessage1.textContent = `Are you sure you want to remove ${username} as a moderator?`;
+                        break;
+                }
                 confirmPopup.classList.remove('hidden');
             }
 
             function closeConfirmPopup() {
+                if (currentAction === 'removeMod')
+                    overlay.classList.add('hidden');
                 confirmPopup.classList.add('hidden');
             }
 

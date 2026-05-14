@@ -37,6 +37,7 @@ button:active {
     grid-column: 2 / span 2;
     position: relative;
     width: 1100px;
+    height: 709px;
     overflow: hidden;
     margin: 3px;
 }
@@ -412,10 +413,12 @@ button:active {
 }
 
 .inactiveBtn:hover {
+    cursor: default;
     filter: brightness(0.7);
 }
 
 .inactiveBtn:active {
+    cursor: default;
     filter: brightness(0.7);
 }
 
@@ -611,8 +614,8 @@ button:active {
     border-radius: 10px;
     top: 50%;
     left: 50%;
-    height: 60%;
-    width: 60%;
+    height: 439px;
+    width: 922px;
     transform: translate(-50%, -50%);
     padding: 20px;
     align-items: center;
@@ -628,8 +631,8 @@ button:active {
     position: fixed;
     top: 50%;
     left: 50%;
-    height: 35%;
-    width: 25%;
+    height: 256px;
+    width: 384px;
     transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
