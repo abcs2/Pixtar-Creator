@@ -8,21 +8,32 @@
 {% block content %}
 <div class="modList" id="modList">
 {% for mod in mods %}
-    <div class="modBlock" data-block-id="{{ mod.id }}">
-        <div>
-            {{ mod.username }}
-            {% if mod.is_staff %}
-             (Admin)
-            {% endif %}
+    {% if mod.staff == True %}
+        <div class="modBlock" data-block-id="{{ mod.id }}">
+            <div>
+                {{ mod.username }} (Admin)
+            </div>
+            <div>|</div>
+            <div>ID: {{ mod.id }}</div>
+            <div></div>
         </div>
-        <div>|</div>
-        <div>ID: {{ mod.id }}</div>
-        <div>
-            {% if not mod.is_superuser and not mod.is_staff and not mod.sameUser %}
-            <div class="removeModButton" data-id="{{ mod.id }}" data-name="{{ mod.username }}">X</div>
-            {% endif %}
+    {% endif %}
+{% endfor %}
+{% for mod in mods %}
+    {% if mod.staff == False %}
+        <div class="modBlock" data-block-id="{{ mod.id }}">
+            <div>
+                {{ mod.username }}
+            </div>
+            <div>|</div>
+            <div>ID: {{ mod.id }}</div>
+            <div>
+                {% if not mod.sameUser %}
+                <div class="removeModButton" data-id="{{ mod.id }}" data-name="{{ mod.username }}">X</div>
+                {% endif %}
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endfor %}
 </div>
 {% endblock %}

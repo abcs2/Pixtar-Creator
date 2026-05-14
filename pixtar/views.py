@@ -127,6 +127,7 @@ class ModListView(UserPassesTestMixin, View):
         mods = User.objects.filter(user_permissions__codename='can_moderate')
         for mod in mods:
             mod.sameUser = (mod == request.user)
+            mod.staff = (mod.is_staff)
         return render(request, 'pixtar/modList.html', {'mods': mods})
     
     
