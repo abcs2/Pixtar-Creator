@@ -1,18 +1,10 @@
 .all {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: stretch;
-    justify-content: stretch;
+    display: flex;
+    justify-content: flex-end;
     border: 4px solid #2F683B;
     height: calc(100vh - 24px);
     width: calc(100vw - 24px);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.leftFromCanvas {
-    display: flex;
-    flex-direction: column;
-    background-color: antiquewhite;
 }
 
 button {
@@ -41,11 +33,20 @@ button:active {
     filter: brightness(0.7);
 }
 
+.leftFromCanvas {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    flex: 1;
+    min-width: 0;
+}
+
 #canvas {
     background-color: white;
     position: relative;
-    aspect-ratio: 3/2;
     overflow: hidden;
+    height: 100%;
+    aspect-ratio: 3/2;
 }
 
 #ops {
@@ -552,6 +553,7 @@ button:active {
     grid-template-columns: repeat(17, 20px);
     grid-template-rows: repeat(8, 25px);
     gap: 2px;
+    justify-content: space-between;
     text-align: center;
     box-shadow: 0 2px 0 #49524F;
 }
