@@ -1,5 +1,5 @@
 .bg {
-    background-color: #9fd87a;
+    background-color: #9ad473;
     position: fixed;
     top: 0;
     left: 0;
@@ -8,7 +8,7 @@
 }
 
 .overlay {
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.2);
     position: fixed;
     top: 0;
     left: 0;
@@ -24,7 +24,8 @@
     position: fixed;
     top: 50%;
     left: 50%;
-    height: 490px;
+    min-height: 360px;
+    height: fit-content;
     width: 323px;
     transform: translate(-50%, -50%);
     display: flex;
@@ -79,7 +80,7 @@ a {
 .menuButtons {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     margin-bottom: auto;
     margin-top: auto;
 }

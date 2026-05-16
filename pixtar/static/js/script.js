@@ -194,7 +194,7 @@ document.addEventListener('mousedown', function (e) {
             bgColor.classList.remove('buttonSelected');
         }
     }
-    if (replaceLetterBtn.classList.contains('buttonSelected2')) {
+    if (replaceLetterBtn.classList.contains('buttonSelected')) {
         if (e.currentTarget != replaceLetterBtn) {
             canvasRect = canvas.getBoundingClientRect();
             if (e.clientX >= canvasRect.left && e.clientX <= canvasRect.right && e.clientY >= canvasRect.top && e.clientY <= canvasRect.bottom) {
@@ -968,7 +968,7 @@ function changeElFont() {
 }
 
 function changeLetter(preview) {
-    if (selectionList.length === 0 || !replaceLetterBtn.classList.contains('buttonSelected2')) return;
+    if (selectionList.length === 0 || !replaceLetterBtn.classList.contains('buttonSelected')) return;
 
     selectionList.forEach(el => {
         el.textContent = preview.textContent;
@@ -1133,14 +1133,10 @@ function selectButton(e, button) {
 
         if (button === bgColor) deselect();
         else if (button === infoBtn) displayInfobox(e);
-        else if (button === replaceLetterBtn) {
-            button.classList.add('buttonSelected2');
-        }
     }
     else {
         if (button === infoBtn) removeInfobox();
         button.classList.remove('buttonSelected');
-        button.classList.remove('buttonSelected2');
     }
 }
 
@@ -1895,7 +1891,7 @@ function endDragPreview(e) {
     if (e.clientX >= buttonRect.left && e.clientX <= buttonRect.right && e.clientY >= buttonRect.top && e.clientY <= buttonRect.bottom) {
         changeLetter(previewElement);
 
-        if (replaceLetterBtn.classList.contains('buttonSelected2')) e.stopPropagation();
+        if (replaceLetterBtn.classList.contains('buttonSelected')) e.stopPropagation();
         else {
             newElement(previewElement, 80, 0, 1, 1, canvasRect.width / 2, canvasRect.height / 2, chosenColor.style.backgroundColor);
             saveState();

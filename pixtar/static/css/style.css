@@ -9,10 +9,10 @@
 }
 
 button {
-    border: 1px solid #2F683B;
+    border: 2px solid #2F683B;
     color: #2f3734;
     background-color: white;
-    border-radius: 3px;
+    border-radius: 4px;
     padding: 5px;
     height: 35px;
     min-width: 35px;
@@ -46,7 +46,7 @@ button:active {
 }
 
 #ops {
-    background-color: #9fd87a;
+    background-color: #9ad473;
     padding: 12px;
     grid-row: 1 / span 2;
     grid-column: 1 / span 1;
@@ -225,22 +225,23 @@ button:active {
 }
 
 .mirrorOuter {
-    border: 1px solid black;
+    border: 1px solid #2f3734;
     padding: 3px;
-    background-color: #BBBBBB;
+    background-color: #B1C3B7;
 }
 
 .mirrorFlex {
-    background-color: #777777;
+    background-color: #7e8d83;
     display: grid;
     grid-template-columns: 1fr 1fr;
     width: 70px;
 }
 
 .mirrorFlex div {
-    border: 1px solid black;
+    border: 1px solid #2f3734;
     height: 20px;
     width: 35px;
+    color: #2f3734;
 }
 
 .mirrorOff {
@@ -249,12 +250,13 @@ button:active {
 }
 
 .mirrorOn {
-    background-color: green;
+    background-color: #559a54;
     grid-column: 2;
 }
 
 .objCount {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #2F683B;
 }
 
 .concludeBtn {
@@ -402,28 +404,6 @@ button:active {
     transform: none;
 }
 
-.buttonSelected {
-    border: 2px solid red;
-    box-shadow: 0 2px 0 red;
-}
-
-.colorBlock.buttonSelected {
-    box-shadow: none;
-    margin: -1px;
-}
-
-.buttonSelected2 {
-    border: 2px solid red;
-    margin-top: -1px;
-    margin-left: 0px;
-    margin-bottom: 0px;
-    box-shadow: 0 2px 0 red;
-}
-
-.buttonSelected2 > div {
-    margin-left: 4.5px;
-}
-
 .inactiveBtn {
     filter: brightness(0.7);
 }
@@ -450,7 +430,7 @@ button:active {
 
 .letterMessage {
     background-color: white;
-    border: 1px solid #2F683B;
+    border: 1px solid #49524F;
     color: #2f3734;
     padding-left: 2px;
     padding-right: 2px;
@@ -461,7 +441,7 @@ button:active {
     user-select: none;
     font-size: 15px;
     font-weight: normal;
-    box-shadow: 0 1px 0 #2F683B;
+    box-shadow: 0 1px 0 #49524F;
 }
 
 .alphabetAndFont {
@@ -512,6 +492,8 @@ button:active {
     padding-bottom: 11px;
     width: 52px;
     height: fit-content;
+    border: 2px solid #49524F;
+    box-shadow: 0 2px 0 #49524F;
 }
 
 .v2 {
@@ -563,14 +545,14 @@ button:active {
 #alphabet {
     background-color: white;
     padding: 5px;
-    border: 1px solid #2F683B;
+    border: 1px solid #49524F;
     margin-top: auto;
     display: grid;
     grid-template-columns: repeat(17, 20px);
     grid-template-rows: repeat(8, 25px);
     gap: 2px;
     text-align: center;
-    box-shadow: 0 2px 0 #2F683B;
+    box-shadow: 0 2px 0 #49524F;
 }
 
 #alphabet div {
@@ -820,6 +802,16 @@ button:active {
 .inactiveForm {
     filter: brightness(0.8);
     pointer-events: none;
+}
+
+.buttonSelected {
+    border: 2px solid red;
+    box-shadow: 0 2px 0 red;
+}
+
+.colorBlock.buttonSelected {
+    box-shadow: none;
+    margin: -1px;
 }
 
 .fonts {
