@@ -2,8 +2,9 @@
 {% load static %}
 <html>
     <head>
-        <title>Pixtar</title>
-            <link rel="stylesheet" href="{% static 'css/title.css' %}">
+        {% block title %}
+        {% endblock %}
+        <link rel="stylesheet" href="{% static 'css/title.css' %}">
     </head>
     <body>
         <main>
