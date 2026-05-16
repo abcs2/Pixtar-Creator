@@ -1,8 +1,13 @@
 {% extends 'pixtar/basegallery.html' %}
 
 {% block header %}
-<div class="pageTitle">Your Images</div>
-<button type="button" class="linkButton selected" id="sortDate">Sort by date ▼</button>
+<div class="headerButtons">
+    <a href="{% url 'pixtar:index' %}"><button type="button" class="backMenuButton">←</button></a>
+    <div class="pageTitle">Your Images</div>
+</div>
+<div class="headerButtons">
+    <button type="button" class="linkButton selected" id="sortDate">Sort by date ▼</button>
+</div>
 {% endblock %}
 
 {% block content %}
@@ -38,7 +43,7 @@
     Colors: <span id="colorCount"></span><br>
 </div>
 <div class="bottomButtonsFlex">
-    <button type="button" class="concludeButtons deleteButton" id="delete">Delete</button>
+    <button type="button" class="concludeButtons deleteButton danger" id="delete">🗑︎</button>
     <button type="button" class="concludeButtons" id="edit">Edit</button>
 </div>
 {% endblock %}

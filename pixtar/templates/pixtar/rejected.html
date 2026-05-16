@@ -1,8 +1,13 @@
 {% extends 'pixtar/basegallery.html' %}
 
 {% block header %}
-<div class="pageTitle">Rejected images</div>
-<a href="{% url 'pixtar:approve' %}"><button type="button" class="linkButton selected">Approve images</button></a>
+<div class="headerButtons">
+    <a href="{% url 'pixtar:index' %}"><button type="button" class="backMenuButton">←</button></a>
+    <div class="pageTitle">Rejected images</div>
+</div>
+<div class="headerButtons">
+    <a href="{% url 'pixtar:approve' %}"><button type="button" class="linkButton">Approve images</button></a>
+</div>
 {% endblock %}
 
 {% block content %}

@@ -33,6 +33,7 @@ const fontNames =
 const maxSize = 1600;
 const minSize = 15;
 const maxScale = 20;
+const maxCount = 99999;
 
 let modifierLvl = 1;
 let modifierMove;
@@ -1213,6 +1214,7 @@ function findMirror(el) {
 }
 
 function createMirrorPair(originalEl) {
+    if (elements.length + 1 > maxCount) return;
     const mirrorEl = originalEl.cloneNode(true);
 
     originalEl.dataset.mirrorId = mirrorIdCounter;
@@ -1257,6 +1259,7 @@ function updateMirror(el) {
 
 
 function newElement(preview, size, rotation, scaleX, scaleY, posX, posY, color) {
+    if (elements.length + 1 > maxCount) return;
     const el = document.createElement('span');
     el.className = 'element';
     el.textContent = preview.textContent;
@@ -2019,6 +2022,9 @@ function checkBorderY(el, posY) {
     const maxY = canvas.clientHeight + quarterHeight;
     if (posY < minY) posY = minY;
     if (posY > maxY) posY = maxY;
+    console.log(canvas.clientHeight);
+    console.log(maxY);
+    console.log(posY);
 
     return posY;
 }

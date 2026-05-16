@@ -1,8 +1,13 @@
 {% extends 'pixtar/basegallery.html' %}
 
 {% block header %}
-<div class="pageTitle">Approve images</div>
-<a href="{% url 'pixtar:rejected' %}"><button type="button" class="linkButton selected">Rejected images</button></a>
+<div class="headerButtons">
+    <a href="{% url 'pixtar:index' %}"><button type="button" class="backMenuButton">←</button></a>
+    <div class="pageTitle">Approve images</div>
+</div>
+<div class="headerButtons">
+    <a href="{% url 'pixtar:rejected' %}"><button type="button" class="linkButton">Rejected images</button></a>
+</div>
 {% endblock %}
 
 {% block content %}
@@ -47,5 +52,5 @@
     Colors: <span id="colorCount"></span><br>
 </div>
 <button type="button" class="concludeButtons" id="approve">Approve</button>
-<button type="button" class="concludeButtons" id="reject">Reject</button>
+<button type="button" class="concludeButtons danger" id="reject">Reject</button>
 {% endblock %}

@@ -33,6 +33,7 @@ const fontNames =
 const maxSize = 1600;
 const minSize = 15;
 const maxScale = 20;
+const maxCount = 99999;
 
 let modifierLvl = 1;
 let modifierMove;
@@ -81,6 +82,7 @@ let currentPreviewButton = null;
 
 let pressingKey = false;
 let scrollTimeout = null;
+let dontSave = false;
 
 let undoStack = [];
 let redoStack = [];
@@ -849,9 +851,12 @@ function keysState() {
     pressingKey = true;
 
     document.addEventListener('keyup', function keySave () {
-        pressingKey = false;
-        maskDirty = true; 
-        saveState();
+        if (!dontSave) {
+            pressingKey = false;
+            maskDirty = true; 
+            saveState();
+        }
+        else dontSave = false
         document.removeEventListener('keyup', keySave);
     });
 }
@@ -862,7 +867,7 @@ function saveUserImage(state) {
         localStorage.setItem('savedState', JSON.stringify(state));
 
     else if (imgStatus.dataset.login === 'True') {
-        if (canvas.innerHTML === '') return;
+        if (canvas.innerHTML === '' && imgStatus.dataset.created === 'False') return;
 
         state.width = canvas.offsetWidth;
         state.height = canvas.offsetHeight;
@@ -1209,6 +1214,7 @@ function findMirror(el) {
 }
 
 function createMirrorPair(originalEl) {
+    if (elements.length + 1 > maxCount) return;
     const mirrorEl = originalEl.cloneNode(true);
 
     originalEl.dataset.mirrorId = mirrorIdCounter;
@@ -1253,6 +1259,7 @@ function updateMirror(el) {
 
 
 function newElement(preview, size, rotation, scaleX, scaleY, posX, posY, color) {
+    if (elements.length + 1 > maxCount) return;
     const el = document.createElement('span');
     el.className = 'element';
     el.textContent = preview.textContent;
@@ -2015,6 +2022,9 @@ function checkBorderY(el, posY) {
     const maxY = canvas.clientHeight + quarterHeight;
     if (posY < minY) posY = minY;
     if (posY > maxY) posY = maxY;
+    console.log(canvas.clientHeight);
+    console.log(maxY);
+    console.log(posY);
 
     return posY;
 }
@@ -2057,7 +2067,11 @@ function changeSizeScroll(e) {
 }
 
 function changeSize(modifier) {
-    if (selectionList.length === 0 || selectionList.length > 1) return;
+    if (selectionList.length === 0) return;
+    if (selectionList.length > 1) {
+        dontSave = true;
+        return;
+    }
     // if (selectionList.length === 1) {
     selectionList.forEach(el => {
         let newSize = parseFloat(el.dataset.fontSize) + modifier;
@@ -2100,7 +2114,11 @@ function changeSize(modifier) {
 }
 
 function stretch(modifier) {
-    if (selectionList.length === 0 || selectionList.length > 1) return;
+    if (selectionList.length === 0) return;
+    if (selectionList.length > 1) {
+        dontSave = true;
+        return;
+    }
 
     selectionList.forEach(el => {
         let newStretch = parseFloat(el.dataset.scaleX);

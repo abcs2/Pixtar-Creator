@@ -1,8 +1,13 @@
 {% extends "pixtar/baseModList.html" %}
 
 {% block header %}
-<div class="pageTitle">List of Moderators</div>
-<button type="button" class="linkButton selected" id="addMod">+ Add Moderator</button>
+<div class="headerButtons">
+    <a href="{% url 'pixtar:index' %}"><button type="button" class="backMenuButton">←</button></a>
+    <div class="pageTitle">Moderator List</div>
+</div>
+<div class="headerButtons">
+    <button type="button" class="linkButton" id="addMod">+ Add Moderator</button>
+</div>
 {% endblock %}
 
 {% block content %}
@@ -29,7 +34,7 @@
             <div>ID: {{ mod.id }}</div>
             <div>
                 {% if not mod.sameUser %}
-                <div class="removeModButton" data-id="{{ mod.id }}" data-name="{{ mod.username }}">X</div>
+                <div class="removeModButton danger" data-id="{{ mod.id }}" data-name="{{ mod.username }}">X</div>
                 {% endif %}
             </div>
         </div>

@@ -2,24 +2,27 @@
     display: grid;
     grid-template-rows: auto auto 1fr;
     grid-template-columns: auto auto auto;
-    background-color: black;
+    background-color: #2F683B;
     height: calc(100vh - 16px);
     width: calc(100vw - 16px);
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
 button {
-    border: 1px solid black;
+    border: 1px solid #2F683B;
+    color: #2f3734;
     background-color: white;
     border-radius: 3px;
     padding: 5px;
     height: 35px;
     min-width: 35px;
+    box-shadow: 0 2px 0 #2F683B;
 
     font-size: 15px;
     font-weight: bold;
     text-decoration: none;
     align-self: baseline;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
 button:hover {
@@ -43,7 +46,7 @@ button:active {
 }
 
 #ops {
-    background-color: #DDDDDD;
+    background-color: #9fd87a;
     padding: 12px;
     grid-row: 1 / span 2;
     grid-column: 1 / span 1;
@@ -51,7 +54,7 @@ button:active {
 }
 
 #charContainer {
-    background-color: #EEEEEE;
+    background-color: #E5EDE0;
     grid-row: 3 / span 1;
     grid-column: 1 / span 1;
     padding: 12px;
@@ -78,6 +81,7 @@ button:active {
 
 .undoRedo {
     transform: scale(1, -1);
+    box-shadow: 0 -2px 0 #2F683B;
 }
 
 .opsFlex {
@@ -88,8 +92,8 @@ button:active {
 }
 
 .modifierCage {
-    border: 1px solid black;
-    background-color: #BBBBBB;
+    border: 1px solid #2F683B;
+    background-color: #B1C3B7;
     padding: 5px;
     padding-left: 7px;
     padding-right: 7px;
@@ -97,11 +101,12 @@ button:active {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    box-shadow: 0 2px 0 #2F683B;
 }
 
 .modifierText {
     font-size: 18px;
-    color: #444444;
+    color: #49524F;
     font-weight: bold;
 }
 
@@ -115,6 +120,8 @@ button:active {
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
+    color: #49524F;
+    font-weight: bold;
 }
 
 .transformOpsFlex {
@@ -150,16 +157,16 @@ button:active {
 
 .flipHGrid {
     display: grid;
-    grid-template-columns: 9px 5px 15px;
+    grid-template-columns: 10px 3px 15px;
     transform: translate(1px, 0);
 }
 
 .mirrorLine {
-    transform: translate(1px, 0) rotate(90deg) scale(1, 1.1);
+    transform: translate(2px, 0) rotate(90deg) scale(1, 1.1);
 }
 
 .mirrorLineB {
-    transform: translate(0px, -1px) scale(1, 1.1);
+    transform: translate(0px, -1.5px) scale(1, 1.1);
 }
 
 .ogA {
@@ -247,7 +254,7 @@ button:active {
 }
 
 .objCount {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .concludeBtn {
@@ -259,8 +266,9 @@ button:active {
     display: flex;
     flex-direction: column;
     background-color: white;
-    border: 1px solid black;
+    border: 1px solid #2F683B;
     padding: 5px;
+    box-shadow: 0 2px 0 #2F683B;
 }
 
 .colorPicker {
@@ -297,7 +305,7 @@ button:active {
     height: 47px;
     width: auto;
     background-color: white;
-    border: 1px solid black;
+    border: 1px solid #49524F;
     gap: 0;
     padding: 0;
     margin: 3px;
@@ -332,7 +340,7 @@ button:active {
 .up {
     width: 0;
     height: 0;
-    border-bottom: 10px solid black;
+    border-bottom: 10px solid #49524F;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent;
 }
@@ -340,7 +348,7 @@ button:active {
 .down {
     width: 0;
     height: 0;
-    border-top: 10px solid black;
+    border-top: 10px solid #49524F;
     border-left: 6px solid transparent;
     border-right: 6px solid transparent; 
 }
@@ -378,7 +386,8 @@ button:active {
 .colorBlock {
     height: 15px;
     width: 15px;
-    border: 1px solid black;
+    border: 1px solid #49524F;
+    cursor: pointer;
 }
 
 .colorBlock:active {
@@ -395,6 +404,12 @@ button:active {
 
 .buttonSelected {
     border: 2px solid red;
+    box-shadow: 0 2px 0 red;
+}
+
+.colorBlock.buttonSelected {
+    box-shadow: none;
+    margin: -1px;
 }
 
 .buttonSelected2 {
@@ -402,6 +417,7 @@ button:active {
     margin-top: -1px;
     margin-left: 0px;
     margin-bottom: 0px;
+    box-shadow: 0 2px 0 red;
 }
 
 .buttonSelected2 > div {
@@ -427,11 +443,15 @@ button:active {
     grid-template-columns: auto auto;
     grid-template-rows: auto auto;
     align-items: center;
+    justify-content: center;
+    color: #49524F;
+    font-weight: bold;
 }
 
 .letterMessage {
     background-color: white;
-    border: 1px solid black;
+    border: 1px solid #2F683B;
+    color: #2f3734;
     padding-left: 2px;
     padding-right: 2px;
     display: inline-block;
@@ -440,6 +460,8 @@ button:active {
     pointer-events: none;
     user-select: none;
     font-size: 15px;
+    font-weight: normal;
+    box-shadow: 0 1px 0 #2F683B;
 }
 
 .alphabetAndFont {
@@ -451,16 +473,18 @@ button:active {
 .letterOptions {
     display: flex;
     margin: 3px;
+    align-items: center;
 }
 
 .triang {
     margin: 3px;
+    cursor: pointer;
 }
 
 .back {
     width: 0;
     height: 0;
-    border-right: 10px solid black;
+    border-right: 10px solid #49524F;
     border-top: 6px solid transparent;
     border-bottom: 6px solid transparent;
 
@@ -469,7 +493,7 @@ button:active {
 .forward {
     width: 0;
     height: 0;
-    border-left: 10px solid black;
+    border-left: 10px solid #49524F;
     border-top: 6px solid transparent;
     border-bottom: 6px solid transparent;
 
@@ -539,13 +563,14 @@ button:active {
 #alphabet {
     background-color: white;
     padding: 5px;
-    border: 1px solid black;
+    border: 1px solid #2F683B;
     margin-top: auto;
     display: grid;
     grid-template-columns: repeat(17, 20px);
     grid-template-rows: repeat(8, 25px);
     gap: 2px;
     text-align: center;
+    box-shadow: 0 2px 0 #2F683B;
 }
 
 #alphabet div {
@@ -580,11 +605,11 @@ button:active {
 
 .infobox {
     background-color: white;
-    border: 1px solid black;
+    border: 1px solid #49524F;
     padding: 3px;
     max-width: 250px;
     font-size: 14px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     position: fixed;
     pointer-events: none;
     white-space: pre-line;
@@ -609,9 +634,11 @@ button:active {
 }
 
 .popup {
-    background-color: white;
-    border: 5px solid black;
-    border-radius: 10px;
+    background-color: #E5EDE0;
+    border: 5px solid #2F683B;
+    color: #49524F;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 20px;
     top: 50%;
     left: 50%;
     height: 439px;
@@ -622,12 +649,16 @@ button:active {
     display: flex;
     gap: 20px;
     position: fixed;
+    z-index: 100001;
 }
 
 .popupSmall {
-    background-color: white;
-    border: 5px solid black;
-    border-radius: 10px;
+    background-color: #E5EDE0;
+    border: 5px solid #2F683B;
+    color: #49524F;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    border-radius: 20px;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -639,6 +670,7 @@ button:active {
     text-align: center;
     padding: 20px;
     font-size: 18px;
+    z-index: 100003;
 }
 
 .hidden {
@@ -662,21 +694,29 @@ button:active {
     font-weight: bold;
     overflow: hidden;
     pointer-events: none;
-    border: 3px solid black;
+    border: 3px solid #B1C3B7;
     flex: 0 0 auto;
 }
 
 .concludeButtons {
     background-color: white;
-    color: black;
+    color: #2F683B;
     text-decoration: none;
-    border: 2px solid black;
+    border: 3px solid #2F683B;
+    font-weight: bold;
     padding: 20px;
     font-size: 18px;
-    border-radius: 5px;
+    border-radius: 10px;
     width: 100%;
     box-sizing: border-box;
+    user-select: none;
+    box-shadow: 0 3px 0 #2F683B;
     text-align: center;
+}
+
+.share {
+    padding-top: 28px;
+    padding-bottom: 28px;
 }
 
 .smaller {
@@ -695,17 +735,20 @@ button:active {
 
 .okButton {
     background-color: white;
-    color: black;
+    color: #2F683B;
     text-decoration: none;
-    border: 2px solid black;
+    border: 3px solid #2F683B;
+    font-weight: bold;
     padding: 20px;
     font-size: 18px;
-    border-radius: 5px;
+    border-radius: 10px;
     position: absolute;
     transform: translate(-50%);
     left: 50%;
     bottom: 20px;
     width: 100px;
+    user-select: none;
+    box-shadow: 0 3px 0 #2F683B;
 }
 
 .okButton:hover {
@@ -718,9 +761,10 @@ button:active {
 }
 
 .backButton {
-    border: 2px solid black;
+    border: 3px solid #2F683B;
+    color: #2F683B;
     background-color: white;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 10px;
     height: 20px;
     width: 20px;
@@ -731,6 +775,7 @@ button:active {
     top: 20px;
     right: 20px;
     user-select: none;
+    box-shadow: 0 3px 0 #2F683B;
 }
 
 .backButton:hover {
@@ -743,16 +788,17 @@ button:active {
 }
 
 .backMenuButton {
-    border: 2px solid black;
+    border: 4px solid #2F683B;
+    color: #2F683B;
     background-color: white;
-    border-radius: 5px;
+    border-radius: 20px;
     padding: 10px;
-    height: 40px;
-    width: 40px;
-    font-size: 20px;
+    height: 70px;
+    width: 70px;
+    font-size: 30px;
     font-weight: bold;
     text-decoration: none;
-    align-self: baseline;
+    box-shadow: 0 3px 0 #2F683B;
 }
 
 .backMenuButton:hover {
@@ -768,7 +814,7 @@ button:active {
     margin: 5px 0 5px 0;
     padding: 5px;
     font-size: 15px;
-    border: 2px solid black;
+    border: 2px solid #49524F;
 }
 
 .inactiveForm {

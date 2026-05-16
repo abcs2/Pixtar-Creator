@@ -9,11 +9,8 @@
         {% csrf_token %}
         <div class="all">
             <div class="headerFlex">
-                <a href="{% url 'pixtar:index' %}"><button type="button" class="backMenuButton">←</button></a>
-                <div class="headerButtons">
-                    {% block header %}
-                    {% endblock %}
-                </div>
+                {% block header %}
+                {% endblock %}
             </div>
             <div class="imageListContainer">
                 {% block content %}
@@ -34,7 +31,7 @@
                 <div id="popupMessage1"></div>
             </div>
             <div class="confirmButtons">
-                <button type="button" class="confirmButton" id="confirmBtn">Yes</button>
+                <button type="button" class="confirmButton danger" id="confirmBtn">Yes</button>
                 <button type="button" class="confirmButton" id="cancelBtn">No</button>
             </div>
         </div>

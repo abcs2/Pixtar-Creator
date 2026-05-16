@@ -1,13 +1,18 @@
 {% extends 'pixtar/basegallery.html' %}
 
 {% block header %}
-<div class="pageTitle">Gallery</div>
-<button type="button" class="linkButton selected" id="sortDate">Sort by date ▼</button>
-<button type="button" class="linkButton" id="sortLikes">Sort by likes ▼</button>
-{% if user.is_authenticated %}
-    <button type="button" class="linkButton" id="sortUserImages">◼ Your images</button>
-    <button type="button" class="linkButton" id="sortUserLikes">❤ Your likes</button>
-{% endif %}
+<div class="headerButtons">
+    <a href="{% url 'pixtar:index' %}"><button type="button" class="backMenuButton">←</button></a>
+    <div class="pageTitle">Gallery</div>
+</div>
+<div class="headerButtons">
+    <button type="button" class="linkButton selected" id="sortDate">Sort by date ▼</button>
+    <button type="button" class="linkButton" id="sortLikes">Sort by likes ▼</button>
+    {% if user.is_authenticated %}
+        <button type="button" class="linkButton" id="sortUserImages">◼ Your images</button>
+        <button type="button" class="linkButton" id="sortUserLikes">❤ Your likes</button>
+    {% endif %}
+</div>
 {% endblock %}
 
 {% block content %}
@@ -46,7 +51,7 @@
 
 {% block info %}
 <div class="titleAuthor">
-    <span id="title"></span><br>
+    <big><span id="title"></span></big><br>
     <small>By <span id="author"></span></small><br>
 </div>
 <div>
@@ -61,6 +66,6 @@
 </div>
 {% if perms.pixtar.can_moderate %}
     <div>Approved by: <span id="userJudge"></span></div>
-    <button type="button" class="concludeButtons" id="reject">Remove from gallery</button>
+    <button type="button" class="concludeButtons danger" id="reject">Remove from gallery</button>
 {% endif %}
 {% endblock %}

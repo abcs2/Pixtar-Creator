@@ -86,14 +86,14 @@
                             </div>
                             <div class="stretchFlex">
                                 <button type="button" id="stretchH" data-message="Make the selected object thicker.\nNot available with multiple objects.\nKeyboard: T">
-                                    ❬|❭
+                                    ❬ | ❭
                                 </button>
                                 <button type="button" id="stretchV" data-message="Make the selected object thinner.\nNot available with multiple objects.\nKeyboard: R">
-                                    ❭|❬
+                                    ❭ | ❬
                                 </button>
                             </div>
                         </div>             
-                        <button type="button" id="hiddenTop" data-message="Bring all hidden objects back to the top.">bring hidden to top</button>
+                        <button type="button" id="hiddenTop" data-message="Bring all hidden objects back to the top.">hidden to top</button>
                         <button type="button" id="mirror" data-message="Activate to create objects with mirrors.\nDeactivate to break the selected objects' mirror.">
                             Mirror:
                             <div class="mirrorOuter">
@@ -204,7 +204,7 @@
                     Colors: <span id="colorCount"></span><br>
                 </div>
                 <div class="concludeButtons" id="download">Download</div>
-                <div class="concludeButtons" id="share">Share to gallery</div>
+                <div class="concludeButtons share" id="share">Share to gallery</div>
             </div>
         </div>
         <div class="popup hidden" id="shareScreen">
@@ -212,11 +212,11 @@
             <div class="concludeOps">
                 <div class="backButton" id="shareBack">→</div>
                 <span>
-                    Title:<br><input type="text" class="input form" id="titleInput" maxlength="25">
+                    <b>Title:</b><br><input type="text" class="input form" id="titleInput" maxlength="25">
                     <input type="checkbox" id="untitled" name="untitled">Untitled</input>
                 </span>
                 <span>
-                    Author:<br><input type="text" class="input form" id="authorInput" value="{{ user.username }}" maxlength="20">
+                    <b>Author:</b><br><input type="text" class="input form" id="authorInput" value="{{ user.username }}" maxlength="20">
                     <input type="checkbox" id="anonymous" name="anonymous">Anonymous</input>
                 </span>
                 <small>Do not share images that are low effort, promote violence or contain personal information or sexual content.</small>

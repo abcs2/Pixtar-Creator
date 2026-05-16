@@ -1,19 +1,14 @@
 .all {
-    height: calc(100vh - 52px);
-    width: calc(100vw - 52px);
-    border: 3px solid black;
-    padding: 15px;
+    height: 706px;
+    width: 1512px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    background-color: #EEEEEE;
+    background-color: #9fd87a;
+    border: 4px solid #2F683B;
 }
 
 .imageListContainer {
-    border: 3px solid black;
-    background-color: white;
-    margin: 0px 107px 0px 107px;
     margin-top: auto;
     margin-bottom: auto;
     height: 100%;
@@ -26,23 +21,59 @@
 
 .imageList {
     width: 100%;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: fit-content;
     gap: 15px;
     column-gap: 30px;
     text-align: center;
 }
 
+.modList {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    column-gap: 30px;
+}
+
 .block {
     cursor: pointer;
-    border: 3px solid black;
-    border-radius: 5px;
-    padding: 15px 20px 15px 20px;
-    background-color: #EEEEEE;
+    border: 4px solid #2F683B;
+    border-radius: 10px;
+    padding: 10px 20px 20px 20px;
+    background-color: #E5EDE0;
+    overflow-x: hidden;
+    box-shadow: 0 5px 0 #2F683B;
+}
+
+.modBlock {
+    border: 4px solid #2F683B;
+    height: 60px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 10px;
+    background-color: white;
+    font-size: 20px;
+    width: 600px;
+    display: grid;
+    grid-template-columns: 375px 30px 150px auto;
+    align-items: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    box-shadow: 0 5px 0 #2F683B;
 }
 
 .imgDescription {
-    margin-top: 3px;
+    margin-top: 5px;
+    width: 330px;
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-align: left;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #49524F;
+    font-weight: bold;
 }
 
 .title {
@@ -52,6 +83,7 @@
 .previewImage {
     width: fit-content;
     overflow: hidden;
+    border: 3px solid #B1C3B7;
 }
 
 .previewContent {
@@ -88,13 +120,15 @@
 }
 
 .popup {
-    background-color: #EEEEEE;
-    border: 5px solid black;
-    border-radius: 10px;
+    background-color: #E5EDE0;
+    border: 5px solid #2F683B;
+    color: #49524F;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 20px;
     top: 50%;
     left: 50%;
-    height: 60%;
-    width: 60%;
+    height: 439px;
+    width: 922px;
     transform: translate(-50%, -50%);
     padding: 20px;
     align-items: center;
@@ -105,14 +139,17 @@
 }
 
 .popupSmall {
-    background-color: white;
-    border: 5px solid black;
-    border-radius: 10px;
+    background-color: #E5EDE0;
+    border: 5px solid #2F683B;
+    color: #49524F;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    border-radius: 20px;
     position: fixed;
     top: 50%;
     left: 50%;
-    height: 35%;
-    width: 25%;
+    height: 256px;
+    width: 384px;
     transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
@@ -130,6 +167,10 @@
     margin: 70px 30px 0 30px;
 }
 
+.popupMessage2 {
+    margin: 30px 30px 0 30px;
+}
+
 .biggerImage {
     position: relative;
     font-weight: bold;
@@ -137,7 +178,7 @@
     user-select: none;
 
     cursor: pointer;
-    border: 3px solid black;
+    border: 3px solid #B1C3B7;
     flex: 0 0 auto;
 }
 
@@ -145,7 +186,7 @@
     font-weight: bold;
     overflow: hidden;
     user-select: none;
-    border: 3px solid black;
+    border: 3px solid #B1C3B7;
     position: fixed;
     z-index: 100010;
     transform: translate(-50%, 0);
@@ -153,8 +194,10 @@
 }
 
 .titleAuthor {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    font-size: 24px;
+    overflow: wrap;
 }
 
 .concludeOps {
@@ -167,19 +210,24 @@
 
 .concludeButtons {
     background-color: white;
-    color: black;
+    color: #2F683B;
     text-decoration: none;
-    border: 2px solid black;
+    border: 3px solid #2F683B;
+    font-weight: bold;
     padding: 20px;
     font-size: 18px;
-    border-radius: 5px;
+    border-radius: 10px;
     width: 100%;
     box-sizing: border-box;
     user-select: none;
+    box-shadow: 0 3px 0 #2F683B;
+    align-self: flex-end;
 }
 
 .deleteButton {
     width: 100px;
+    font-size: 30px;
+    padding: 0;
     color: red;
 }
 
@@ -207,14 +255,22 @@
 
 .confirmButton {
     background-color: white;
-    color: black;
+    color: #2F683B;
     text-decoration: none;
-    border: 2px solid black;
+    border: 3px solid #2F683B;
+    font-weight: bold;
     padding: 20px;
     font-size: 18px;
-    border-radius: 5px;
+    border-radius: 10px;
     user-select: none;
     width: 100%;
+    box-shadow: 0 3px 0 #2F683B;
+}
+
+.danger {
+    border: 3px solid red;
+    color: red;
+    box-shadow: 0 3px 0 red;
 }
 
 .confirmButton:hover {
@@ -228,18 +284,20 @@
 
 .okButton {
     background-color: white;
-    color: black;
+    color: #2F683B;
     text-decoration: none;
-    border: 2px solid black;
+    border: 3px solid #2F683B;
+    font-weight: bold;
     padding: 20px;
     font-size: 18px;
-    border-radius: 5px;
+    border-radius: 10px;
     position: absolute;
     transform: translate(-50%);
     left: 50%;
     bottom: 20px;
     width: 100px;
     user-select: none;
+    box-shadow: 0 3px 0 #2F683B;
 }
 
 .okButton:hover {
@@ -252,9 +310,10 @@
 }
 
 .backButton {
-    border: 2px solid black;
+    border: 3px solid #2F683B;
+    color: #2F683B;
     background-color: white;
-    border-radius: 5px;
+    border-radius: 10px;
     padding: 10px;
     height: 20px;
     width: 20px;
@@ -265,6 +324,7 @@
     top: 20px;
     right: 20px;
     user-select: none;
+    box-shadow: 0 3px 0 #2F683B;
 }
 
 .backButton:hover {
@@ -277,15 +337,18 @@
 }
 
 .backMenuButton {
-    border: 2px solid black;
+    border: 4px solid #2F683B;
+    color: #2F683B;
     background-color: white;
-    border-radius: 5px;
+    border-radius: 20px;
     padding: 10px;
-    height: 55px;
-    width: 55px;
-    font-size: 20px;
+    height: 70px;
+    width: 70px;
+    font-size: 30px;
     font-weight: bold;
     text-decoration: none;
+    box-shadow: 0 3px 0 #2F683B;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .backMenuButton:hover {
@@ -299,15 +362,19 @@
 
 .linkButton {
     background-color: white;
-    color: black;
+    color: #2F683B;
     text-decoration: none;
-    border: 2px solid black;
+    border: 4px solid #2F683B;
     padding: 15px;
     font-size: 18px;
-    border-radius: 5px;
+    font-weight: bold;
+    border-radius: 20px;
     box-sizing: border-box;
     user-select: none;
     cursor: pointer;
+    height: 70px;
+    box-shadow: 0 3px 0 #2F683B;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .linkButton:hover {
@@ -319,29 +386,39 @@
 }
 
 .selected {
-    border: 3px solid black;
-    margin: -1px;
+    border: 4px solid red;
+    margin: 0px;
     margin-right: 0px;
+    box-shadow: 0 3px 0 red;
 }
 
 .pageTitle {
-    font-size: 51px;
+    font-size: 60px;
     font-weight: bold;
+    color: white;
+    -webkit-text-stroke: 10px #2F683B;
+    paint-order: stroke fill;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .headerFlex {
+    background-color: #3EA53C;
+    padding: 15px;
     display: flex;
     gap: 52px;
+    height: 100px;
+    align-items: center;
+    border-bottom: 4px solid #2F683B;
 }
 
 .headerButtons {
     display: flex;
-    gap: 30px;
+    gap: 20px;
 }
 
 .heart {
     font-size: 30px;
-    color: gray;
+    color: #7e8d83;
     cursor: pointer;
     user-select: none;
 }
@@ -378,4 +455,54 @@
 .bottomButtonsFlex {
     display: flex;
     gap: 10px;
+}
+
+.addModText {
+    text-align: left;
+    font-size: 40px;
+}
+
+.form {
+    margin: 5px 0 5px 0;
+    margin-top: 25px;
+    padding: 10px;
+    font-size: 20px;
+    border: 2px solid #49524F;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.nameMessage {
+    font-size: 30px;
+}
+
+.removeModButton {
+    height: 100%;
+    aspect-ratio: 1;
+    color: red;
+    border: 3px solid red;
+    border-radius: 10px;
+    background-color: white;
+    user-select: none;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.removeModButton:hover {
+    filter: brightness(0.9);
+}
+
+.removeModButton:active {
+    filter: brightness(0.7);
+}
+
+h2 {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    color: white;
+    -webkit-text-stroke: 5px #2F683B;
+    paint-order: stroke fill;
 }

@@ -9,11 +9,8 @@
         {% csrf_token %}
         <div class="all">
             <div class="headerFlex">
-                <a href="{% url 'pixtar:index' %}"><button type="button" class="backMenuButton">←</button></a>
-                <div class="headerButtons">
-                    {% block header %}
-                    {% endblock %}
-                </div>
+                {% block header %}
+                {% endblock %}
             </div>
             <div class="imageListContainer">
                 {% block content %}
@@ -35,8 +32,8 @@
         <div class="popupSmall hidden" id="confirmPopup">
             <div class="popupMessage" id="popupMessage1"></div>
             <div class="confirmButtons">
-                <button type="button" class="confirmButton" id="confirmBtn">Yes</button>
-                <button type="button" class="confirmButton" id="cancelBtn">No</button>
+                <button type="button" class="confirmButton danger" id="confirmBtn">Yes</button>
+                <button type="button" class="confirmButton" id="cancelBtn">Cancel</button>
             </div>
         </div>
         <div class="popupSmall hidden" id="popupSmall">
@@ -171,7 +168,7 @@
                 overlay.classList.remove('hidden');
                 infoScreen.classList.remove('hidden');
                 const biggerImage = infoScreen.querySelector('.biggerImage')
-                makePreview(e, image, biggerImage, 0.5);
+                makePreview(e, image, biggerImage, 0.6);
                 currentImageId = block.dataset.id;
 
                 biggerImage.addEventListener('click', () => {

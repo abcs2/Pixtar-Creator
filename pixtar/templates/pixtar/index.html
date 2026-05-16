@@ -11,7 +11,7 @@
         <div>
             <hr>
             User: {{ user.username }}<br>
-            Id: {{ user.id }}<br><br>
+            ID: {{ user.id }}<br>
             <div class="userArea">
                 <a class="linkButton" href="{% url 'pixtar:userImages' %}">Your images</a>
                 {% if perms.pixtar.can_moderate %}
