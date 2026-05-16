@@ -39,6 +39,7 @@ button:active {
     align-self: stretch;
     flex: 1;
     min-width: 0;
+    overflow-y: scroll;
 }
 
 #canvas {
