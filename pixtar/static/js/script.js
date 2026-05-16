@@ -2417,7 +2417,7 @@ function removeInfobox () {
 function displayInfoboxSelection() {
     canvasRect = canvas.getBoundingClientRect();
     //infoBox.textContent = 'Selecting mirrored objects with non mirrored ones will automatically break all mirrors.\nShift+click the objects again or press Enter to select them.';
-    infoBox.textContent = "You can't select mirrored objects with non-mirrored ones.";
+    infoBox.textContent = "You can't select mirrored symbols with non-mirrored ones.";
     infoBox.style.fontSize = '16px'
     infoBox.style.left = (canvasRect.left - infoBox.style.maxWidth) + 'px';
     infoBox.style.top = canvasRect.top + 'px';

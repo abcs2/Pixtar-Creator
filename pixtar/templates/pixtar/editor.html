@@ -27,8 +27,8 @@
                     <div class="upperRight">
                         <div>
                             <button type="button" id="clear" data-message="Clear the canvas.">clear</button>
-                            <button type="button" id="delete" data-message="Delete the selected object.\nKeyboard: Del">delete</button>
-                            <button type="button" id="copy" data-message="Make a copy of the selected object.\nKeyboard: V">copy</button>
+                            <button type="button" id="delete" data-message="Delete the selected symbol.\nKeyboard: Del">delete</button>
+                            <button type="button" id="copy" data-message="Make a copy of the selected symbol.\nKeyboard: V">copy</button>
                         </div>
                         <div>
                             <button type="button" class="undoRedo" id="undo" data-message="Undo the last modification made.\nKeyboard: Z">↩</button>
@@ -48,19 +48,19 @@
                     </div>
                     <div class="sizeMove">
                         <div class="sizeFlex">
-                            <button type="button" class="moveBtn" id="sizeUp" data-message="Make the selected object bigger.\nNot available with multiple objects.\nKeyboard: + / Scroll up">+</button>
-                            <button type="button" class="moveBtn" id="sizeDown" data-message="Make the selected object smaller.\nNot available with multiple objects.\nKeyboard: - / Scroll down">–</button>
+                            <button type="button" class="moveBtn" id="sizeUp" data-message="Make the selected symbol bigger.\nNot available with multiple symbols.\nKeyboard: + / Scroll up">+</button>
+                            <button type="button" class="moveBtn" id="sizeDown" data-message="Make the selected symbol smaller.\nNot available with multiple symbols.\nKeyboard: - / Scroll down">–</button>
                         </div>  
                         <div class="moveOps">
                             <div class="moveOps1">
-                                <button type="button" class="rotateBtn" id="rotateDown" data-message="Rotate the selected object counter-clockwise.\nKeyboard: Q">⟲</button>
-                                <button type="button" class="moveBtn" id="Ubutton" data-message="Move the selected object up.\nKeyboard: Up / W">⭡</button>
-                                <button type="button" class="rotateBtn" id="rotateUp" data-message="Rotate the selected object clockwise.\nKeyboard: E">⟳</button>
+                                <button type="button" class="rotateBtn" id="rotateDown" data-message="Rotate the selected symbol counter-clockwise.\nKeyboard: Q">⟲</button>
+                                <button type="button" class="moveBtn" id="Ubutton" data-message="Move the selected symbol up.\nKeyboard: Up / W">⭡</button>
+                                <button type="button" class="rotateBtn" id="rotateUp" data-message="Rotate the selected symbol clockwise.\nKeyboard: E">⟳</button>
                             </div>
                             <div class="moveOps2">
-                                <button type="button" class="moveBtn" id="Lbutton" data-message="Move the selected object left.\nKeyboard: Left / A">⭠</button>
-                                <button type="button" class="moveBtn" id="Dbutton" data-message="Move the selected object down.\nKeyboard: Down / S">⭣</button>
-                                <button type="button" class="moveBtn" id="Rbutton" data-message="Move the selected object right.\nKeyboard: Right / D">⭢</button>  
+                                <button type="button" class="moveBtn" id="Lbutton" data-message="Move the selected symbol left.\nKeyboard: Left / A">⭠</button>
+                                <button type="button" class="moveBtn" id="Dbutton" data-message="Move the selected symbol down.\nKeyboard: Down / S">⭣</button>
+                                <button type="button" class="moveBtn" id="Rbutton" data-message="Move the selected symbol right.\nKeyboard: Right / D">⭢</button>  
                             </div>
                         </div>
                     </div>
@@ -69,14 +69,14 @@
                     <div class="leftSide">
                         <div class="transformOpsFlex">
                             <div class="flipFlex">
-                                <button type="button" id="flipV" data-message="Flip the selected object vertically.">
+                                <button type="button" id="flipV" data-message="Flip the selected symbol vertically.">
                                     <div class="flipVGrid">
                                         <div class="ogA">A</div>
                                         <div class="mirrorLine">|</div>
                                         <div class="mirroredA">A</div>
                                     </div>
                                 </button>
-                                <button type="button" id="flipH" data-message="Flip the selected object horizontally.">
+                                <button type="button" id="flipH" data-message="Flip the selected symbol horizontally.">
                                     <div class="flipHGrid">
                                         <div>B</div>
                                         <div class="mirrorLineB">|</div>
@@ -85,16 +85,16 @@
                                 </button>
                             </div>
                             <div class="stretchFlex">
-                                <button type="button" id="stretchH" data-message="Make the selected object thicker.\nNot available with multiple objects.\nKeyboard: T">
+                                <button type="button" id="stretchH" data-message="Make the selected symbol thicker.\nNot available with multiple symbols.\nKeyboard: T">
                                     ❬ | ❭
                                 </button>
-                                <button type="button" id="stretchV" data-message="Make the selected object thinner.\nNot available with multiple objects.\nKeyboard: R">
+                                <button type="button" id="stretchV" data-message="Make the selected symbol thinner.\nNot available with multiple symbols.\nKeyboard: R">
                                     ❭ | ❬
                                 </button>
                             </div>
                         </div>             
-                        <button type="button" id="hiddenTop" data-message="Bring all hidden objects back to the top.">hidden to top</button>
-                        <button type="button" id="mirror" data-message="Activate to create objects with mirrors.\nDeactivate to break the selected objects' mirror.">
+                        <button type="button" id="hiddenTop" data-message="Bring all hidden symbols back to the top.">hidden to top</button>
+                        <button type="button" id="mirror" data-message="Activate to create symbols with mirrors.\nDeactivate to break the selected symbols' mirror.">
                             Mirror:
                             <div class="mirrorOuter">
                                 <div class="mirrorFlex">
@@ -103,7 +103,7 @@
                                 </div>
                             </div>
                         </button>
-                        <div class="objCount"><small>Objects: <span id="objCount">0</span></small></div>
+                        <div class="objCount"><small>Symbols: <span id="objCount">0</span></small></div>
                         <button class="concludeBtn" id="conclude" data-message="Download or share the image.">Complete</button>
                     </div>
                     <div class="colorContainer">
@@ -151,7 +151,7 @@
                         </div>
                     </div>
                     <div class="replaceOps">
-                        <button type="button" class="letterButton v2" id="replaceLetter" data-message="Click to activate.\nClicking one of the preview letters will replace the selected object with it.">
+                        <button type="button" class="letterButton v2" id="replaceLetter" data-message="Click to activate.\nClicking one of the preview letters will replace the selected symbol with it.">
                             <div class="fontAllGrid g2">
                                 <div class="buttonPart1">
                                     <div>A</div>
@@ -162,7 +162,7 @@
                                 </div>
                             </div>
                         </button>
-                        <button type="button" class="letterButton v2" id="fontOne" data-message="Make the selected object have the current font.">
+                        <button type="button" class="letterButton v2" id="fontOne" data-message="Make the selected symbol have the current font.">
                             <div class="fontAllGrid g2">
                                 <div class="buttonPart1">
                                     <div>A</div>
@@ -173,7 +173,7 @@
                                 </div>
                             </div>
                         </button>
-                        <button type="button" class="letterButton" id="fontAll" data-message="Make all objects on the canvas have the current font.">
+                        <button type="button" class="letterButton" id="fontAll" data-message="Make all symbols on the canvas have the current font.">
                             <div class="fontAllGrid">
                                 <div class="buttonPart1">
                                     <div>A</div>
@@ -188,7 +188,7 @@
                         </button>
                     </div>
                 </div>
-                <div id="alphabet" data-message="Drag a letter to the canvas to create an object.\nClick to create an object on the center of the canvas."></div>
+                <div id="alphabet" data-message="Drag to bring a symbol to the canvas.\nClick to create a symbol on the center of the canvas."></div>
             </div>
             <div id="canvas"></div>
         </div>
@@ -198,7 +198,7 @@
             <div class="concludeOps">
                 <div class="backButton" id="concludeBack">→</div>
                 <div>
-                    Objects: <span id="objCount2"></span><br>
+                    Symbols: <span id="objCount2"></span><br>
                     Alphabets: <span id="alphabetCount"></span><br>
                     Fonts: <span id="fontCount"></span><br>
                     Colors: <span id="colorCount"></span><br>
@@ -219,7 +219,7 @@
                     <b>Author:</b><br><input type="text" class="input form" id="authorInput" value="{{ user.username }}" maxlength="20">
                     <input type="checkbox" id="anonymous" name="anonymous">Anonymous</input>
                 </span>
-                <small>Do not share images that are low effort, promote violence or contain personal information or sexual content.</small>
+                <small>Before sharing, make sure the combined symbols make up an image. Shared images cannot promote violence, contain sexual content or personal information.</small>
                 <div class="concludeButtons" id="save">Share to gallery</div>
             </div>
         </div>
