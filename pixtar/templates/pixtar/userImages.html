@@ -6,11 +6,11 @@
 
 {% block header %}
 <div class="headerButtons">
-    <a href="{% url 'pixtar:index' %}"><button type="button" class="backMenuButton">←</button></a>
+    <a href="{% url 'pixtar:index' %}"><button type="button" class="backMenuButton">←&#xFE0E;</button></a>
     <div class="pageTitle">Your Images</div>
 </div>
 <div class="headerButtons">
-    <button type="button" class="linkButton selected" id="sortDate">Sort by date ▼</button>
+    <button type="button" class="linkButton selected" id="sortDate">Sort by date ▼&#xFE0E;</button>
 </div>
 {% endblock %}
 
@@ -47,7 +47,7 @@
     Colors: <span id="colorCount"></span><br>
 </div>
 <div class="bottomButtonsFlex">
-    <button type="button" class="concludeButtons deleteButton danger" id="delete">🗑︎</button>
+    <button type="button" class="concludeButtons deleteButton danger" id="delete">🗑︎&#xFE0E;</button>
     <button type="button" class="concludeButtons" id="edit">Edit</button>
 </div>
 {% endblock %}

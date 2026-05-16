@@ -2,6 +2,7 @@
 {% load static %}
 <html>
     <head>
+        <meta charset="UTF-8">
         {% block title %}
         {% endblock %}
         <link rel="stylesheet" href="{% static 'css/gallery.css' %}">
@@ -23,7 +24,7 @@
         <div class="popup hidden" id="infoScreen">
             <div class="biggerImage"></div>
             <div class="concludeOps">
-                <div class="backButton" id="infoBack">→</div>
+                <div class="backButton" id="infoBack">→&#xFE0E;</div>
                 {% block info %}
                 {% endblock %}
             </div>

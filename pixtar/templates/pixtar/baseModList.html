@@ -2,6 +2,7 @@
 {% load static %}
 <html>
     <head>
+        <meta charset="UTF-8">
         {% block title %}
         {% endblock %}
         <link rel="stylesheet" href="{% static 'css/gallery.css' %}">
@@ -21,7 +22,7 @@
 
         <div class="overlay hidden" id="overlay"></div>
         <div class="popupSmall hidden" id="popupSearch">
-            <div class="backButton" id="back">→</div>
+            <div class="backButton" id="back">→&#xFE0E;</div>
             <div class="addModText">Add Moderator</div>
             <input type="text" class="form" name="userId" placeholder="User Id" id='idForm'>
             <button type="button" class="okButton" id="addOk">Add</button>

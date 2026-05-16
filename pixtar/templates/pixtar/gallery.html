@@ -6,15 +6,15 @@
 
 {% block header %}
 <div class="headerButtons">
-    <a href="{% url 'pixtar:index' %}"><button type="button" class="backMenuButton">←</button></a>
+    <a href="{% url 'pixtar:index' %}"><button type="button" class="backMenuButton">←&#xFE0E;</button></a>
     <div class="pageTitle">Gallery</div>
 </div>
 <div class="headerButtons">
-    <button type="button" class="linkButton selected" id="sortDate">Sort by date ▼</button>
-    <button type="button" class="linkButton" id="sortLikes">Sort by likes ▼</button>
+    <button type="button" class="linkButton selected" id="sortDate">Sort by date ▼&#xFE0E;</button>
+    <button type="button" class="linkButton" id="sortLikes">Sort by likes ▼&#xFE0E;</button>
     {% if user.is_authenticated %}
-        <button type="button" class="linkButton" id="sortUserImages">◼ Your images</button>
-        <button type="button" class="linkButton" id="sortUserLikes">❤ Your likes</button>
+        <button type="button" class="linkButton" id="sortUserImages">◼&#xFE0E; Your images</button>
+        <button type="button" class="linkButton" id="sortUserLikes">❤&#xFE0E; Your likes</button>
     {% endif %}
 </div>
 {% endblock %}
@@ -65,7 +65,7 @@
     Colors: <span id="colorCount"></span><br>
 </div>
 <div>
-    <span class="heart" id="likeBtn">❤</span> <span id="likeCount"></span>
+    <span class="heart" id="likeBtn">❤&#xFE0E;</span> <span id="likeCount"></span>
     <small><div id="errorMsg"></div></small>
 </div>
 {% if perms.pixtar.can_moderate %}

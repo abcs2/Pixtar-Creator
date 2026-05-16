@@ -6,7 +6,7 @@
 
 {% block header %}
 <div class="headerButtons">
-    <a href="{% url 'pixtar:index' %}"><button type="button" class="backMenuButton">←</button></a>
+    <a href="{% url 'pixtar:index' %}"><button type="button" class="backMenuButton">←&#xFE0E;</button></a>
     <div class="pageTitle">Rejected images</div>
 </div>
 <div class="headerButtons">
@@ -56,7 +56,7 @@
     Fonts: <span id="fontCount"></span><br>
     Colors: <span id="colorCount"></span><br>
 </div>
-<div><span class="clock">⏱</span> <span id="timeLeft"></span></div>
+<div><span class="clock">⏱&#xFE0E;</span> <span id="timeLeft"></span></div>
 <div>Rejected by: <span id="userJudge"></span></div>
 <button type="button" class="concludeButtons" id="approve">Approve</button>
 {% endblock %}

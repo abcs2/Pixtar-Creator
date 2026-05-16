@@ -180,14 +180,6 @@ const imgStatus = document.getElementById('status');
 
 window.addEventListener('beforeunload', saveState);
 
-document.addEventListener('wheel', e => {
-    if (e.ctrlKey) e.preventDefault();
-}, {passive: false});
-
-document.addEventListener('keydown', e => {
-    if ((e.ctrlKey || e.metaKey) && ['+', '-', '='].includes(e.key)) e.preventDefault();
-});
-
 document.addEventListener('mousedown', function (e) {
     if (bgColor.classList.contains('buttonSelected')) {
         if (!(e.target.classList.contains('picker')) && !(e.target.classList.contains('colorPicker')) && !(e.target.classList.contains('colorBlock'))) {
