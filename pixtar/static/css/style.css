@@ -33,6 +33,14 @@ button:active {
     filter: brightness(0.7);
 }
 
+#canvas {
+    background-color: white;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    aspect-ratio: 3/2;
+}
+
 .leftFromCanvas {
     display: flex;
     flex-direction: column;
@@ -40,14 +48,11 @@ button:active {
     flex: 1;
     min-width: 0;
     overflow-y: scroll;
+    overflow-x: scroll;
 }
 
-#canvas {
-    background-color: white;
-    position: relative;
-    overflow: hidden;
-    height: 100%;
-    aspect-ratio: 3/2;
+.leftFromCanvas::-webkit-scrollbar {
+  display: none;
 }
 
 #ops {

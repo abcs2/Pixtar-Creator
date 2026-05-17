@@ -122,7 +122,6 @@
 
             document.querySelectorAll(".previewImage").forEach(div => {
                 listSize++;
-                const scale = 0.3;
 
                 const jsonScript = div.querySelector(".estadoJSON");
                 const estado = JSON.parse(jsonScript.textContent);
@@ -130,6 +129,7 @@
                 const container = document.createElement('div');
                 container.className = 'previewContent';
                 container.innerHTML = estado.html;
+                const scale = calcScale(318, estado.width);
 
                 container.style.backgroundColor = estado.color;
                 container.style.width = (estado.width * scale) + 'px';
@@ -170,12 +170,12 @@
                 overlay.classList.remove('hidden');
                 infoScreen.classList.remove('hidden');
                 const biggerImage = infoScreen.querySelector('.biggerImage')
-                makePreview(e, image, biggerImage, 0.6);
+                makePreview(e, image, biggerImage, calcScale(637, image.dataset.width));
                 currentImageId = block.dataset.id;
 
                 biggerImage.addEventListener('click', () => {
                     const hugeImage = infoScreen.querySelector('.hugeImage')
-                    makePreview(e, image, hugeImage, 1);
+                    makePreview(e, image, hugeImage, calcScale((overlay.clientHeight - 24), image.dataset.height));
                     hugeImage.classList.remove('hidden');
                     overlay.style.cursor = 'pointer';
                     
@@ -221,6 +221,11 @@
                         else likeBtn.classList.remove('liked');
                     }
                 }
+            }
+
+            function calcScale(newSize, ogSize) {
+                const scale = newSize / ogSize;
+                return scale;
             }
 
             function makePreview(e, image, previewImage, scale) {

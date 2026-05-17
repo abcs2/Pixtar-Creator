@@ -2301,14 +2301,19 @@ function closeShare() {
     shareScreen.classList.add('hidden');
 }
 
+function calcScale(width) {
+    const scale = width / canvas.clientWidth;
+    return scale;
+}
+
 function makePreview(previewImage) {
-    const scale = 0.5;
+    const scale = calcScale(637);
 
     previewImage.innerHTML = canvas.innerHTML;
     previewImage.style.backgroundColor = canvas.style.backgroundColor;
 
-    previewImage.style.width = (canvas.offsetWidth * scale) + 'px';
-    previewImage.style.height = (canvas.offsetHeight * scale) + 'px';
+    previewImage.style.width = (canvas.clientWidth * scale) + 'px';
+    previewImage.style.height = (canvas.clientHeight * scale) + 'px';
 
     previewImage.querySelectorAll('.element').forEach(el => {
         const rotation = el.dataset.rotation || 0;
