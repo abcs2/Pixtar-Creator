@@ -187,7 +187,7 @@
     font-weight: bold;
     overflow: hidden;
     user-select: none;
-    border: 3px solid #B1C3B7;
+    border: 4px solid #B1C3B7;
     position: fixed;
     z-index: 100010;
     transform: translate(-50%, 0);
