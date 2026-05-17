@@ -1,0 +1,151 @@
+@font-face {
+    font-family: 'ArialExact';
+    src: url('../fonts/ArialMT.woff2') format('woff2');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'ArialExact';
+    src: url('../fonts/Arial-BoldMT.woff2') format('woff2');
+    font-weight: bold;
+}
+
+
+
+@font-face {
+    font-family: 'BIZ-UDGothicExact';
+    src: url('../fonts/BIZ-UDGothic.woff2') format('woff2');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'BIZ-UDGothicExact';
+    src: url('../fonts/BIZ-UDGothic-Bold.woff2') format('woff2');
+    font-weight: bold;
+}
+
+
+
+@font-face {
+    font-family: 'CalibriExact';
+    src: url('../fonts/Calibri.woff2') format('woff2');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'CalibriExact';
+    src: url('../fonts/Calibri-Bold.woff2') format('woff2');
+    font-weight: bold;
+}
+
+
+
+@font-face {
+    font-family: 'CourierNewExact';
+    src: url('../fonts/CourierNewPSMT.woff2') format('woff2');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'CourierNewExact';
+    src: url('../fonts/CourierNewPS-BoldMT.woff2') format('woff2');
+    font-weight: bold;
+}
+
+
+
+@font-face {
+    font-family: 'GillSansExact';
+    src: url('../fonts/GillSansMT.woff2') format('woff2');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'GillSansExact';
+    src: url('../fonts/GillSansMT-Bold.woff2') format('woff2');
+    font-weight: bold;
+}
+
+
+
+@font-face {
+    font-family: 'MeiryoExact';
+    src: url('../fonts/Meiryo.woff2') format('woff2');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'MeiryoExact';
+    src: url('../fonts/Meiryo-Bold.woff2') format('woff2');
+    font-weight: bold;
+}
+
+
+
+@font-face {
+    font-family: 'SegoeUIExact';
+    src: url('../fonts/SegoeUI.woff2') format('woff2');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'SegoeUIExact';
+    src: url('../fonts/SegoeUI-Bold.woff2') format('woff2');
+    font-weight: bold;
+}
+
+
+
+@font-face {
+    font-family: 'TahomaExact';
+    src: url('../fonts/Tahoma.woff2') format('woff2');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'TahomaExact';
+    src: url('../fonts/Tahoma-Bold.woff2') format('woff2');
+    font-weight: bold;
+}
+
+
+
+@font-face {
+    font-family: 'TimesNewRomanExact';
+    src: url('../fonts/TimesNewRomanPSMT.woff2') format('woff2');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'TimesNewRomanExact';
+    src: url('../fonts/TimesNewRomanPS-BoldMT.woff2') format('woff2');
+    font-weight: bold;
+}
+
+
+
+@font-face {
+    font-family: 'VerdanaExact';
+    src: url('../fonts/Verdana.woff2') format('woff2');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'VerdanaExact';
+    src: url('../fonts/Verdana-Bold.woff2') format('woff2');
+    font-weight: bold;
+}
+
+
+
+@font-face {
+    font-family: 'YuMinchoExact';
+    src: url('../fonts/YuMincho-Regular.woff2') format('woff2');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'VerdanaExact';
+    src: url('../fonts/YuMincho-Demibold.woff2') format('woff2');
+    font-weight: bold;
+}

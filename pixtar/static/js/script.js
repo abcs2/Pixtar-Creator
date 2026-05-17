@@ -13,12 +13,12 @@ const alphabetNames =
 const charList = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.', ',', '-', '!', '#', '$', '&', '(', ')', '*', ';', ':', '?', '@', '[', ']', '^', '_', '~', '{', '}', '|', '+', '=', '<', '>', '/', '\\', '%', '£', '¢', '§', '€', '₽', '¥'];
 
 const fontList =
-    ["Arial, Helvetica, sans-serif",
-    '"Courier New", Courier, monospace',
-    '"Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif',
-    '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
-    '"Times New Roman", Times, serif',
-    'Verdana, Geneva, Tahoma, sans-serif'
+    ["ArialExact, MeiryoExact, Helvetica, sans-serif",
+    'CourierNewExact, BIZ-UDGothicExact, Courier, monospace',
+    'GillSansExact, MeiryoExact, "Gill Sans MT", CalibriExact, "Trebuchet MS", sans-serif',
+    'SegoeUIExact, MeiryoExact, TahomaExact, Geneva, VerdanaExact, sans-serif',
+    'TimesNewRomanExact, YuMinchoExact, Times, serif',
+    'VerdanaExact, MeiryoExact, Geneva, TahomaExact, sans-serif'
     ];
 
 const fontNames = 

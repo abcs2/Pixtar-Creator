@@ -49,6 +49,8 @@ button:active {
     min-width: 0;
     overflow-y: scroll;
     overflow-x: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .leftFromCanvas::-webkit-scrollbar {
@@ -556,7 +558,7 @@ button:active {
     border: 1px solid #49524F;
     margin-top: auto;
     display: grid;
-    grid-template-columns: repeat(17, 20px);
+    grid-template-columns: repeat(17, auto);
     grid-template-rows: repeat(8, 25px);
     gap: 2px;
     justify-content: space-between;
